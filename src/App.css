@@ -62,7 +62,7 @@ body {
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
-  background: var(--background);
+  background: var(--surface);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
 }
@@ -167,7 +167,7 @@ a:hover {
 /* ---------- Lateral ---------- */
 
 .lateral {
-  background: var(--surface);
+  background: var(--color-white);
   border-right: 1px solid var(--border);
   padding: 24px;
   overflow-y: auto;
@@ -232,6 +232,25 @@ a:hover {
   font-weight: 300;
   line-height: 18px;
   color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.aviso-corpus {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 4px 6px;
+  background: var(--tint-yellow);
+  border-left: 3px solid var(--color-ey-yellow);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--text-secondary);
+}
+
+.aviso-corpus svg {
+  flex-shrink: 0;
   margin-top: 2px;
 }
 
@@ -369,7 +388,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background: var(--background);
+  background: var(--surface);
 }
 
 .mensajes {
@@ -783,7 +802,7 @@ a:hover {
   gap: 8px;
   padding: 16px clamp(24px, 4vw, 48px);
   border-top: 1px solid var(--border);
-  background: var(--color-white);
+  background: var(--surface);
 }
 
 .entrada textarea {
@@ -839,7 +858,7 @@ a:hover {
   font-weight: 300;
   line-height: 18px;
   color: var(--text-muted);
-  background: var(--color-white);
+  background: var(--surface);
 }
 
 @media (max-width: 1024px) {

@@ -9,6 +9,7 @@ import {
   Filter,
   Loader2,
   Scale,
+  ScanLine,
   Send,
   Sparkles,
   XCircle,
@@ -229,15 +230,21 @@ export default function App() {
           <Scale size={24} aria-hidden="true" />
           <h1>Asistente de Normativa y Compliance</h1>
         </div>
-        <span className="sello">Powered by EY</span>
+        <span className="sello">FDA</span>
 
         {estado && (
           <p className="estado-global">
             {estado.ok ? (
               <>
-                <span>{estado.unidades_indexadas} unidades indexadas</span>
+                <span
+                  title="Artículos, disposiciones complementarias y cláusulas que el asistente puede consultar y citar."
+                >
+                  {estado.unidades_indexadas} artículos consultables
+                </span>
                 <span aria-hidden="true">·</span>
-                <span>
+                <span
+                  title={`Unidad Impositiva Tributaria: valor de referencia que fija el Estado cada año y sobre el que se calculan las multas. ${estado.uit.fuente}`}
+                >
                   UIT {estado.uit.anio}: S/{" "}
                   {estado.uit.valor.toLocaleString("es-PE")}
                 </span>
@@ -271,9 +278,17 @@ export default function App() {
                     <span>
                       {n.nombre}
                       <span className="meta">
-                        {n.unidades} unidades
-                        {n.requiere_cotejo && " · OCR, requiere cotejo"}
+                        {n.unidades} artículos
                       </span>
+                      {n.requiere_cotejo && (
+                        <span
+                          className="aviso-corpus"
+                          title="El PDF de origen es un escaneo sin texto digital. Se leyó con reconocimiento óptico, que puede introducir errores, así que conviene contrastar las citas con la versión oficial."
+                        >
+                          <ScanLine size={11} aria-hidden="true" />
+                          Texto escaneado, contrastar con la fuente oficial
+                        </span>
+                      )}
                     </span>
                   </label>
                 </li>
