@@ -41,8 +41,9 @@ código:
 - **`#FFE600` nunca como texto sobre blanco** (contraste 2.2:1, no pasa WCAG AA).
   El amarillo se usa como *fondo* con texto `#161D23`, como borde, o como color
   de texto solo sobre la cabecera oscura.
-- **Tipografía `EYInterstate`** con fallback a Arial. La fuente es propietaria y
-  no se descarga: si no está instalada en el sistema, cae al fallback.
+- **Tipografía Nunito**, servida desde Google Fonts con `display=swap` para que
+  el texto sea legible mientras carga. Sustituye a EYInterstate, que es
+  propietaria y no se puede distribuir.
 - **Iconos exclusivamente de `lucide-react`**, sin emojis.
 - **Superficies oscuras en `#161D23`**, nunca negro puro.
 

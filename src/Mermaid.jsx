@@ -9,7 +9,7 @@ mermaid.initialize({
   // amarillo se reserva para los rombos de decisión, donde actúa como fondo
   // con texto oscuro encima (nunca como texto amarillo sobre blanco).
   themeVariables: {
-    fontFamily: "EYInterstate, Arial, sans-serif",
+    fontFamily: "Nunito, Segoe UI, system-ui, sans-serif",
     fontSize: "14px",
     primaryColor: "#F2F2F2",
     primaryBorderColor: "#161D23",

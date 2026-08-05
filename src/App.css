@@ -47,7 +47,7 @@
   --primary: #ffe600;
   --primary-foreground: #161d23;
 
-  --font-sans: "EYInterstate", "Arial", sans-serif;
+  --font-sans: "Nunito", "Segoe UI", system-ui, sans-serif;
   --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
