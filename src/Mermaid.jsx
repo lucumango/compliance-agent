@@ -5,13 +5,30 @@ mermaid.initialize({
   startOnLoad: false,
   theme: "base",
   securityLevel: "strict",
+  // Paleta EY. Los nodos van en gris claro con borde y texto en EY Black; el
+  // amarillo se reserva para los rombos de decisión, donde actúa como fondo
+  // con texto oscuro encima (nunca como texto amarillo sobre blanco).
   themeVariables: {
-    primaryColor: "#e7f2f0",
-    primaryBorderColor: "#0e6f6b",
-    primaryTextColor: "#0a4f4c",
-    lineColor: "#5a6b68",
-    fontFamily: "system-ui, sans-serif",
+    fontFamily: "EYInterstate, Arial, sans-serif",
+    fontSize: "14px",
+    primaryColor: "#F2F2F2",
+    primaryBorderColor: "#161D23",
+    primaryTextColor: "#161D23",
+    secondaryColor: "#FFE600",
+    secondaryBorderColor: "#161D23",
+    secondaryTextColor: "#161D23",
+    tertiaryColor: "#FFFFFF",
+    tertiaryBorderColor: "#CCCCCC",
+    tertiaryTextColor: "#333333",
+    lineColor: "#333333",
+    textColor: "#161D23",
+    mainBkg: "#F2F2F2",
+    nodeBorder: "#161D23",
+    clusterBkg: "#FFFFFF",
+    clusterBorder: "#E8E8E8",
+    edgeLabelBackground: "#FFFFFF",
   },
+  flowchart: { curve: "linear", useMaxWidth: true },
 });
 
 let contador = 0;

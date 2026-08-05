@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
+import { DollarSign, TrendingUp } from "lucide-react";
 import { calcularMulta, regimenes as pedirRegimenes } from "./api";
 
-const NOMBRES = {
-  leve: "Leve",
-  grave: "Grave",
-  muy_grave: "Muy grave",
+// La escala de gravedad del régimen sancionador mapea sobre los colores
+// semánticos de riesgo del sistema EY, así que no hacen falta colores propios.
+const NIVELES = {
+  leve: { nombre: "Leve", color: "var(--color-risk-low)", clase: "bajo" },
+  grave: { nombre: "Grave", color: "var(--color-risk-medium)", clase: "medio" },
+  muy_grave: {
+    nombre: "Muy grave",
+    color: "var(--color-risk-high)",
+    clase: "alto",
+  },
 };
+
+// Proporción de la barra: dónde cae el tramo dentro de la escala del régimen.
+const PROPORCION = { leve: 33, grave: 66, muy_grave: 100 };
 
 const soles = (n) =>
   n.toLocaleString("es-PE", {
@@ -50,11 +60,24 @@ export default function CalculadoraMultas() {
 
   if (!regimenes.length) return null;
 
+  const nivel = NIVELES[gravedad] ?? {
+    nombre: gravedad,
+    color: "var(--color-risk-none)",
+    clase: "neutro",
+  };
+
   return (
     <section className="calculadora">
-      <h2>Estimador de multas</h2>
+      <p className="rotulo">
+        <DollarSign size={14} aria-hidden="true" />
+        Estimador de multas
+      </p>
 
-      <select value={regimen} onChange={(e) => setRegimen(e.target.value)}>
+      <select
+        value={regimen}
+        onChange={(e) => setRegimen(e.target.value)}
+        aria-label="Régimen sancionador"
+      >
         {regimenes.map((r) => (
           <option key={r.id} value={r.id}>
             {r.nombre}
@@ -62,14 +85,15 @@ export default function CalculadoraMultas() {
         ))}
       </select>
 
-      <div className="gravedades">
+      <div className="gravedades" role="group" aria-label="Gravedad">
         {actual?.gravedades.map((g) => (
           <button
             key={g}
             className={g === gravedad ? "activo" : ""}
             onClick={() => setGravedad(g)}
+            aria-pressed={g === gravedad}
           >
-            {NOMBRES[g] ?? g}
+            {NIVELES[g]?.nombre ?? g}
           </button>
         ))}
       </div>
@@ -77,19 +101,33 @@ export default function CalculadoraMultas() {
       {error && <p className="pista">{error}</p>}
 
       {resultado && (
-        <div className="resultado">
+        <div className="tarjeta" style={{ "--nivel": nivel.color }}>
+          <span className={`badge ${nivel.clase}`}>
+            <TrendingUp size={12} aria-hidden="true" />
+            {nivel.nombre}
+          </span>
+
           <p className="monto">
             {soles(resultado.min_soles)} – {soles(resultado.max_soles)}
           </p>
+
+          <div
+            className="barra-riesgo"
+            role="img"
+            aria-label={`Tramo ${nivel.nombre} dentro de la escala del régimen`}
+          >
+            <span style={{ width: `${PROPORCION[gravedad] ?? 100}%` }} />
+          </div>
+
           <p className="detalle">
             {resultado.rango_uit[0]}–{resultado.rango_uit[1]} UIT · UIT{" "}
             {resultado.anio_uit}: {soles(resultado.valor_uit)}
           </p>
           <p className="detalle fuente">Base legal: {resultado.fuente_rango}</p>
           {resultado.tope_adicional && (
-            <p className="detalle tope">{resultado.tope_adicional}</p>
+            <p className="detalle">{resultado.tope_adicional}</p>
           )}
-          <p className="detalle aviso">{resultado.advertencia}</p>
+          <p className="detalle">{resultado.advertencia}</p>
         </div>
       )}
     </section>

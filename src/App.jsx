@@ -1,25 +1,59 @@
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import {
+  AlertTriangle,
+  Building2,
+  Clock,
+  DollarSign,
+  FileSearch,
+  Filter,
+  Loader2,
+  Scale,
+  Send,
+  Sparkles,
+  XCircle,
+} from "lucide-react";
 import Mermaid from "./Mermaid";
 import CalculadoraMultas from "./CalculadoraMultas";
 import { consultarStream, normas, pedirDiagrama, salud } from "./api";
 import "./App.css";
 
 const EJEMPLOS = [
-  "¿Cuál es la multa máxima por una infracción muy grave en protección de datos?",
-  "¿Qué debo hacer si ocurre un accidente de trabajo mortal?",
-  "¿Cómo se tramita una solicitud de acceso a datos personales y en qué plazo?",
-  "¿Qué medidas administrativas se aplican a una persona jurídica por cohecho?",
+  {
+    icono: DollarSign,
+    texto:
+      "¿Cuál es la multa máxima por una infracción muy grave en protección de datos?",
+  },
+  {
+    icono: AlertTriangle,
+    texto: "¿Qué debo hacer si ocurre un accidente de trabajo mortal?",
+  },
+  {
+    icono: Clock,
+    texto:
+      "¿Cómo se tramita una solicitud de acceso a datos personales y en qué plazo?",
+  },
+  {
+    icono: Building2,
+    texto:
+      "¿Qué medidas administrativas se aplican a una persona jurídica por cohecho?",
+  },
 ];
 
 function Fuente({ fuente }) {
   const [abierto, setAbierto] = useState(false);
   return (
     <li className="fuente">
-      <button className="fuente-cab" onClick={() => setAbierto((v) => !v)}>
+      <button
+        className="fuente-cab"
+        onClick={() => setAbierto((v) => !v)}
+        aria-expanded={abierto}
+      >
         <span className="etiqueta">{fuente.etiqueta}</span>
         <span className="cita">{fuente.cita}</span>
-        <span className="score">{fuente.score.toFixed(3)}</span>
+        <span className="score" aria-label={`Similitud ${fuente.score}`}>
+          {fuente.score.toFixed(3)}
+        </span>
       </button>
       {abierto && <pre className="fuente-texto">{fuente.texto}</pre>}
     </li>
@@ -34,38 +68,61 @@ function Mensaje({ mensaje }) {
   // Un error puede llegar después de haberse emitido parte del texto, así que
   // se muestra junto a lo ya redactado en vez de reemplazarlo.
   if (mensaje.error && !mensaje.respuesta) {
-    return <div className="msg error">⚠ {mensaje.error}</div>;
+    return (
+      <div className="msg error">
+        <XCircle size={16} aria-hidden="true" />
+        <span>{mensaje.error}</span>
+      </div>
+    );
   }
 
   return (
     <div className="msg asistente">
+      <p className="ia-cab">
+        <Sparkles size={14} aria-hidden="true" />
+        Respuesta generada · anclada a las fuentes citadas
+      </p>
+
       {mensaje.respuesta ? (
         <div className="prosa">
           <ReactMarkdown>{mensaje.respuesta}</ReactMarkdown>
-          {mensaje.generando && <span className="cursor" />}
+          {mensaje.generando && <span className="cursor" aria-hidden="true" />}
         </div>
       ) : (
-        <p className="redactando">Redactando…</p>
+        <div className="skeleton" aria-busy="true" aria-label="Redactando">
+          <span />
+          <span />
+          <span />
+        </div>
       )}
 
-      {mensaje.error && <p className="error-parcial">⚠ {mensaje.error}</p>}
+      {mensaje.error && <p className="error-parcial">{mensaje.error}</p>}
 
       {mensaje.diagrama && <Mermaid codigo={mensaje.diagrama} />}
       {mensaje.cargandoDiagrama && (
-        <p className="redactando">Dibujando el diagrama…</p>
+        <p className="cargando-linea" aria-busy="true">
+          <Loader2 size={14} className="gira" aria-hidden="true" />
+          Dibujando el diagrama…
+        </p>
       )}
 
       {mensaje.advertencias?.length > 0 && (
         <div className="advertencias">
           {mensaje.advertencias.map((a, i) => (
-            <p key={i}>⚠ {a}</p>
+            <div className="hallazgo" key={i} role="note">
+              <AlertTriangle size={16} aria-hidden="true" />
+              <p>{a}</p>
+            </div>
           ))}
         </div>
       )}
 
       {mensaje.fuentes?.length > 0 && (
         <details className="fuentes" open>
-          <summary>{mensaje.fuentes.length} fuentes citadas</summary>
+          <summary>
+            <FileSearch size={14} aria-hidden="true" />
+            {mensaje.fuentes.length} fuentes citadas
+          </summary>
           <ul>
             {mensaje.fuentes.map((f) => (
               <Fuente key={f.etiqueta} fuente={f} />
@@ -87,8 +144,12 @@ export default function App() {
   const finRef = useRef(null);
 
   useEffect(() => {
-    salud().then(setEstado).catch(() => setEstado({ ok: false }));
-    normas().then(setCorpus).catch(() => setCorpus([]));
+    salud()
+      .then(setEstado)
+      .catch(() => setEstado({ ok: false }));
+    normas()
+      .then(setCorpus)
+      .catch(() => setCorpus([]));
   }, []);
 
   useEffect(() => {
@@ -125,10 +186,7 @@ export default function App() {
     try {
       await consultarStream(consulta, materias, (evento, datos) => {
         if (evento === "fuentes") {
-          parchear({
-            fuentes: datos.fuentes,
-            advertencias: datos.advertencias,
-          });
+          parchear({ fuentes: datos.fuentes, advertencias: datos.advertencias });
         } else if (evento === "delta") {
           acumulado += datos.texto;
           parchear({ respuesta: acumulado });
@@ -166,101 +224,136 @@ export default function App() {
 
   return (
     <div className="app">
-      <aside className="lateral">
-        <h1>Asistente de Compliance</h1>
-        <p className="sub">Normativa peruana · respuestas con cita a la fuente</p>
-
-        <h2>Filtrar por materia</h2>
-        <ul className="corpus">
-          {corpus.map((n) => (
-            <li key={n.norma_id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={materias.includes(n.materia)}
-                  onChange={() => alternarMateria(n.materia)}
-                />
-                <span>
-                  {n.nombre}
-                  <em>
-                    {n.unidades} unidades
-                    {n.requiere_cotejo && " · OCR"}
-                  </em>
-                </span>
-              </label>
-            </li>
-          ))}
-        </ul>
-        {materias.length === 0 && (
-          <p className="pista">Sin filtro: busca en todo el corpus.</p>
-        )}
-
-        <CalculadoraMultas />
+      <header className="cabecera">
+        <div className="marca">
+          <Scale size={24} aria-hidden="true" />
+          <h1>Asistente de Normativa y Compliance</h1>
+        </div>
+        <span className="sello">Powered by EY</span>
 
         {estado && (
-          <p className="estado">
-            {estado.ok
-              ? `${estado.unidades_indexadas} unidades · UIT ${estado.uit.anio}: S/ ${estado.uit.valor.toLocaleString("es-PE")}`
-              : "Backend no disponible"}
+          <p className="estado-global">
+            {estado.ok ? (
+              <>
+                <span>{estado.unidades_indexadas} unidades indexadas</span>
+                <span aria-hidden="true">·</span>
+                <span>
+                  UIT {estado.uit.anio}: S/{" "}
+                  {estado.uit.valor.toLocaleString("es-PE")}
+                </span>
+              </>
+            ) : (
+              <>
+                <XCircle size={14} aria-hidden="true" />
+                Backend no disponible
+              </>
+            )}
           </p>
         )}
-      </aside>
+      </header>
 
-      <main className="chat">
-        <div className="mensajes">
-          {mensajes.length === 0 && (
-            <div className="bienvenida">
-              <h2>¿Qué necesitas consultar?</h2>
-              <p>
-                Respondo únicamente a partir del corpus normativo cargado, y cito
-                el artículo de cada afirmación. Si el corpus no cubre tu consulta,
-                te lo digo en vez de improvisar.
-              </p>
-              <div className="ejemplos">
-                {EJEMPLOS.map((e) => (
-                  <button key={e} onClick={() => enviar(e)}>
-                    {e}
-                  </button>
-                ))}
+      <div className="cuerpo">
+        <aside className="lateral">
+          <section>
+            <p className="rotulo">
+              <Filter size={14} aria-hidden="true" />
+              Filtrar por materia
+            </p>
+            <ul className="corpus">
+              {corpus.map((n) => (
+                <li key={n.norma_id}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={materias.includes(n.materia)}
+                      onChange={() => alternarMateria(n.materia)}
+                    />
+                    <span>
+                      {n.nombre}
+                      <span className="meta">
+                        {n.unidades} unidades
+                        {n.requiere_cotejo && " · OCR, requiere cotejo"}
+                      </span>
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+            {materias.length === 0 && (
+              <p className="pista">Sin filtro: busca en todo el corpus.</p>
+            )}
+          </section>
+
+          <CalculadoraMultas />
+        </aside>
+
+        <main className="chat">
+          <div className="mensajes">
+            {mensajes.length === 0 && (
+              <div className="bienvenida">
+                <h2>¿Qué necesitas consultar?</h2>
+                <p>
+                  Respondo únicamente a partir del corpus normativo cargado, y
+                  cito el artículo de cada afirmación. Si el corpus no cubre tu
+                  consulta, te lo digo en vez de improvisar.
+                </p>
+                <div className="ejemplos">
+                  {EJEMPLOS.map(({ icono: Icono, texto }) => (
+                    <button key={texto} onClick={() => enviar(texto)}>
+                      <Icono size={16} aria-hidden="true" />
+                      {texto}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {mensajes.map((m, i) => (
-            <Mensaje key={i} mensaje={m} />
-          ))}
-          <div ref={finRef} />
-        </div>
+            {mensajes.map((m, i) => (
+              <Mensaje key={i} mensaje={m} />
+            ))}
+            <div ref={finRef} />
+          </div>
 
-        <form
-          className="entrada"
-          onSubmit={(e) => {
-            e.preventDefault();
-            enviar();
-          }}
-        >
-          <textarea
-            value={entrada}
-            onChange={(e) => setEntrada(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                enviar();
-              }
+          <form
+            className="entrada"
+            onSubmit={(e) => {
+              e.preventDefault();
+              enviar();
             }}
-            placeholder="Escribe tu consulta… (Enter para enviar, Shift+Enter para salto de línea)"
-            rows={2}
-          />
-          <button type="submit" disabled={cargando || !entrada.trim()}>
-            Consultar
-          </button>
-        </form>
+          >
+            <textarea
+              value={entrada}
+              onChange={(e) => setEntrada(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  enviar();
+                }
+              }}
+              placeholder="Escribe tu consulta… (Enter para enviar, Shift+Enter para salto de línea)"
+              rows={2}
+              aria-label="Consulta"
+            />
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={cargando || !entrada.trim()}
+            >
+              {cargando ? (
+                <Loader2 size={16} className="gira" aria-hidden="true" />
+              ) : (
+                <Send size={16} aria-hidden="true" />
+              )}
+              Consultar
+            </button>
+          </form>
 
-        <p className="descargo">
-          Este asistente informa sobre normativa; no constituye asesoría legal.
-          Verifica siempre contra la fuente oficial.
-        </p>
-      </main>
+          <p className="descargo">
+            Este asistente informa sobre normativa; no constituye asesoría
+            legal. Verifica siempre contra la fuente oficial.
+          </p>
+        </main>
+      </div>
     </div>
   );
 }

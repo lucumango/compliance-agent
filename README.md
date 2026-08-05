@@ -31,6 +31,29 @@ npx vercel --prod
 Define `VITE_API_URL` con la URL pública del backend. Sin esa variable el
 frontend llama a `127.0.0.1:8000` y en producción falla.
 
+## Diseño
+
+Sigue el sistema de marca **EY** (ver `DESIGN.md`). Puntos que condicionan el
+código:
+
+- **Sin `border-radius`.** EY es angular; hay una regla global `* { border-radius: 0 }`
+  para que ningún componente lo reintroduzca por descuido.
+- **`#FFE600` nunca como texto sobre blanco** (contraste 2.2:1, no pasa WCAG AA).
+  El amarillo se usa como *fondo* con texto `#161D23`, como borde, o como color
+  de texto solo sobre la cabecera oscura.
+- **Tipografía `EYInterstate`** con fallback a Arial. La fuente es propietaria y
+  no se descarga: si no está instalada en el sistema, cae al fallback.
+- **Iconos exclusivamente de `lucide-react`**, sin emojis.
+- **Superficies oscuras en `#161D23`**, nunca negro puro.
+
+La escala de gravedad de las infracciones (leve / grave / muy grave) reutiliza
+los colores semánticos de riesgo del sistema —verde / naranja / rojo— en vez de
+definir una paleta propia.
+
+El diagrama Mermaid usa un tema derivado de la misma paleta: nodos en gris
+claro con borde `#161D23`, y el amarillo reservado para los rombos de decisión,
+donde funciona como fondo con texto oscuro encima.
+
 ## Notas de implementación
 
 **El streaming usa `fetch` + `ReadableStream`, no `EventSource`.** La API
