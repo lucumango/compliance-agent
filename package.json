@@ -1,0 +1,14 @@
+{
+  "name": "compliance-agent",
+  "private": true,
+  "description": "CARLOS — Compliance Audit Regulatory Logic Operational System. Monorepo: backend/ (API y RAG) y frontend/ (interfaz).",
+  "scripts": {
+    "install:frontend": "npm --prefix frontend ci",
+    "build": "npm --prefix frontend run build",
+    "dev": "npm --prefix frontend run dev",
+    "lint": "npm --prefix frontend run lint"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

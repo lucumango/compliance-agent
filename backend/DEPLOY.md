@@ -35,18 +35,42 @@ Railway y Fly.io funcionan igual con el mismo Dockerfile.
 
 ### 2. Frontend
 
-Conecta el repositorio en Vercel y **deja el Root Directory en la raíz**. El
-`vercel.json` de la raíz ya le dice todo lo que necesita:
+Conecta el repositorio en Vercel y **deja el Root Directory en la raíz** (`./`).
+
+> **Si el Root Directory apunta a `backend/`, el despliegue falla así:**
+>
+> ```
+> + uvicorn==0.52.1
+> + uvloop==0.22.1
+> sh: line 1: vite: command not found
+> Error: Command "vite build" exited with 127
+> ```
+>
+> Vercel encuentra `backend/requirements.txt`, deduce que es un proyecto
+> Python, instala las dependencias del backend y luego intenta construir un
+> frontend que en esa carpeta no existe. La pista es que instale paquetes de
+> Python: si los ves, el Root Directory está mal.
+
+El `vercel.json` de la raíz le dice todo lo que necesita:
 
 ```json
 {
-  "installCommand": "cd frontend && npm ci",
-  "buildCommand":   "cd frontend && npm run build",
+  "installCommand": "npm --prefix frontend ci",
+  "buildCommand":   "npm --prefix frontend run build",
   "outputDirectory": "frontend/dist",
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- frontend/"
 }
 ```
+
+Hay además un `package.json` en la raíz. No tiene dependencias: existe para que
+Vercel reconozca la raíz como proyecto Node en vez de ponerse a adivinar. Sin
+él, la raíz solo contenía `vercel.json` y la detección automática se iba al
+backend.
+
+**Comprueba también que en el panel, en *Build & Development Settings*, los
+interruptores de Override estén apagados.** Si alguien escribió ahí un comando
+a mano, ese gana y el `vercel.json` se ignora.
 
 Dos cosas que hace ese fichero y conviene entender:
 
