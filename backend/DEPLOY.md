@@ -59,9 +59,14 @@ El `vercel.json` de la raíz le dice todo lo que necesita:
   "buildCommand":   "npm --prefix frontend run build",
   "outputDirectory": "frontend/dist",
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- frontend/"
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- frontend/ package.json vercel.json"
 }
 ```
+
+El `ignoreCommand` vigila `frontend/` **y los dos ficheros de configuración de
+la raíz**: cambiar el `vercel.json` o el `package.json` altera cómo se
+construye, así que tiene que disparar despliegue aunque no se haya tocado una
+línea del frontend.
 
 Hay además un `package.json` en la raíz. No tiene dependencias: existe para que
 Vercel reconozca la raíz como proyecto Node en vez de ponerse a adivinar. Sin
