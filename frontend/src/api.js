@@ -1,7 +1,19 @@
 const BASE = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000";
+const CLAVE = import.meta.env.VITE_API_KEY ?? "";
 
-async function pedir(ruta, opciones) {
-  const resp = await fetch(`${BASE}${ruta}`, opciones);
+/**
+ * Cabeceras comunes. La clave solo se manda si está configurada: en local el
+ * backend arranca sin API_KEY y no la pide.
+ */
+function cabeceras(extra = {}) {
+  return CLAVE ? { ...extra, "X-API-Key": CLAVE } : extra;
+}
+
+async function pedir(ruta, opciones = {}) {
+  const resp = await fetch(`${BASE}${ruta}`, {
+    ...opciones,
+    headers: cabeceras(opciones.headers),
+  });
   if (!resp.ok) {
     // El backend devuelve {detail} en los errores; sin él, el status a secas.
     const cuerpo = await resp.json().catch(() => null);
@@ -48,7 +60,7 @@ export const pedirDiagrama = (respuesta) =>
 export async function consultarStream(consulta, materias, alEvento, señal) {
   const resp = await fetch(`${BASE}/api/consultar/stream`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: cabeceras({ "Content-Type": "application/json" }),
     body: JSON.stringify({
       consulta,
       materias: materias?.length ? materias : null,

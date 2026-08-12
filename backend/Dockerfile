@@ -8,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY api.py .
+COPY api.py auth.py ./
 COPY rag/ rag/
 # El índice (9 MB) y el corpus parseado se copian ya construidos.
 COPY data/index/ data/index/

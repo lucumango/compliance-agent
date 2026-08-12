@@ -96,26 +96,36 @@ Advertencias:
 
 Escribe `notas` pensando en que un abogado lo va a leer al pie de una respuesta.
 
-## Lo que el registro todavía no captura
+## Campos de trazabilidad
 
-Tres cosas que hoy no tienen dónde guardarse, y que conviene añadir antes de
-que el corpus crezca — porque reconstruirlas después, con cuarenta normas
-cargadas, es mucho más caro que anotarlas al ingerir:
+Además de los anteriores, cada norma declara por qué está y con qué se
+relaciona. Son el insumo del [grafo de trazabilidad](GRAFO.md), y la razón de
+anotarlos al ingerir es que reconstruirlos después, con cuarenta normas
+cargadas, es mucho más caro.
 
-1. **Por qué esta norma está en el corpus.** Hoy se deduce de `materia`, que no
-   es lo mismo. "La 29783 está porque el cliente tiene obligaciones de SST como
-   empleador" es información que no sobrevive en la cabeza de nadie seis meses.
+| Campo | Qué es |
+|---|---|
+| `por_que_relevante` | Una o dos frases: a quién obliga y a qué. **Obligatorio** para toda norma nueva |
+| `estado_texto` | `consolidado`, `original` o `parcial`. Lo mismo que cuenta `notas`, pero como dato consultable |
+| `consolidado_a` | Fecha a la que está actualizado el texto, si se lee del documento |
+| `relaciones` | Lista de `Relacion(tipo, destino, nota, en_corpus)` |
 
-2. **Qué relación tiene con las demás.** Qué norma modifica a cuál, cuál
-   reglamenta a cuál, cuál derogó a cuál. Hoy existe a medias: cada unidad
-   guarda `modificatorias` parseadas de su propio texto, pero no hay relación a
-   nivel de norma.
+Tipos de relación: `modifica_a` / `modificada_por`, `reglamenta_a` /
+`reglamentada_por`, `deroga_a` / `derogada_por`, `sustituye_a`, `complementa_a`.
 
-3. **Qué versión del texto es.** `notas` lo dice en prosa, que sirve para el
-   aviso al usuario pero no para filtrar ni consultar.
+Las formas pasivas no sobran: **la norma que modifica suele ser justo la que no
+está cargada**, así que la relación solo se puede anotar desde el lado que sí
+tenemos. Una relación con `en_corpus: false` deja constancia del hueco — que la
+Ley 30835 modifica a la 30424 se sabe, y anotarlo lo convierte en algo
+consultable en vez de una frase enterrada en una nota.
 
-Los tres son el mismo dato que necesita el **grafo de trazabilidad**. Ver
-[GRAFO.md](GRAFO.md) para el esquema propuesto.
+El grafo actual (`GET /api/grafo`) son 10 nodos y 5 aristas, de los cuales
+**tres nodos son normas que faltan**: Ley 30835, Ley 31740 y DS 002-2019-JUS,
+las tres colgando de la Ley 30424.
+
+ISO 37001 va deliberadamente sin relaciones: su conexión con la Ley 30424 es
+real pero editorial, no normativa —ISO no modifica ni reglamenta una ley
+peruana—, y anotarla exige decidir con la fuente delante qué se está afirmando.
 
 ## Materias en uso
 

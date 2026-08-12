@@ -47,11 +47,23 @@ Sin esa variable el frontend llama a `127.0.0.1:8000` y en producción falla.
 
 Dos cosas que hoy **bloquean** un despliegue abierto:
 
-### La API no tiene autenticación
+### La API ya tiene clave y límite de uso — configúralos
 
-Cualquiera con la URL puede lanzar consultas contra tu cuota de Gemini. Como
-mínimo, una clave compartida por cabecera y un límite por IP. Para un demo
-privado basta con no publicar la URL, pero no es una protección real.
+Define `API_KEY` en el backend y `VITE_API_KEY` en el frontend, con el mismo
+valor. **Sin `API_KEY` la API arranca abierta** y cualquiera con la URL consume
+tu cuota de Gemini.
+
+```bash
+python3 -c "import secrets; print(secrets.token_urlsafe(32))"
+```
+
+Todos los endpoints la exigen en la cabecera `X-API-Key` salvo `/api/salud`,
+que Render y compañía sondean sin cabeceras. El límite por IP va aparte
+(`RATE_LIMIT_PETICIONES`, `RATE_LIMIT_VENTANA`; por defecto 30/60 s).
+
+Ten claro su alcance: la clave viaja en el bundle del frontend y es visible
+para cualquiera que abra las herramientas de desarrollo. Sirve contra el abuso
+de paso, no contra alguien decidido, y no hay usuarios ni permisos.
 
 ### ISO 37001 tiene copyright
 

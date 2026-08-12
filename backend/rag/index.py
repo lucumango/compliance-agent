@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import json
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
@@ -37,6 +37,12 @@ class Unidad:
     vigente: bool
     requiere_cotejo: bool
     notas_norma: str
+    # Metadatos de la norma que la API sirve sin tener que leer data/parsed/,
+    # que no viaja al contenedor de producción. Con valores por defecto para
+    # que un unidades.json antiguo siga cargando.
+    por_que_relevante: str = ""
+    estado_texto: str = "consolidado"
+    relaciones: list[dict] = field(default_factory=list)
 
 
 def cargar_unidades() -> tuple[list[Unidad], list[str]]:
@@ -63,6 +69,9 @@ def cargar_unidades() -> tuple[list[Unidad], list[str]]:
                     vigente=u["vigente"],
                     requiere_cotejo=requiere_cotejo,
                     notas_norma=data["notas"],
+                    por_que_relevante=data.get("por_que_relevante", ""),
+                    estado_texto=data.get("estado_texto", "consolidado"),
+                    relaciones=data.get("relaciones", []),
                 )
             )
             textos.append(u["texto_para_embedding"])
@@ -101,6 +110,38 @@ def construir(verbose: bool = True) -> None:
         )
 
 
+def actualizar_metadatos(verbose: bool = True) -> None:
+    """Reescribe unidades.json desde data/parsed/ sin tocar los vectores.
+
+    Cambiar `por_que_relevante`, `notas` o las relaciones de una norma no
+    altera el `texto_para_embedding` de ninguna unidad, así que revectorizar
+    sería tirar seis minutos y cuota de embeddings para nada.
+
+    Solo es válido si el corpus tiene exactamente las mismas unidades en el
+    mismo orden. Si has añadido o quitado alguna, hace falta `construir()`.
+    """
+    unidades, _ = cargar_unidades()
+
+    if not VECTORS_PATH.exists():
+        raise FileNotFoundError(
+            "No existe el índice. Constrúyelo con: python -m rag.index"
+        )
+
+    filas = np.load(VECTORS_PATH, mmap_mode="r").shape[0]
+    if filas != len(unidades):
+        raise ValueError(
+            f"El corpus tiene {len(unidades)} unidades y el índice {filas} "
+            "vectores. Han cambiado las unidades, no solo sus metadatos: "
+            "reconstruye el índice con `python -m rag.index`."
+        )
+
+    META_PATH.write_text(
+        json.dumps([u.__dict__ for u in unidades], ensure_ascii=False, indent=1)
+    )
+    if verbose:
+        print(f"Metadatos actualizados: {len(unidades)} unidades, vectores intactos.")
+
+
 def cargar() -> tuple[np.ndarray, list[Unidad]]:
     if not VECTORS_PATH.exists():
         raise FileNotFoundError(
@@ -112,4 +153,21 @@ def cargar() -> tuple[np.ndarray, list[Unidad]]:
 
 
 if __name__ == "__main__":
-    construir()
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Construye el índice vectorial.")
+    ap.add_argument(
+        "--solo-metadatos",
+        action="store_true",
+        help=(
+            "Reescribe unidades.json desde data/parsed/ sin revectorizar. "
+            "Úsalo cuando solo cambien metadatos de la norma (notas, "
+            "relaciones, por_que_relevante) y no el texto de las unidades."
+        ),
+    )
+    args = ap.parse_args()
+
+    if args.solo_metadatos:
+        actualizar_metadatos()
+    else:
+        construir()

@@ -15,11 +15,12 @@ from contextlib import asynccontextmanager
 # entiende `list[str] | None`. Los modelos usan typing explícito por eso.
 from typing import List, Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
+from auth import aviso_de_arranque, limitar_uso, verificar_clave
 from rag.answer import preparar, responder, responder_stream
 from rag.diagrama import generar_diagrama
 from rag.gemini import GeminiError
@@ -37,8 +38,16 @@ _estado: dict[str, Buscador] = {}
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     _estado["buscador"] = Buscador()
+    if (aviso := aviso_de_arranque()) is not None:
+        print(aviso, flush=True)
     yield
     _estado.clear()
+
+
+# Todo lo que consume cuota del modelo, o expone el corpus, va detrás de la
+# clave y del límite por IP. /api/salud queda fuera a propósito: las
+# plataformas de despliegue lo sondean sin cabeceras.
+PROTEGIDO = [Depends(verificar_clave), Depends(limitar_uso)]
 
 
 app = FastAPI(
@@ -103,7 +112,7 @@ def salud() -> dict:
     }
 
 
-@app.get("/api/normas")
+@app.get("/api/normas", dependencies=PROTEGIDO)
 def normas() -> list[dict]:
     """Corpus disponible, para que el frontend ofrezca filtros por materia."""
     buscador = _estado["buscador"]
@@ -117,13 +126,64 @@ def normas() -> list[dict]:
                 "materia": u.materia,
                 "unidades": 0,
                 "requiere_cotejo": u.requiere_cotejo,
+                "por_que_relevante": u.por_que_relevante,
+                "estado_texto": u.estado_texto,
             },
         )
         entrada["unidades"] += 1
     return sorted(vistas.values(), key=lambda n: n["nombre"])
 
 
-@app.post("/api/consultar", response_model=ConsultaOut)
+@app.get("/api/grafo", dependencies=PROTEGIDO)
+def grafo() -> dict:
+    """Grafo de trazabilidad entre normas.
+
+    Los nodos con `en_corpus: false` son normas que sabemos que existen y que
+    afectan a las cargadas, pero cuyo texto no tenemos. Son la parte útil: el
+    grafo sirve de mapa de cobertura además de trazar las relaciones.
+    """
+    buscador = _estado["buscador"]
+
+    nodos: dict[str, dict] = {}
+    aristas: list[dict] = []
+
+    for u in buscador.unidades:
+        if u.norma_id in nodos:
+            continue
+        nodos[u.norma_id] = {
+            "id": u.norma_id,
+            "nombre": u.norma_nombre,
+            "materia": u.materia,
+            "estado_texto": u.estado_texto,
+            "requiere_cotejo": u.requiere_cotejo,
+            "en_corpus": True,
+        }
+        for r in u.relaciones:
+            destino = r["destino"]
+            # Una norma referida que no está cargada entra igual como nodo,
+            # marcada, para que el hueco se vea en vez de desaparecer.
+            if destino not in nodos:
+                nodos[destino] = {
+                    "id": destino,
+                    "nombre": destino,
+                    "materia": None,
+                    "estado_texto": None,
+                    "requiere_cotejo": False,
+                    "en_corpus": bool(r.get("en_corpus")),
+                }
+            aristas.append(
+                {
+                    "origen": u.norma_id,
+                    "destino": destino,
+                    "tipo": r["tipo"],
+                    "nota": r.get("nota", ""),
+                }
+            )
+
+    return {"nodos": list(nodos.values()), "aristas": aristas}
+
+
+@app.post("/api/consultar", response_model=ConsultaOut, dependencies=PROTEGIDO)
 def consultar(payload: ConsultaIn) -> ConsultaOut:
     try:
         resp = responder(
@@ -164,7 +224,7 @@ def _sse(evento: str, dato: dict) -> str:
     return f"event: {evento}\ndata: {json.dumps(dato, ensure_ascii=False)}\n\n"
 
 
-@app.post("/api/consultar/stream")
+@app.post("/api/consultar/stream", dependencies=PROTEGIDO)
 def consultar_stream(payload: ConsultaIn) -> StreamingResponse:
     """Igual que /api/consultar pero emitiendo la respuesta por fragmentos.
 
@@ -177,13 +237,20 @@ def consultar_stream(payload: ConsultaIn) -> StreamingResponse:
     El diagrama NO se genera aquí: duplicaría el tiempo (12 s -> 30 s) y el
     cliente ya puede pedirlo aparte a /api/diagrama cuando termine de leer.
     """
-    prep = preparar(
-        payload.consulta,
-        _estado["buscador"],
-        k=payload.k,
-        materias=payload.materias,
-        con_diagrama=payload.con_diagrama,
-    )
+    # La recuperación ocurre ANTES de abrir el stream, y también llama al
+    # modelo (para vectorizar la consulta). Sin este try, agotar la cuota de
+    # embeddings salía como un 500 con traza en vez del 502 que devuelve
+    # /api/consultar, y el frontend solo podía enseñar "Error 500".
+    try:
+        prep = preparar(
+            payload.consulta,
+            _estado["buscador"],
+            k=payload.k,
+            materias=payload.materias,
+            con_diagrama=payload.con_diagrama,
+        )
+    except GeminiError as e:
+        raise HTTPException(status_code=502, detail=f"Error del modelo: {e}") from e
 
     def eventos():
         yield _sse(
@@ -229,7 +296,7 @@ class DiagramaIn(BaseModel):
     respuesta: str = Field(min_length=20, max_length=20000)
 
 
-@app.post("/api/diagrama")
+@app.post("/api/diagrama", dependencies=PROTEGIDO)
 def diagrama(payload: DiagramaIn) -> dict:
     """Genera el diagrama a partir de una respuesta ya redactada.
 
@@ -245,7 +312,7 @@ class MultaIn(BaseModel):
     anio: Optional[int] = None
 
 
-@app.get("/api/regimenes")
+@app.get("/api/regimenes", dependencies=PROTEGIDO)
 def regimenes() -> list[dict]:
     return [
         {
@@ -258,7 +325,7 @@ def regimenes() -> list[dict]:
     ]
 
 
-@app.post("/api/multa")
+@app.post("/api/multa", dependencies=PROTEGIDO)
 def multa(payload: MultaIn) -> dict:
     try:
         e = estimar(payload.regimen, payload.gravedad, payload.anio)

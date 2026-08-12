@@ -12,6 +12,10 @@
   "url_fuente": null,
   "metadata_verificada": false,
   "notas": "Escaneo de El Peruano procesado por OCR; el texto puede contener errores de reconocimiento y requiere cotejo con SPIJ.",
+  "por_que_relevante": "Crea la UIF y fija el deber de los sujetos obligados de comunicar operaciones sospechosas. Es la única norma de LA/FT cargada y con 21 unidades es, con diferencia, la cobertura más flaca del corpus: no incluye las resoluciones SBS de gestión de riesgos, que es donde vive el detalle operativo.",
+  "estado_texto": "consolidado",
+  "consolidado_a": null,
+  "relaciones": [],
   "extraccion": {
     "archivo": "ley_27693.pdf",
     "paginas": 4,

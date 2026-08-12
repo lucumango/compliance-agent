@@ -106,12 +106,32 @@ que la similitud coseno es un producto punto. A esta escala una búsqueda
 exhaustiva tarda menos de un milisegundo; migrar a pgvector o Qdrant tiene
 sentido cuando el corpus crezca mucho o haya multi-tenancy, no antes.
 
+## Autenticación
+
+Se activa con la variable de entorno `API_KEY`. Si no está definida, la API
+arranca abierta —lo que quieres en local— y lo avisa por consola.
+
+Con ella puesta, todos los endpoints exigen la cabecera `X-API-Key` **salvo
+`/api/salud`**, que las plataformas de despliegue sondean sin cabeceras. Se
+suma un límite por IP en ventana deslizante (30 peticiones / 60 s por defecto,
+configurable con `RATE_LIMIT_PETICIONES` y `RATE_LIMIT_VENTANA`).
+
+Lo que esto resuelve y lo que no está en la cabecera de `backend/auth.py`. En
+corto: **una clave compartida que viaja en el bundle del frontend es visible
+para cualquiera que abra las herramientas de desarrollo.** Frena el abuso de
+paso —bots, alguien que da con la URL— no a alguien decidido, y no hay usuarios
+ni permisos. El punto de enganche para cuentas de verdad es `verificar_clave`.
+
+El límite de uso vive en memoria y por proceso: con varias réplicas, cada una
+lleva su cuenta. Para una sola instancia basta.
+
 ## Estructura del código
 
 ```
 backend/
   api.py                FastAPI. Endpoints /api/consultar[/stream], /diagrama,
-                        /multa, /normas, /regimenes, /salud
+                        /multa, /normas, /regimenes, /grafo, /salud
+  auth.py               clave compartida y límite por IP
   ingestion/
     extract.py          PDF -> texto. PyMuPDF, u OCR si la página es imagen
     parser.py           leyes: Título → Capítulo → Artículo + disposiciones
@@ -197,9 +217,9 @@ respuesta generada — solo la recuperación que la precede.
   modelo tal cual. Hace falta un NER si eso importa para el caso de uso.
 - **La Ley 30424 es el texto de 2016**, sin modificatorias. Ver [FUENTES.md](FUENTES.md).
 - **Fechas y URLs sin verificar:** `metadata_verificada: false` en las 5 normas.
-- **La API no tiene autenticación ni límite de uso.** Cualquiera con la URL
-  consume la cuota de Gemini. `/api/diagrama` es el más expuesto: acepta 20.000
-  caracteres arbitrarios y los manda al modelo sin anclar a nada.
+- **La autenticación es una clave compartida, no cuentas.** Va en el bundle del
+  frontend, así que es visible en las herramientas de desarrollo. Y no
+  distingue quién es quién.
 - **Un solo régimen en la calculadora de multas:** protección de datos
   (Ley 29733, Art. 39). Los rangos de SST y LA/FT están en normas no cargadas.
 - **`titulo` está truncado en 211 de las 701 unidades.** El parser toma la

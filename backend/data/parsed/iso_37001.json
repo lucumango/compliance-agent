@@ -9,6 +9,10 @@
   "url_fuente": null,
   "metadata_verificada": false,
   "notas": "Traducción oficial al español. Documento con copyright ISO: uso interno del proyecto; no redistribuir el texto íntegro.",
+  "por_que_relevante": "No es derecho peruano: es el estándar contra el que se diseña y audita un sistema de gestión antisoborno. Aporta el 'cómo' (debida diligencia, controles, función de cumplimiento) allí donde la Ley 30424 solo fija el 'qué'.",
+  "estado_texto": "consolidado",
+  "consolidado_a": null,
+  "relaciones": [],
   "extraccion": {
     "archivo": "iso_37001.pdf",
     "paginas": 58,

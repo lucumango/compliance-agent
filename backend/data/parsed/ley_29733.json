@@ -12,6 +12,17 @@
   "url_fuente": null,
   "metadata_verificada": false,
   "notas": "Texto consolidado (Editora Perú). Incluye el Reglamento aprobado por DS 003-2013-JUS como documento anexo.",
+  "por_que_relevante": "Obliga a toda entidad que trate datos personales en el Perú: consentimiento, bancos de datos, derechos del titular y régimen sancionador. Es la base del cumplimiento en privacidad, y la única norma del corpus cuya escala de multas está cargada en la calculadora.",
+  "estado_texto": "consolidado",
+  "consolidado_a": null,
+  "relaciones": [
+    {
+      "tipo": "reglamentada_por",
+      "destino": "DS 003-2013-JUS",
+      "nota": "Incluido en el mismo PDF como documento anexo.",
+      "en_corpus": true
+    }
+  ],
   "extraccion": {
     "archivo": "ley_29733.pdf",
     "paginas": 31,

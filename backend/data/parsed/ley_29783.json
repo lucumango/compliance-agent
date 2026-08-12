@@ -12,6 +12,17 @@
   "url_fuente": null,
   "metadata_verificada": false,
   "notas": "Texto consolidado actualizado al 28/04/2022 según portada. Incluye el Reglamento aprobado por DS 005-2012-TR.",
+  "por_que_relevante": "Obliga a todo empleador: sistema de gestión de SST, comité de seguridad, notificación de accidentes y enfermedades ocupacionales. Es el corpus más extenso cargado (252 unidades) y el que responde la mayoría de consultas procedimentales.",
+  "estado_texto": "consolidado",
+  "consolidado_a": "2022-04-28",
+  "relaciones": [
+    {
+      "tipo": "reglamentada_por",
+      "destino": "DS 005-2012-TR",
+      "nota": "Incluido en el mismo PDF como documento anexo.",
+      "en_corpus": true
+    }
+  ],
   "extraccion": {
     "archivo": "ley_29783.pdf",
     "paginas": 55,

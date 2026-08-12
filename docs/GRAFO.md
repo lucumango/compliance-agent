@@ -1,7 +1,8 @@
 # Grafo de trazabilidad — propuesta
 
-> **Estado: diseño, no implementado.** Este documento propone el modelo de
-> datos. Nada de esto existe todavía en el código.
+> **Estado: capa 1 implementada.** El modelo de datos, el registro de las 5
+> normas actuales y el endpoint `GET /api/grafo` funcionan. Falta pintarlo en
+> la interfaz, y la capa 2 (trazabilidad por artículo) sigue siendo diseño.
 
 ## El problema
 
@@ -126,19 +127,38 @@ mostrando el sub-grafo de esa norma.
 GET /api/grafo  ->  { nodos: [...], aristas: [...] }
 ```
 
-Se construye desde `REGISTRY` en memoria, sin tocar el índice. Es barato y
-cacheable: el grafo solo cambia cuando cambia el registry.
+Se construye en memoria a partir de los metadatos que viajan con cada unidad
+del índice, sin leer `data/parsed/` —que no llega al contenedor de producción—
+ni tocar los vectores.
 
-## Por dónde empezar
+Estado actual: **10 nodos, 5 aristas**. Tres de esos nodos son normas que
+faltan (Ley 30835, Ley 31740, DS 002-2019-JUS), las tres colgando de la
+Ley 30424.
 
-1. Añadir los campos a `NormaMeta` con valores por defecto (no rompe nada).
-2. Rellenar `por_que_relevante` y `relaciones` de las 5 normas actuales. Es
-   media hora de trabajo y hay que hacerla con la fuente delante, no de memoria.
-3. `GET /api/grafo`.
-4. Pintar el Mermaid en el panel lateral.
-5. Hacer obligatorio `por_que_relevante` en [INGESTA.md](INGESTA.md) para toda
-   norma nueva.
+```json
+{
+  "nodos": [
+    {"id": "ley_30424", "estado_texto": "original", "en_corpus": true, ...},
+    {"id": "Ley 30835", "estado_texto": null, "en_corpus": false, ...}
+  ],
+  "aristas": [
+    {"origen": "ley_30424", "destino": "Ley 30835", "tipo": "modificada_por",
+     "nota": "Amplía el catálogo de delitos. No cargada."}
+  ]
+}
+```
 
-El paso 2 es el que hay que hacer **antes** de la próxima carga grande. Después,
-con cuarenta normas encima, reconstruir de dónde salió cada una y por qué es
-mucho más caro que anotarlo al entrar.
+## Lo que queda
+
+1. ~~Añadir los campos a `NormaMeta`~~ ✅
+2. ~~Rellenar `por_que_relevante` y `relaciones` de las 5 normas~~ ✅
+3. ~~`GET /api/grafo`~~ ✅
+4. **Pintarlo en el panel lateral** con Mermaid. Nodo en color pleno =
+   cargada; en gris = conocida pero ausente.
+5. ~~Hacer obligatorio `por_que_relevante` para toda norma nueva~~ ✅
+   (ver [INGESTA.md](INGESTA.md))
+
+La capa 2 —resolver `unidad.modificatorias` contra normas concretas para poder
+decir *"el artículo 5 de la 30424 lo modificó el artículo 2 de la Ley 30835"*—
+sigue sin abordarse a propósito: es bastante más cara y no sabremos si hace
+falta hasta usar la capa 1 un tiempo.

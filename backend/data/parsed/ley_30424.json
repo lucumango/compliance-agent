@@ -12,6 +12,29 @@
   "url_fuente": null,
   "metadata_verificada": false,
   "notas": "Texto ORIGINAL publicado el 21/04/2016, sin las modificatorias posteriores (p. ej. Ley 30835, Ley 31740). No usar como texto vigente sin actualizar.",
+  "por_que_relevante": "Establece la responsabilidad administrativa de la persona jurídica y el modelo de prevención que la atenúa. Es la norma que justifica tener un programa de compliance, no solo políticas sueltas. ATENCIÓN: el texto cargado es el de 2016 y su alcance quedó limitado al cohecho activo transnacional; el vigente cubre bastante más.",
+  "estado_texto": "original",
+  "consolidado_a": null,
+  "relaciones": [
+    {
+      "tipo": "modificada_por",
+      "destino": "Ley 30835",
+      "nota": "Amplía el catálogo de delitos. No cargada.",
+      "en_corpus": false
+    },
+    {
+      "tipo": "modificada_por",
+      "destino": "Ley 31740",
+      "nota": "Modificatoria posterior. No cargada.",
+      "en_corpus": false
+    },
+    {
+      "tipo": "reglamentada_por",
+      "destino": "DS 002-2019-JUS",
+      "nota": "Desarrolla el modelo de prevención, que es la parte accionable de la ley. No cargado.",
+      "en_corpus": false
+    }
+  ],
   "extraccion": {
     "archivo": "ley_30424.pdf",
     "paginas": 4,

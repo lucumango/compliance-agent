@@ -181,6 +181,10 @@ def ingest_norma(meta: NormaMeta) -> dict:
         "url_fuente": meta.url_fuente,
         "metadata_verificada": meta.metadata_verificada,
         "notas": meta.notas,
+        "por_que_relevante": meta.por_que_relevante,
+        "estado_texto": meta.estado_texto,
+        "consolidado_a": meta.consolidado_a,
+        "relaciones": [r.__dict__ for r in meta.relaciones],
         "extraccion": {
             "archivo": meta.archivo,
             "paginas": len(pages),

@@ -59,7 +59,8 @@ es exactamente el caso de la Ley 30424.
 ## 2. Registrar la norma
 
 Añade una entrada a `REGISTRY` en `backend/ingestion/registry.py`. Es el único
-sitio donde se declara una fuente:
+sitio donde se declara una fuente. `NormaMeta` y `Relacion` ya están definidos
+en ese mismo archivo:
 
 ```python
 NormaMeta(
@@ -78,10 +79,22 @@ NormaMeta(
         "Texto consolidado descargado de SPIJ el 12/08/2026. "
         "Incluye las modificatorias hasta esa fecha."
     ),
+
+    # OBLIGATORIO: por qué esta norma entra al corpus.
+    por_que_relevante=(
+        "Amplía el catálogo de delitos que generan responsabilidad de la "
+        "persona jurídica. Es lo que determina el alcance real de un "
+        "programa de compliance."
+    ),
+    estado_texto="consolidado",       # "consolidado" | "original" | "parcial"
+    consolidado_a="2023-05-01",       # solo si consta en el documento
+    relaciones=[
+        Relacion(tipo="modifica_a", destino="ley_30424", en_corpus=True),
+    ],
 ),
 ```
 
-Tres campos que se hacen mal con facilidad:
+Cinco campos que se hacen mal con facilidad:
 
 - **`fecha_publicacion` y `url_fuente`:** déjalos en `None` salvo que el dato
   esté impreso en el PDF. No los rellenes de memoria ni de una búsqueda rápida.
@@ -91,6 +104,12 @@ Tres campos que se hacen mal con facilidad:
   emite automáticamente como advertencia.
 - **`materia`:** si inventas una nueva, aparecerá sola en el filtro de la
   interfaz. No hay que tocar el frontend.
+- **`por_que_relevante`:** es el campo que más se agradece dentro de seis
+  meses y el que más tienta dejar vacío. Escribe a quién obliga y a qué, no un
+  resumen del articulado.
+- **`relaciones`:** anota también las normas que **no** están cargadas
+  (`en_corpus=False`). Es lo que convierte el grafo en un mapa de lo que falta,
+  y te ahorra descubrir el hueco cuando ya estés respondiendo una consulta.
 
 ## 3. Ingerir y validar
 
@@ -136,6 +155,20 @@ espera exponencial).
 
 Reconstruye **una sola vez**, al final, cuando hayas cargado todos los PDFs de
 la tanda. No una vez por documento.
+
+### Si solo cambiaste metadatos
+
+Corregir una nota, añadir un `por_que_relevante` o una relación **no** altera
+el texto que se vectoriza, así que revectorizar sería tirar seis minutos y
+cuota de embeddings para nada:
+
+```bash
+python -m ingestion.ingest
+python -m rag.index --solo-metadatos    # reescribe unidades.json, no toca los vectores
+```
+
+Solo vale si las unidades son exactamente las mismas y en el mismo orden. Si
+añadiste o quitaste alguna, el comando se niega y te manda a `rag.index`.
 
 ## 5. Comprobar que la recuperación no empeoró
 
