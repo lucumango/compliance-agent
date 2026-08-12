@@ -1,0 +1,43 @@
+# Blueprint de Render para el backend.
+#
+# Con este fichero en el repo, Render sabe qué desplegar sin configurarlo a
+# mano: Blueprints -> New Blueprint Instance -> elegir el repo.
+#
+# La clave es rootDir: el Dockerfile vive en backend/, no en la raíz. Sin eso
+# Render lo busca arriba, no lo encuentra, y el despliegue falla.
+
+services:
+  - type: web
+    name: carlos-api
+    runtime: docker
+    plan: free
+    region: oregon
+
+    # El backend es una subcarpeta del monorepo. Todo lo de abajo se resuelve
+    # a partir de aquí.
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+
+    # /api/salud es el único endpoint sin autenticación, precisamente para
+    # que las plataformas puedan sondearlo sin cabeceras.
+    healthCheckPath: /api/salud
+
+    # Solo redespliega si cambió el backend. Sin esto, tocar el frontend o la
+    # documentación reconstruye una imagen idéntica a la anterior.
+    buildFilter:
+      paths:
+        - backend/**
+
+    envVars:
+      # sync: false = Render la pide al crear el servicio y no la guarda en el
+      # repositorio. Ninguna de estas debe acabar versionada.
+      - key: GOOGLE_API_KEY
+        sync: false
+      # Sin API_KEY la API queda abierta a cualquiera con la URL.
+      # Genera una con: python3 -c "import secrets; print(secrets.token_urlsafe(32))"
+      - key: API_KEY
+        sync: false
+      # El dominio del frontend en Vercel, separado por comas si hay varios.
+      - key: ALLOWED_ORIGINS
+        sync: false

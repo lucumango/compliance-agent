@@ -34,35 +34,29 @@ Fuentes:
 
 ## Dónde vive el repo
 
-El monorepo está espejado en **tres** sitios con el mismo contenido:
-
 | Repo | Papel |
 |---|---|
 | `gitlab.com/lonelynode/compliance-agent` | **Principal** |
 | `github.com/lucumango/compliance-agent` | Espejo |
-| `gitlab.com/lonelynode/compliance-back` | Espejo — es el que despliega Vercel |
-
-Empuja siempre a los tres, o divergirán:
 
 ```bash
-git push origin main \
-  && git push github main \
-  && git push https://gitlab.com/lonelynode/compliance-back.git main
+git push origin main && git push github main
 ```
 
-**El tercero tiene el nombre equivocado y es a propósito, por ahora.** Era el
-repo del backend cuando el proyecto vivía en dos repositorios; el proyecto de
-Vercel quedó conectado a él y no se ha repuntado todavía, así que se mantiene
-sincronizado para que los despliegues sigan saliendo. Lo correcto es reconectar
-Vercel a `compliance-agent` y dejar este de escribir.
+Ambas plataformas despliegan de este mismo repo, cada una con su carpeta:
 
-> ⚠ **`github.com/lucumango/compliance-back` está obsoleto.** Se quedó en el
-> commit `28e06ad` del 5 de agosto, con la estructura vieja de solo backend. No
-> empujes ahí.
+| | Repo | Root Directory | Config en el repo |
+|---|---|---|---|
+| Frontend | `compliance-agent` | `./` | `vercel.json` |
+| Backend | `compliance-agent` | `backend` | `render.yaml` |
 
-Antes el frontend y el backend vivían en repos separados, y el backend además
-duplicado entre GitLab y GitHub. Eso ya costó tres despliegues fallidos: Vercel
-clonaba el repo del backend y buscaba en él un frontend que no existía.
+> ⚠ **Los repos `compliance-back` están obsoletos** — el de GitHub congelado en
+> el commit del 5 de agosto, el de GitLab sincronizado solo como parche
+> temporal mientras Vercel apuntaba a él. No empujes a ninguno de los dos.
+
+Al principio el frontend y el backend vivían en repos separados, y el backend
+además duplicado entre GitLab y GitHub. Costó tres despliegues fallidos: Vercel
+clonaba el repo del backend y buscaba dentro un frontend que no existía.
 
 ## Qué hace hoy
 

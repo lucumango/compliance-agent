@@ -24,14 +24,23 @@ El `Dockerfile` incluido solo empaqueta la capa de runtime: la ingesta de PDFs
 local y se despliega ya indexado. La imagen lleva ~9 MB de datos y cuatro
 dependencias de Python.
 
-En Render:
+En Render hay un `render.yaml` en la raíz del repo, así que no hay que
+configurar nada a mano:
 
-1. New → Web Service → conecta el repo, raíz `backend/`, runtime Docker.
-2. Variable de entorno: `GOOGLE_API_KEY` (y `ALLOWED_ORIGINS`, ver abajo).
-3. Deploy. El plan gratuito duerme tras inactividad: el primer request tras la
-   siesta tarda ~1 min.
+**Blueprints → New Blueprint Instance → elige `compliance-agent`.** Render lee
+el fichero, crea el servicio con `rootDir: backend` y te pide las tres
+variables (`GOOGLE_API_KEY`, `API_KEY`, `ALLOWED_ORIGINS`), que no se guardan
+en el repositorio.
 
-Railway y Fly.io funcionan igual con el mismo Dockerfile.
+Si prefieres crearlo a mano (*New → Web Service*), lo único imprescindible es
+**Root Directory = `backend`**. El `Dockerfile` está ahí dentro, no en la raíz
+del repo: si dejas el Root Directory arriba, Render no lo encuentra y falla.
+
+El plan gratuito duerme tras inactividad: el primer request tras la siesta
+tarda ~1 min.
+
+Railway y Fly.io funcionan igual con el mismo Dockerfile, apuntando a
+`backend/`.
 
 ### 2. Frontend
 
