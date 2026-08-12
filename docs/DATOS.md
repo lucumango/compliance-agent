@@ -122,16 +122,43 @@ respondió y con qué base. `corpus_version_id` completa la foto.
 ### 2. Persistir el historial nos convierte en responsables de datos
 
 Hoy las consultas no se guardan: se enmascara la PII antes de llamar al modelo
-y ahí muere. Con historial pasaríamos a **almacenar consultas con DNI, nombres
-y datos de casos reales**, atribuidas a una persona concreta.
+y ahí muere. Con historial pasamos a **almacenar consultas con DNI, nombres y
+datos de casos reales**, atribuidas a una persona concreta. Eso cae bajo la
+Ley 29733, la misma que está cargada en el corpus.
 
-Eso cae bajo la Ley 29733, la misma que está cargada en el corpus. Y la
-anonimización actual es por patrones: reconoce DNI, RUC y correos, pero **no
-reconoce nombres de persona**.
+**Decisión tomada: se guarda el texto original**, con tres cosas alrededor:
 
-Hay que decidirlo antes de crear las tablas, porque cambia qué guarda cada
-columna: texto enmascarado en vez del original, cifrado de `contenido`, o
-borrado automático por antigüedad.
+1. **RLS** — nadie ve el historial de otro (ver más abajo).
+2. **Cifrado en reposo** — lo da Supabase por defecto.
+3. **Retención configurable** — borrado automático por antigüedad, con el plazo
+   como parámetro.
+
+El motivo de no guardar el enmascarado es de producto: verías tu propia
+consulta como *"el trabajador [DNI_1] sufrió…"* y no sabrías de qué caso
+hablaba. El historial perdería casi todo su valor.
+
+> ### ⚠ Pendiente: la anonimización no cubre nombres de persona
+>
+> `rag/anonimizar.py` funciona por patrones: reconoce DNI, RUC, correos,
+> teléfonos, montos y tarjetas. **No reconoce nombres.** "Juan Pérez" viaja al
+> modelo tal cual, y ahora además se queda guardado en la base de datos.
+>
+> Con el historial esto pasa de ser una limitación conocida a una decisión que
+> hay que revisar, porque cambia el perfil de riesgo: antes el nombre pasaba de
+> largo, ahora se acumula.
+>
+> Tres salidas, de menos a más trabajo:
+>
+> - **Aviso en la interfaz** al escribir la consulta, recomendando no incluir
+>   nombres. Barato, imperfecto, y honesto sobre lo que el sistema hace.
+> - **NER** (reconocimiento de entidades) para detectar nombres antes de
+>   enviarlos y guardarlos. Es lo correcto; requiere un modelo adicional y
+>   tolerar falsos positivos sobre nombres de normas y entidades.
+> - **Retención corta** para el contenido, más larga para las citas. Reduce la
+>   ventana de exposición sin tocar la anonimización.
+>
+> Sin decidir. No bloquea el historial, pero no debería quedarse así mucho
+> tiempo.
 
 ## Migración
 
@@ -244,13 +271,36 @@ Con esto, el aislamiento entre usuarios deja de depender de que nadie olvide un
 `where usuario_id = ...`. Postgres lo impone aunque la consulta pida la tabla
 entera.
 
+## Retención
+
+El borrado por antigüedad va como función programada, con el plazo en una
+variable para poder cambiarlo sin tocar el esquema:
+
+```sql
+create or replace function public.purgar_historial(dias int default 365)
+returns int language plpgsql security definer as $$
+declare borradas int;
+begin
+  -- Basta con borrar la conversación: mensajes y fuentes caen en cascada.
+  delete from public.conversaciones
+  where actualizada_en < now() - (dias || ' days')::interval
+  returning 1 into borradas;
+  get diagnostics borradas = row_count;
+  return borradas;
+end $$;
+```
+
+Se programa con `pg_cron` desde el panel de Supabase. **El plazo por defecto de
+365 días es un marcador, no una recomendación:** debería salir de la política
+de retención de la organización, no de este archivo.
+
 ## Qué falta decidir
 
-1. **Qué se guarda del texto del usuario** — original, enmascarado o cifrado, y
-   si hay borrado por antigüedad. Es la decisión 2 y bloquea todo lo demás.
-2. **Qué pasa con la clave compartida** — con cuentas reales la API valida el
+1. **El plazo de retención** — ver arriba. Hoy 365 días por defecto.
+2. **Nombres de persona en el historial** — ver el aviso de la decisión 2.
+3. **Qué pasa con la clave compartida** — con cuentas reales la API valida el
    JWT del usuario; la clave se queda para servicio a servicio o se retira. El
    punto de enganche está aislado en `verificar_clave` (`backend/auth.py`).
-3. **Si hay roles desde el principio** — `perfiles.rol` está puesto, pero no
+4. **Si hay roles desde el principio** — `perfiles.rol` está puesto, pero no
    hace falta usarlo hasta que alguien deba ver lo de otro.
-4. **Dónde vive Supabase** — el plan gratuito suspende proyectos inactivos.
+5. **Dónde vive Supabase** — el plan gratuito suspende proyectos inactivos.

@@ -9,7 +9,6 @@ import {
   Filter,
   Loader2,
   Moon,
-  Scale,
   ScanLine,
   Send,
   Sparkles,
@@ -177,10 +176,14 @@ function Mensaje({ mensaje, indice }) {
 
   return (
     <div className="msg asistente">
-      <p className="ia-cab">
-        <Sparkles size={14} aria-hidden="true" />
-        Respuesta generada · anclada a las fuentes citadas
-      </p>
+      {/* Solo mientras redacta. Una vez terminada, la respuesta ya lleva sus
+          citas a la vista y el rótulo no aportaba nada. */}
+      {mensaje.generando && (
+        <p className="ia-cab" aria-live="polite">
+          <Sparkles size={14} aria-hidden="true" />
+          CARLOS está respondiendo…
+        </p>
+      )}
 
       {mensaje.respuesta ? (
         <div className="prosa">
@@ -364,19 +367,25 @@ export default function App() {
     <div className="app">
       <header className="cabecera">
         <div className="marca">
-          <Scale size={24} aria-hidden="true" />
-          <h1>Asistente de Normativa y Compliance</h1>
+          {/* La marca sola, sin el eslogan: a este tamaño "Building a better
+              working world" sería una mancha gris. El lockup completo está en
+              public/ey-logo.png para usos con más espacio. */}
+          <img
+            className="logo-ey"
+            src="/ey-logo-marca.png"
+            alt="EY"
+            width="27"
+            height="28"
+          />
+          <h1>
+            <abbr title="Compliance &amp; Audit Regulatory Logic Operational System">
+              CARLOS
+            </abbr>
+            <span className="marca-expansion">
+              Compliance Audit Regulatory Logic Operational System
+            </span>
+          </h1>
         </div>
-        {/* La marca sola, sin el eslogan: a 44 px de alto "Building a better
-            working world" quedaría en 4 px y sería una mancha. El lockup
-            completo está en public/ey-logo.png para usos con más espacio. */}
-        <img
-          className="logo-ey"
-          src="/ey-logo-marca.png"
-          alt="EY"
-          width="43"
-          height="44"
-        />
 
         {estado && (
           <p className="estado-global">
