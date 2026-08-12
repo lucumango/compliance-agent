@@ -20,6 +20,19 @@ Supabase **es** Postgres, así que la elección viene dada. Pero encaja igual:
 
 ## Diagrama
 
+![Diagrama entidad-relación del historial de chats](img/esquema-bd.png)
+
+La fuente está más abajo como bloque Mermaid —que GitLab renderiza solo— y en
+[`img/esquema-bd.mmd`](img/esquema-bd.mmd). Si tocas una, actualiza la otra:
+
+```bash
+npx -p @mermaid-js/mermaid-cli mmdc \
+  -i docs/img/esquema-bd.mmd -o docs/img/esquema-bd.png -b white -w 2400
+```
+
+<details>
+<summary>Fuente Mermaid</summary>
+
 ```mermaid
 erDiagram
     auth_users ||--|| perfiles : "extiende"
@@ -77,8 +90,19 @@ erDiagram
     }
 ```
 
+</details>
+
 `auth_users` es `auth.users`, que gestiona Supabase. No se toca: se cuelga
 `perfiles` de ella para lo que es nuestro.
+
+La cadena de propiedad baja recta —`perfiles` → `conversaciones` → `mensajes` →
+`mensaje_fuentes`— y es lo que hace cumplir el aislamiento entre usuarios: cada
+eslabón hereda el dueño del anterior, así que `mensajes` y `mensaje_fuentes` no
+necesitan su propia columna `usuario_id`. Menos columnas que mantener
+sincronizadas, y una sola fuente de verdad sobre quién posee qué.
+
+`corpus_versiones` entra por un lado, fuera de esa cadena: no pertenece a nadie
+y solo la señalan los mensajes, para dejar dicho con qué corpus se respondió.
 
 ## Las dos decisiones que no son obvias
 

@@ -1,0 +1,54 @@
+erDiagram
+    auth_users ||--|| perfiles : "extiende"
+    perfiles ||--o{ conversaciones : "posee"
+    conversaciones ||--o{ mensajes : "contiene"
+    mensajes ||--o{ mensaje_fuentes : "cita"
+    corpus_versiones ||--o{ mensajes : "respondio_con"
+
+    auth_users {
+        uuid id PK
+        text email
+    }
+    perfiles {
+        uuid id PK "= auth.users.id"
+        text nombre
+        text rol
+        timestamptz creado_en
+    }
+    conversaciones {
+        uuid id PK
+        uuid usuario_id FK
+        text titulo
+        timestamptz creada_en
+        timestamptz actualizada_en
+        timestamptz archivada_en
+    }
+    mensajes {
+        uuid id PK
+        uuid conversacion_id FK
+        int orden
+        text rol
+        text contenido
+        text_array advertencias
+        text diagrama
+        text modelo
+        uuid corpus_version_id FK
+        timestamptz creado_en
+    }
+    mensaje_fuentes {
+        uuid id PK
+        uuid mensaje_id FK
+        text etiqueta
+        text unidad_id
+        text norma_id
+        text cita
+        text texto
+        real score
+    }
+    corpus_versiones {
+        uuid id PK
+        text hash_indice
+        int unidades
+        jsonb normas
+        timestamptz creado_en
+    }
