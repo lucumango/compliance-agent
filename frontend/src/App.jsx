@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import Mermaid from "./Mermaid";
 import CalculadoraMultas from "./CalculadoraMultas";
+import GrafoNormas from "./GrafoNormas";
 import { consultarStream, normas, pedirDiagrama, salud } from "./api";
 import "./App.css";
 
@@ -449,6 +450,7 @@ export default function App() {
             )}
           </section>
 
+          <GrafoNormas />
           <CalculadoraMultas />
         </aside>
 

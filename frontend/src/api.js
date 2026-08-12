@@ -25,6 +25,7 @@ async function pedir(ruta, opciones = {}) {
 export const salud = () => pedir("/api/salud");
 export const normas = () => pedir("/api/normas");
 export const regimenes = () => pedir("/api/regimenes");
+export const grafo = () => pedir("/api/grafo");
 
 export const consultar = (consulta, materias) =>
   pedir("/api/consultar", {

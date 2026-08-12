@@ -1052,3 +1052,42 @@ a:hover {
   border-color: var(--color-ey-yellow);
   background: rgba(255, 230, 0, 0.12);
 }
+
+/* ---------- Grafo de trazabilidad ---------- */
+
+.grafo details > summary {
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.grafo details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.grafo details > summary::after {
+  content: "+";
+  margin-left: auto;
+  font-weight: 700;
+}
+
+.grafo details[open] > summary::after {
+  content: "–";
+}
+
+.grafo .pista {
+  margin: 8px 0 12px;
+}
+
+/* El diagrama puede salirse del ancho del panel: que desborde él, no la
+   página. */
+.grafo .diagrama {
+  overflow-x: auto;
+  background: var(--background);
+  border: 1px solid var(--border);
+  padding: 12px;
+}
+
+.grafo .diagrama svg {
+  max-width: none;
+}

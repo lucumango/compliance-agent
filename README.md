@@ -25,8 +25,30 @@ Fuentes:
 | **[docs/SISTEMA.md](docs/SISTEMA.md)** | Cómo funciona de punta a punta y **dónde está el prompt del agente** |
 | **[docs/FUENTES.md](docs/FUENTES.md)** | Qué normas hay cargadas, en qué estado, y cómo se registra una fuente |
 | **[docs/INGESTA.md](docs/INGESTA.md)** | Paso a paso para cargar PDFs nuevos al corpus |
+| [docs/PENDIENTE.md](docs/PENDIENTE.md) | Lo que falta, con el contexto para retomarlo |
+| [docs/GRAFO.md](docs/GRAFO.md) | Grafo de trazabilidad entre normas |
+| [docs/DESIGN.md](docs/DESIGN.md) | Sistema de diseño y modo oscuro |
 | [EJECUTAR.md](EJECUTAR.md) | Levantar el proyecto en local |
 | [backend/DEPLOY.md](backend/DEPLOY.md) | Desplegar |
+
+## Dónde vive el repo
+
+Este monorepo está **espejado en dos sitios**, con el mismo contenido:
+
+| | |
+|---|---|
+| GitLab (principal) | `gitlab.com/lonelygroup1/compliance-agent` |
+| GitHub (espejo) | `github.com/lucumango/compliance-agent` |
+
+Empuja siempre a los dos, o acabarán divergiendo:
+
+```bash
+git push origin main && git push github main
+```
+
+Antes vivían separados —el frontend en GitLab y el backend en dos repos
+distintos, uno por proveedor—, lo que hacía que dos personas trabajando a la
+vez pudieran empujar a copias distintas del backend sin enterarse.
 
 ## Qué hace hoy
 
