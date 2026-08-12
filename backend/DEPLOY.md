@@ -32,9 +32,28 @@ el fichero, crea el servicio con `rootDir: backend` y te pide las tres
 variables (`GOOGLE_API_KEY`, `API_KEY`, `ALLOWED_ORIGINS`), que no se guardan
 en el repositorio.
 
-Si prefieres crearlo a mano (*New → Web Service*), lo único imprescindible es
-**Root Directory = `backend`**. El `Dockerfile` está ahí dentro, no en la raíz
-del repo: si dejas el Root Directory arriba, Render no lo encuentra y falla.
+Si prefieres crearlo a mano (*New → Web Service*), dos ajustes son
+imprescindibles:
+
+- **Language / Runtime: `Docker`** — no Node.
+- **Root Directory: `backend`** — el `Dockerfile` está ahí dentro, no arriba.
+
+> **Síntoma de tenerlo mal:** el log construye el *frontend*.
+>
+> ```
+> Running build command 'yarn install; yarn build'
+> $ npm --prefix frontend run build
+> sh: 1: vite: not found
+> ```
+>
+> Con el Root Directory en la raíz, Render encuentra el `package.json` de
+> arriba —que existe para que Vercel reconozca el proyecto— y ejecuta su
+> script `build`, que apunta al frontend. En `backend/` no hay `package.json`,
+> solo el `Dockerfile`, así que el ajuste correcto elimina la ambigüedad.
+>
+> **El runtime no se puede cambiar después de crear el servicio.** Si el
+> servicio nació como Node, hay que borrarlo y crear uno nuevo con Docker; el
+> Blueprint de arriba lo hace bien de primeras.
 
 El plan gratuito duerme tras inactividad: el primer request tras la siesta
 tarda ~1 min.
