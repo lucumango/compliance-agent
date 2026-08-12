@@ -1,0 +1,16 @@
+# Credenciales. Cada persona usa su propia GOOGLE_API_KEY en su .env local.
+.env
+.env.*
+!.env.example
+
+# Python (backend)
+.venv/
+__pycache__/
+*.pyc
+
+# Node (frontend)
+node_modules/
+dist/
+*.local
+
+.DS_Store

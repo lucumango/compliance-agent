@@ -64,8 +64,16 @@ licencia del PDF es de usuario único. Opciones antes de exponerlo:
 
 Sería irónico que una herramienta de compliance infringiera una licencia.
 
-## Mejora de UX pendiente
+## Streaming (ya implementado)
 
-30 s sin feedback es mucho. Lo que realmente lo arregla es **streaming**: emitir
-la respuesta token a token con SSE y generar el diagrama después, en una segunda
-petición. El usuario empieza a leer a los ~2 s en vez de esperar 30.
+30 s sin feedback era mucho, y lo que lo arregló fue el **streaming**:
+`/api/consultar/stream` emite la respuesta por fragmentos con SSE y el diagrama
+se pide aparte, en una segunda petición a `/api/diagrama`. El usuario empieza a
+leer a los ~2 s en vez de esperar 30.
+
+Es el endpoint que usa el frontend. `/api/consultar` sigue existiendo para
+integraciones que prefieran una respuesta única.
+
+Al desplegar detrás de un proxy, comprueba que no acumule la respuesta: el
+endpoint ya manda `Cache-Control: no-cache` y `X-Accel-Buffering: no`, pero
+algunos CDN necesitan además desactivar el buffering por configuración.
