@@ -27,6 +27,7 @@ Fuentes:
 | **[docs/INGESTA.md](docs/INGESTA.md)** | Paso a paso para cargar PDFs nuevos al corpus |
 | [docs/PENDIENTE.md](docs/PENDIENTE.md) | Lo que falta, con el contexto para retomarlo |
 | [docs/GRAFO.md](docs/GRAFO.md) | Grafo de trazabilidad entre normas |
+| [docs/DATOS.md](docs/DATOS.md) | Esquema de BD para el historial de chats (propuesta) |
 | [docs/DESIGN.md](docs/DESIGN.md) | Sistema de diseño y modo oscuro |
 | [EJECUTAR.md](EJECUTAR.md) | Levantar el proyecto en local |
 | [backend/DEPLOY.md](backend/DEPLOY.md) | Desplegar |
