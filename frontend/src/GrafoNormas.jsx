@@ -80,7 +80,9 @@ export default function GrafoNormas() {
 
   return (
     <section className="grafo">
-      <details>
+      {/* Abierto por defecto: el grafo es sobre todo un mapa de cobertura, y
+          lo que enseña —qué normas faltan— hay que verlo sin buscarlo. */}
+      <details open>
         <summary className="rotulo">
           <Network size={14} aria-hidden="true" />
           Trazabilidad entre normas
