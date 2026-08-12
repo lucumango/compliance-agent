@@ -367,7 +367,16 @@ export default function App() {
           <Scale size={24} aria-hidden="true" />
           <h1>Asistente de Normativa y Compliance</h1>
         </div>
-        <span className="sello">FDA</span>
+        {/* La marca sola, sin el eslogan: a 44 px de alto "Building a better
+            working world" quedaría en 4 px y sería una mancha. El lockup
+            completo está en public/ey-logo.png para usos con más espacio. */}
+        <img
+          className="logo-ey"
+          src="/ey-logo-marca.png"
+          alt="EY"
+          width="43"
+          height="44"
+        />
 
         {estado && (
           <p className="estado-global">

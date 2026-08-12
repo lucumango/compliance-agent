@@ -20,7 +20,7 @@ por descuido:
 sobre blanco — no pasa WCAG AA. El amarillo se usa de tres formas, todas
 válidas:
 
-- como **fondo** con texto `#161D23` encima (botón primario, sello, chips),
+- como **fondo** con texto `#161D23` encima (botón primario, chips de cita),
 - como **borde** o anillo de foco,
 - como **texto** solo sobre superficies oscuras (`#161D23`).
 
@@ -135,6 +135,27 @@ puede distribuir.
   con teclado y se anuncian con el artículo que citan.
 - Nada depende **solo** del hover: el chip de cita muestra la norma al pasar
   por encima, pero también se puede pulsar, que es lo que funciona en táctil.
+
+## Logo
+
+Dos ficheros en `frontend/public/`:
+
+| Fichero | Qué es | Dónde |
+|---|---|---|
+| `ey-logo-marca.png` | Rayo + EY, sin eslogan | Cabecera, 44 px de alto |
+| `ey-logo.png` | Lockup completo con *Building a better working world* | Usos con más espacio |
+
+**En la cabecera va la marca sola, a propósito.** El lockup completo mide
+701 × 821: a 44 px de alto, el eslogan quedaría en unos 4 px y sería una mancha
+gris ilegible. Reservar el lockup para tamaños que lo sostengan es además lo que
+pide la propia guía de marca.
+
+Ambos son la **versión clara** del logo, para fondo oscuro. No hace falta una
+variante por tema porque van siempre sobre el negro EY de la cabecera, que es
+negro en los dos temas.
+
+Si algún día el logo tiene que ir sobre fondo claro —una portada, un PDF
+exportado— hace falta la versión oscura; recortarle el color a esta no vale.
 
 ## Iconos
 
