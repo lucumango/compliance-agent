@@ -34,22 +34,35 @@ Fuentes:
 
 ## Dónde vive el repo
 
-Este monorepo está **espejado en dos sitios**, con el mismo contenido:
+El monorepo está espejado en **tres** sitios con el mismo contenido:
 
-| | |
+| Repo | Papel |
 |---|---|
-| GitLab (principal) | `gitlab.com/lonelygroup1/compliance-agent` |
-| GitHub (espejo) | `github.com/lucumango/compliance-agent` |
+| `gitlab.com/lonelynode/compliance-agent` | **Principal** |
+| `github.com/lucumango/compliance-agent` | Espejo |
+| `gitlab.com/lonelynode/compliance-back` | Espejo — es el que despliega Vercel |
 
-Empuja siempre a los dos, o acabarán divergiendo:
+Empuja siempre a los tres, o divergirán:
 
 ```bash
-git push origin main && git push github main
+git push origin main \
+  && git push github main \
+  && git push https://gitlab.com/lonelynode/compliance-back.git main
 ```
 
-Antes vivían separados —el frontend en GitLab y el backend en dos repos
-distintos, uno por proveedor—, lo que hacía que dos personas trabajando a la
-vez pudieran empujar a copias distintas del backend sin enterarse.
+**El tercero tiene el nombre equivocado y es a propósito, por ahora.** Era el
+repo del backend cuando el proyecto vivía en dos repositorios; el proyecto de
+Vercel quedó conectado a él y no se ha repuntado todavía, así que se mantiene
+sincronizado para que los despliegues sigan saliendo. Lo correcto es reconectar
+Vercel a `compliance-agent` y dejar este de escribir.
+
+> ⚠ **`github.com/lucumango/compliance-back` está obsoleto.** Se quedó en el
+> commit `28e06ad` del 5 de agosto, con la estructura vieja de solo backend. No
+> empujes ahí.
+
+Antes el frontend y el backend vivían en repos separados, y el backend además
+duplicado entre GitLab y GitHub. Eso ya costó tres despliegues fallidos: Vercel
+clonaba el repo del backend y buscaba en él un frontend que no existía.
 
 ## Qué hace hoy
 
