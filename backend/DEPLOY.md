@@ -35,13 +35,40 @@ Railway y Fly.io funcionan igual con el mismo Dockerfile.
 
 ### 2. Frontend
 
-```bash
-cd frontend
-npx vercel --prod
+Conecta el repositorio en Vercel y **deja el Root Directory en la raíz**. El
+`vercel.json` de la raíz ya le dice todo lo que necesita:
+
+```json
+{
+  "installCommand": "cd frontend && npm ci",
+  "buildCommand":   "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- frontend/"
+}
 ```
 
-Configura `VITE_API_URL` en Vercel apuntando a la URL pública del backend.
-Sin esa variable el frontend llama a `127.0.0.1:8000` y en producción falla.
+Dos cosas que hace ese fichero y conviene entender:
+
+- **`rewrites`** manda cualquier ruta a `/`. Sin eso, recargar una URL que no
+  sea la raíz devuelve 404: es una SPA y el enrutado vive en el cliente.
+- **`ignoreCommand`** cancela el despliegue cuando el commit no tocó
+  `frontend/`. Sin él, cada cambio en el corpus o en la documentación
+  dispararía un despliegue del frontend idéntico al anterior. `git diff
+  --quiet` sale con 0 si no hay cambios, que es justamente lo que Vercel
+  interpreta como "no construyas".
+
+Si prefieres poner *Root Directory* = `frontend` en el panel, también funciona:
+en ese caso Vercel lee `frontend/vercel.json`, que está puesto y hace lo mismo
+sin los prefijos. Solo uno de los dos ficheros se aplica — el del directorio
+raíz configurado.
+
+Configura `VITE_API_URL` en Vercel apuntando a la URL pública del backend, y
+`VITE_API_KEY` con el mismo valor que la `API_KEY` del backend. Sin la primera
+el frontend llama a `127.0.0.1:8000` y en producción falla.
+
+**El backend en Render:** *Root Directory* = `backend`, runtime Docker. El
+`Dockerfile` está ahí dentro y no necesita nada más.
 
 ## Antes de exponerlo al público
 
