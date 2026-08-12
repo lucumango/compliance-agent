@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Children, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import {
   AlertTriangle,
@@ -8,16 +8,52 @@ import {
   FileSearch,
   Filter,
   Loader2,
+  Moon,
   Scale,
   ScanLine,
   Send,
   Sparkles,
+  Sun,
   XCircle,
 } from "lucide-react";
 import Mermaid from "./Mermaid";
 import CalculadoraMultas from "./CalculadoraMultas";
 import { consultarStream, normas, pedirDiagrama, salud } from "./api";
 import "./App.css";
+
+const CLAVE_TEMA = "compliance:tema";
+
+/**
+ * Tema con tres estados: "claro", "oscuro" y `null` = lo que diga el sistema.
+ * Mientras nadie elija, se respeta la preferencia del sistema operativo; en
+ * cuanto se elige, `data-theme` en el <html> manda sobre la media query.
+ */
+function useTema() {
+  const [tema, setTema] = useState(() => localStorage.getItem(CLAVE_TEMA));
+
+  useEffect(() => {
+    const raiz = document.documentElement;
+    if (tema) {
+      raiz.setAttribute("data-theme", tema === "oscuro" ? "dark" : "light");
+      localStorage.setItem(CLAVE_TEMA, tema);
+    } else {
+      raiz.removeAttribute("data-theme");
+      localStorage.removeItem(CLAVE_TEMA);
+    }
+  }, [tema]);
+
+  // Solo hace falta saber qué se está pintando para rotular el botón.
+  const oscuroAhora =
+    tema === "oscuro" ||
+    (!tema && window.matchMedia?.("(prefers-color-scheme: dark)").matches);
+
+  return [oscuroAhora, () => setTema(oscuroAhora ? "claro" : "oscuro")];
+}
+
+// Margen en px por debajo del cual se considera que el usuario sigue al final
+// de la conversación. Holgado a propósito: el cursor de escritura y el salto
+// de línea del último fragmento mueven el fondo unos pocos píxeles.
+const UMBRAL_PEGADO = 80;
 
 const EJEMPLOS = [
   {
@@ -41,15 +77,10 @@ const EJEMPLOS = [
   },
 ];
 
-function Fuente({ fuente }) {
-  const [abierto, setAbierto] = useState(false);
+function Fuente({ fuente, abierto, alAlternar, id }) {
   return (
-    <li className="fuente">
-      <button
-        className="fuente-cab"
-        onClick={() => setAbierto((v) => !v)}
-        aria-expanded={abierto}
-      >
+    <li className="fuente" id={id}>
+      <button className="fuente-cab" onClick={alAlternar} aria-expanded={abierto}>
         <span className="etiqueta">{fuente.etiqueta}</span>
         <span className="cita">{fuente.cita}</span>
         <span className="score" aria-label={`Similitud ${fuente.score}`}>
@@ -61,10 +92,76 @@ function Fuente({ fuente }) {
   );
 }
 
-function Mensaje({ mensaje }) {
+// El modelo cita con etiquetas desnudas ([F1], [F3]) porque son las que el
+// prompt le impone y las únicas que puede escribir sin equivocarse. Aquí se
+// convierten en algo legible: la etiqueta muestra la norma al pasar por
+// encima, y al pulsarla abre esa fuente en el panel. El texto visible sigue
+// siendo corto para no romper la lectura del párrafo.
+const RE_CITA = /\[(F\d+)\]/g;
+
+function ChipCita({ etiqueta, fuente, alPulsar }) {
+  if (!fuente) return <span className="cita-chip huerfana">[{etiqueta}]</span>;
+  return (
+    <button
+      type="button"
+      className="cita-chip"
+      title={fuente.cita}
+      onClick={() => alPulsar(etiqueta)}
+      aria-label={`Fuente ${etiqueta}: ${fuente.cita}. Pulsa para ver el texto.`}
+    >
+      {etiqueta}
+    </button>
+  );
+}
+
+/** Sustituye [Fn] por un chip en los nodos de texto, dejando el resto igual. */
+function conCitas(hijos, porEtiqueta, alPulsar) {
+  return Children.map(hijos, (hijo) => {
+    if (typeof hijo !== "string") return hijo;
+    const trozos = [];
+    let cursor = 0;
+    for (const m of hijo.matchAll(RE_CITA)) {
+      if (m.index > cursor) trozos.push(hijo.slice(cursor, m.index));
+      trozos.push(
+        <ChipCita
+          key={`${m.index}-${m[1]}`}
+          etiqueta={m[1]}
+          fuente={porEtiqueta.get(m[1])}
+          alPulsar={alPulsar}
+        />
+      );
+      cursor = m.index + m[0].length;
+    }
+    if (!trozos.length) return hijo;
+    if (cursor < hijo.length) trozos.push(hijo.slice(cursor));
+    return trozos;
+  });
+}
+
+function Mensaje({ mensaje, indice }) {
+  const [abierta, setAbierta] = useState(null);
+
   if (mensaje.rol === "usuario") {
     return <div className="msg usuario">{mensaje.texto}</div>;
   }
+
+  const porEtiqueta = new Map(
+    (mensaje.fuentes ?? []).map((f) => [f.etiqueta, f])
+  );
+
+  const idFuente = (etiqueta) => `fuente-${indice}-${etiqueta}`;
+
+  function abrirFuente(etiqueta) {
+    setAbierta(etiqueta);
+    // El panel puede estar fuera de la vista tras una respuesta larga.
+    requestAnimationFrame(() =>
+      document
+        .getElementById(idFuente(etiqueta))
+        ?.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    );
+  }
+
+  const conChips = (props) => conCitas(props.children, porEtiqueta, abrirFuente);
 
   // Un error puede llegar después de haberse emitido parte del texto, así que
   // se muestra junto a lo ya redactado en vez de reemplazarlo.
@@ -86,7 +183,17 @@ function Mensaje({ mensaje }) {
 
       {mensaje.respuesta ? (
         <div className="prosa">
-          <ReactMarkdown>{mensaje.respuesta}</ReactMarkdown>
+          <ReactMarkdown
+            components={{
+              p: (props) => <p>{conChips(props)}</p>,
+              li: (props) => <li>{conChips(props)}</li>,
+              strong: (props) => <strong>{conChips(props)}</strong>,
+              em: (props) => <em>{conChips(props)}</em>,
+              td: (props) => <td>{conChips(props)}</td>,
+            }}
+          >
+            {mensaje.respuesta}
+          </ReactMarkdown>
           {mensaje.generando && <span className="cursor" aria-hidden="true" />}
         </div>
       ) : (
@@ -126,7 +233,15 @@ function Mensaje({ mensaje }) {
           </summary>
           <ul>
             {mensaje.fuentes.map((f) => (
-              <Fuente key={f.etiqueta} fuente={f} />
+              <Fuente
+                key={f.etiqueta}
+                id={idFuente(f.etiqueta)}
+                fuente={f}
+                abierto={abierta === f.etiqueta}
+                alAlternar={() =>
+                  setAbierta((v) => (v === f.etiqueta ? null : f.etiqueta))
+                }
+              />
             ))}
           </ul>
         </details>
@@ -143,6 +258,9 @@ export default function App() {
   const [materias, setMaterias] = useState([]);
   const [estado, setEstado] = useState(null);
   const finRef = useRef(null);
+  // Si el usuario sube a releer, deja de estar "pegado" y el autoscroll calla.
+  const pegadoAlFinal = useRef(true);
+  const [oscuro, alternarTema] = useTema();
 
   useEffect(() => {
     salud()
@@ -153,8 +271,23 @@ export default function App() {
       .catch(() => setCorpus([]));
   }, []);
 
+  // El streaming reescribe `mensajes` con cada fragmento, varias veces por
+  // segundo. Un scroll suave por fragmento no llega a terminar antes de que el
+  // siguiente lo reinicie —de ahí el temblor— y encima secuestra al usuario
+  // que ha subido a leer una fuente. Así que: solo se auto-desplaza si ya
+  // estaba pegado al final, e instantáneo mientras escribe.
+  function alScroll(e) {
+    const el = e.currentTarget;
+    pegadoAlFinal.current =
+      el.scrollHeight - el.scrollTop - el.clientHeight < UMBRAL_PEGADO;
+  }
+
   useEffect(() => {
-    finRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (!pegadoAlFinal.current) return;
+    finRef.current?.scrollIntoView({
+      behavior: cargando ? "auto" : "smooth",
+      block: "end",
+    });
   }, [mensajes, cargando]);
 
   async function enviar(texto) {
@@ -163,6 +296,9 @@ export default function App() {
 
     setEntrada("");
     setCargando(true);
+    // Enviar es una acción deliberada: aquí sí queremos seguir la respuesta
+    // nueva aunque el usuario estuviera leyendo más arriba.
+    pegadoAlFinal.current = true;
 
     // El hueco del asistente se crea vacío y se va rellenando: primero las
     // fuentes, luego el texto fragmento a fragmento.
@@ -257,6 +393,20 @@ export default function App() {
             )}
           </p>
         )}
+
+        <button
+          className="tema"
+          onClick={alternarTema}
+          aria-pressed={oscuro}
+          title={`Cambiar a modo ${oscuro ? "claro" : "oscuro"}`}
+        >
+          {oscuro ? (
+            <Sun size={14} aria-hidden="true" />
+          ) : (
+            <Moon size={14} aria-hidden="true" />
+          )}
+          {oscuro ? "Claro" : "Oscuro"}
+        </button>
       </header>
 
       <div className="cuerpo">
@@ -303,7 +453,7 @@ export default function App() {
         </aside>
 
         <main className="chat">
-          <div className="mensajes">
+          <div className="mensajes" onScroll={alScroll}>
             {mensajes.length === 0 && (
               <div className="bienvenida">
                 <h2>¿Qué necesitas consultar?</h2>
@@ -324,7 +474,7 @@ export default function App() {
             )}
 
             {mensajes.map((m, i) => (
-              <Mensaje key={i} mensaje={m} />
+              <Mensaje key={i} mensaje={m} indice={i} />
             ))}
             <div ref={finRef} />
           </div>

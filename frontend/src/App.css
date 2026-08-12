@@ -1,9 +1,13 @@
-/* Sistema de diseño EY — ver DESIGN.md
+/* Sistema de diseño EY — ver ../../docs/DESIGN.md
  *
  * Dos reglas de marca gobiernan casi todo lo de abajo:
  *   1. Sin border-radius. EY es angular; el redondeo rompe la identidad.
  *   2. El amarillo #FFE600 NUNCA como texto sobre blanco (contraste 2.2:1).
  *      Va como fondo con texto #161D23, o sobre superficies oscuras.
+ *
+ * Los colores se declaran SIEMPRE como tokens semánticos (--background,
+ * --text-primary, --border...). El tema oscuro se limita a redefinirlos, así
+ * que un hex literal aquí abajo es un color que no se tematiza.
  */
 
 :root {
@@ -46,9 +50,87 @@
 
   --primary: #ffe600;
   --primary-foreground: #161d23;
+  --primary-hover: #e6cf00;
+
+  /* Texto sobre superficies que son negro EY en AMBOS temas (la cabecera, el
+     globo del usuario, el botón de gravedad activo). No se invierten: si se
+     tematizaran, en oscuro quedaría texto oscuro sobre fondo oscuro. */
+  --on-dark: #ffffff;
+  --on-dark-muted: #cccccc;
 
   --font-sans: "Nunito", "Segoe UI", system-ui, sans-serif;
   --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  color-scheme: light;
+}
+
+/* ---------- Tema oscuro ----------
+ *
+ * El resto de la hoja no distingue temas: se limita a redefinir los tokens.
+ * Los grises de marca cambian de valor pero conservan su papel —de más claro
+ * a más oscuro pasan a ser de más oscuro a más claro—, de modo que cada regla
+ * sigue expresando la misma jerarquía visual sin tocarla.
+ *
+ * El amarillo y el negro EY NO se tocan: son la identidad, no el tema.
+ *
+ * Se declara tres veces a propósito: el sistema operativo decide cuando el
+ * usuario no ha elegido, y [data-theme] gana en ambas direcciones cuando sí.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-gray-light: #222a31;
+    --color-gray-second: #2b343c;
+    --color-gray-faint: #3a444d;
+    --color-gray-medium: #8b959e;
+    --color-gray-dark: #cbd3da;
+    --color-white: #1b2229;
+
+    --background: #1b2229;
+    --surface: #12181d;
+    --border: #2b343c;
+
+    --text-primary: #f2f2f2;
+    --text-secondary: #cbd3da;
+    --text-muted: #8b959e;
+
+    /* Los tintes de aviso se rebajan: a plena saturación sobre fondo oscuro
+       vibran y se leen mal. El texto encima sigue siendo --text-primary. */
+    --tint-yellow: #3d3616;
+    --tint-red: #3d1f1c;
+    --tint-orange: #3d2c16;
+    --tint-green: #16301f;
+
+    /* En oscuro una sombra negra no se ve; el relieve lo da el borde. */
+    --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.4);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-gray-light: #222a31;
+  --color-gray-second: #2b343c;
+  --color-gray-faint: #3a444d;
+  --color-gray-medium: #8b959e;
+  --color-gray-dark: #cbd3da;
+  --color-white: #1b2229;
+
+  --background: #1b2229;
+  --surface: #12181d;
+  --border: #2b343c;
+
+  --text-primary: #f2f2f2;
+  --text-secondary: #cbd3da;
+  --text-muted: #8b959e;
+
+  --tint-yellow: #3d3616;
+  --tint-red: #3d1f1c;
+  --tint-orange: #3d2c16;
+  --tint-green: #16301f;
+
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.4);
+
+  color-scheme: dark;
 }
 
 * {
@@ -113,7 +195,7 @@ a:hover {
 
 .cabecera {
   background: var(--color-ey-black);
-  color: var(--color-white);
+  color: var(--on-dark);
   border-bottom: 3px solid var(--color-ey-yellow);
   display: flex;
   align-items: center;
@@ -136,7 +218,7 @@ a:hover {
 .cabecera h1 {
   font-size: 18px;
   line-height: 26px;
-  color: var(--color-white);
+  color: var(--on-dark);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -162,7 +244,7 @@ a:hover {
   font-size: 12px;
   font-weight: 300;
   line-height: 18px;
-  color: var(--color-gray-faint);
+  color: var(--on-dark-muted);
   white-space: nowrap;
 }
 
@@ -316,7 +398,7 @@ a:hover {
 .gravedades button.activo {
   background: var(--color-ey-black);
   border-color: var(--color-ey-black);
-  color: var(--color-white);
+  color: var(--on-dark);
 }
 
 .monto {
@@ -462,7 +544,7 @@ a:hover {
   align-self: flex-end;
   max-width: 640px;
   background: var(--color-ey-black);
-  color: var(--color-white);
+  color: var(--on-dark);
   padding: 16px 20px;
   font-size: 14px;
   line-height: 22px;
@@ -844,7 +926,7 @@ a:hover {
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #e6cf00;
+  background: var(--primary-hover);
 }
 
 .btn-primary:disabled {
@@ -877,4 +959,96 @@ a:hover {
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
+}
+
+/* ---------- Chips de cita en el cuerpo de la respuesta ----------
+ *
+ * El modelo escribe [F1] porque es lo único que puede citar sin equivocarse.
+ * Aquí eso se convierte en un control: al pasar por encima dice de qué norma
+ * habla, y al pulsarlo abre esa fuente en el panel. Se mantiene corto —la
+ * etiqueta, no la cita entera— para no romper la lectura del párrafo.
+ */
+
+.cita-chip {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  vertical-align: baseline;
+  display: inline-block;
+  padding: 0 5px;
+  margin: 0 1px;
+  border: 1px solid var(--color-ey-black);
+  background: var(--color-ey-yellow);
+  color: var(--color-ey-black);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.cita-chip:hover {
+  background: var(--primary-hover);
+}
+
+/* En oscuro el amarillo pleno sobre texto corrido deslumbra: se invierte a
+   contorno amarillo sobre el fondo, que pesa menos sin perder el vínculo. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cita-chip {
+    background: transparent;
+    border-color: var(--color-ey-yellow);
+    color: var(--color-ey-yellow);
+  }
+  :root:not([data-theme="light"]) .cita-chip:hover {
+    background: var(--color-ey-yellow);
+    color: var(--color-ey-black);
+  }
+}
+
+:root[data-theme="dark"] .cita-chip {
+  background: transparent;
+  border-color: var(--color-ey-yellow);
+  color: var(--color-ey-yellow);
+}
+
+:root[data-theme="dark"] .cita-chip:hover {
+  background: var(--color-ey-yellow);
+  color: var(--color-ey-black);
+}
+
+/* Una etiqueta que el modelo inventó y no corresponde a ninguna fuente. No se
+   oculta: que se vea es la señal de que algo va mal en la respuesta. */
+.cita-chip.huerfana {
+  border: 1px dashed var(--color-risk-high);
+  background: transparent;
+  color: var(--color-risk-high);
+  padding: 0 4px;
+  cursor: help;
+}
+
+/* Fuente recién abierta desde un chip. */
+.fuente:target,
+.fuente.destacada {
+  outline: 2px solid var(--color-ey-yellow);
+}
+
+/* ---------- Selector de tema ---------- */
+
+.tema {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--color-gray-dark);
+  color: var(--on-dark);
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.tema:hover {
+  border-color: var(--color-ey-yellow);
+  background: rgba(255, 230, 0, 0.12);
 }
