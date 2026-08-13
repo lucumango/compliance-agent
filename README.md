@@ -22,6 +22,7 @@ Fuentes:
 
 | Documento | Para qué |
 |---|---|
+| **[docs/GUIA.md](docs/GUIA.md)** | **Guía de uso**, para quien lo usa sin tocar el código |
 | **[docs/SISTEMA.md](docs/SISTEMA.md)** | Cómo funciona de punta a punta y **dónde está el prompt del agente** |
 | **[docs/FUENTES.md](docs/FUENTES.md)** | Qué normas hay cargadas, en qué estado, y cómo se registra una fuente |
 | **[docs/INGESTA.md](docs/INGESTA.md)** | Paso a paso para cargar PDFs nuevos al corpus |

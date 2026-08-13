@@ -21,6 +21,7 @@ Fuentes:
 
 | Si quieres… | Ve a |
 |---|---|
+| **Usarlo** sin entrar en el código | [Guía de uso](GUIA.md) |
 | Entender cómo funciona, o **encontrar el prompt** | [Cómo funciona](SISTEMA.md) |
 | Saber qué normas hay cargadas y en qué estado | [Fuentes del corpus](FUENTES.md) |
 | **Cargar PDFs nuevos** al corpus | [Cargar documentos](INGESTA.md) |
