@@ -4,6 +4,5 @@
   "installCommand": "npm --prefix frontend ci",
   "buildCommand": "npm --prefix frontend run build",
   "outputDirectory": "frontend/dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- frontend/ package.json vercel.json"
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }

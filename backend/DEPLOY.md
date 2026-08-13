@@ -86,15 +86,24 @@ El `vercel.json` de la raíz le dice todo lo que necesita:
   "installCommand": "npm --prefix frontend ci",
   "buildCommand":   "npm --prefix frontend run build",
   "outputDirectory": "frontend/dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- frontend/ package.json vercel.json"
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
 ```
 
-El `ignoreCommand` vigila `frontend/` **y los dos ficheros de configuración de
-la raíz**: cambiar el `vercel.json` o el `package.json` altera cómo se
-construye, así que tiene que disparar despliegue aunque no se haya tocado una
-línea del frontend.
+**No hay `ignoreCommand` a propósito.** Se probó uno que saltaba el despliegue
+cuando el commit no tocaba `frontend/`, y ahorraba builds redundantes al cargar
+normas al corpus. El problema es que Vercel lo evalúa **también en los Redeploy
+manuales**: pulsabas el botón y salía *"Deployment canceled"* sin más
+explicación, justo cuando cambiabas una variable de entorno y necesitabas un
+build nuevo para que surtiera efecto.
+
+Un despliegue de más cuesta cuarenta segundos. Un despliegue que se cancela sin
+decir por qué cuesta una tarde. Si algún día el volumen de commits lo justifica,
+la línea es:
+
+```json
+"ignoreCommand": "git diff --quiet HEAD^ HEAD -- frontend/ package.json vercel.json"
+```
 
 Hay además un `package.json` en la raíz. No tiene dependencias: existe para que
 Vercel reconozca la raíz como proyecto Node en vez de ponerse a adivinar. Sin
