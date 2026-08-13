@@ -11,6 +11,7 @@ import {
   Loader2,
   Moon,
   ScanLine,
+  Search,
   Send,
   Sparkles,
   Sun,
