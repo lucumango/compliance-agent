@@ -8,6 +8,7 @@ no antes.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 from dataclasses import dataclass, field
@@ -15,7 +16,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .config import INDEX_DIR, PARSED_DIR
+from .config import EMBEDDING_DIM, INDEX_DIR, PARSED_DIR
 from .gemini import BATCH_MAX, embed_batch
 
 VECTORS_PATH = INDEX_DIR / "vectors.npy"
@@ -43,6 +44,10 @@ class Unidad:
     por_que_relevante: str = ""
     estado_texto: str = "consolidado"
     relaciones: list[dict] = field(default_factory=list)
+    # Huella del texto que se vectorizó. Es lo que permite reindexar sin
+    # volver a pagar por lo que no ha cambiado: si la huella coincide con la
+    # del índice anterior, el vector se reutiliza tal cual.
+    hash_texto: str = ""
 
 
 def cargar_unidades() -> tuple[list[Unidad], list[str]]:
@@ -79,22 +84,75 @@ def cargar_unidades() -> tuple[list[Unidad], list[str]]:
     return unidades, textos
 
 
-def construir(verbose: bool = True) -> None:
+def _huella(texto: str) -> str:
+    return hashlib.sha256(texto.encode("utf-8")).hexdigest()
+
+
+def _vectores_reutilizables() -> dict[str, np.ndarray]:
+    """Vectores del índice anterior, indexados por huella del texto.
+
+    Se indexa por huella y no por id de unidad a propósito: si el parser
+    cambia y el texto de un artículo se altera, su huella deja de coincidir y
+    se revectoriza, aunque conserve el mismo id. Y al revés, un artículo que se
+    renumera pero mantiene el texto reaprovecha su vector.
+    """
+    if not (VECTORS_PATH.exists() and META_PATH.exists()):
+        return {}
+    try:
+        matriz = np.load(VECTORS_PATH)
+        previas = json.loads(META_PATH.read_text())
+    except Exception:
+        return {}
+    if len(previas) != matriz.shape[0]:
+        return {}
+    return {
+        u["hash_texto"]: matriz[i]
+        for i, u in enumerate(previas)
+        if u.get("hash_texto")
+    }
+
+
+def construir(verbose: bool = True, forzar: bool = False) -> None:
+    """Construye el índice reaprovechando lo que ya estaba vectorizado.
+
+    Vectorizar es lo caro —es una llamada de red por lote y la cuota gratuita
+    devuelve 429—, mientras que buscar sobre la matriz resultante tarda menos
+    de un milisegundo. Por eso lo que se optimiza aquí es no repetir trabajo:
+    añadir una norma nueva solo debe costar sus propias unidades, no las que ya
+    estaban.
+    """
     unidades, textos = cargar_unidades()
+    for u, t in zip(unidades, textos):
+        u.hash_texto = _huella(t)
+
+    cache = {} if forzar else _vectores_reutilizables()
+    pendientes = [i for i, u in enumerate(unidades) if u.hash_texto not in cache]
+
     if verbose:
-        print(f"Vectorizando {len(textos)} unidades con lotes de {BATCH_MAX}...")
+        reutilizadas = len(unidades) - len(pendientes)
+        print(
+            f"{len(unidades)} unidades: {reutilizadas} reutilizadas del índice "
+            f"anterior, {len(pendientes)} por vectorizar."
+        )
+        if not pendientes:
+            print("Nada que vectorizar.")
 
-    vectores: list[list[float]] = []
     inicio = time.time()
-    for i in range(0, len(textos), BATCH_MAX):
-        lote = textos[i : i + BATCH_MAX]
-        vectores.extend(embed_batch(lote, task_type="RETRIEVAL_DOCUMENT"))
+    nuevos: dict[int, list[float]] = {}
+    for i in range(0, len(pendientes), BATCH_MAX):
+        idx = pendientes[i : i + BATCH_MAX]
+        lote = [textos[j] for j in idx]
+        for j, v in zip(idx, embed_batch(lote, task_type="RETRIEVAL_DOCUMENT")):
+            nuevos[j] = v
         if verbose:
-            print(f"  {len(vectores)}/{len(textos)}", flush=True)
+            print(f"  {len(nuevos)}/{len(pendientes)}", flush=True)
 
-    matriz = np.array(vectores, dtype=np.float32)
-    # Normalizar una vez al indexar convierte la similitud coseno en un simple
-    # producto punto en cada consulta.
+    matriz = np.empty((len(unidades), EMBEDDING_DIM), dtype=np.float32)
+    for i, u in enumerate(unidades):
+        matriz[i] = nuevos[i] if i in nuevos else cache[u.hash_texto]
+
+    # Normalizar convierte la similitud coseno en un producto punto. Es
+    # idempotente sobre los vectores reutilizados, que ya venían normalizados.
     matriz /= np.linalg.norm(matriz, axis=1, keepdims=True)
 
     INDEX_DIR.mkdir(parents=True, exist_ok=True)
@@ -120,7 +178,9 @@ def actualizar_metadatos(verbose: bool = True) -> None:
     Solo es válido si el corpus tiene exactamente las mismas unidades en el
     mismo orden. Si has añadido o quitado alguna, hace falta `construir()`.
     """
-    unidades, _ = cargar_unidades()
+    unidades, textos = cargar_unidades()
+    for u, t in zip(unidades, textos):
+        u.hash_texto = _huella(t)
 
     if not VECTORS_PATH.exists():
         raise FileNotFoundError(
@@ -165,9 +225,17 @@ if __name__ == "__main__":
             "relaciones, por_que_relevante) y no el texto de las unidades."
         ),
     )
+    ap.add_argument(
+        "--forzar",
+        action="store_true",
+        help=(
+            "Revectoriza todo, ignorando el índice anterior. Solo hace falta "
+            "al cambiar de modelo de embeddings."
+        ),
+    )
     args = ap.parse_args()
 
     if args.solo_metadatos:
         actualizar_metadatos()
     else:
-        construir()
+        construir(forzar=args.forzar)
