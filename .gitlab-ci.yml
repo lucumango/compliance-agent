@@ -2,8 +2,8 @@
 #
 # GitLab sirve lo que el job deje en public/ (site_dir en mkdocs.yml).
 #
-# Visibilidad: por defecto un sitio de Pages en un proyecto privado solo lo ven
-# los miembros. Para hacerlo público:
+# Visibilidad: por defecto, en un proyecto privado el sitio solo lo ven sus
+# miembros —una visita anónima recibe 403—. Para abrirlo:
 #   Settings -> General -> Visibility -> Pages -> Everyone
 
 pages:
@@ -18,14 +18,9 @@ pages:
   artifacts:
     paths:
       - public
+  # Corre en cada push a main, sin filtrar por ficheros. Se probó un filtro
+  # `changes:` sobre docs/ y el job no llegaba a crearse: el pipeline salía
+  # verde con cero jobs, que es indistinguible de haber publicado. Tarda 22
+  # segundos; no vale la pena arriesgarse a un silencio así por ahorrarlos.
   rules:
-    # Solo desde main, y solo si cambió algo que afecte al sitio.
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - docs/**/*
-        - mkdocs.yml
-        - .gitlab-ci.yml
-    # Permite lanzarlo a mano desde la interfaz cuando haga falta.
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: manual
-      allow_failure: true
