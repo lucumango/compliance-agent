@@ -15,6 +15,10 @@ pages:
     # todas las páginas saldrían con la fecha del build.
     GIT_DEPTH: 0
   script:
+    # python:3.12-slim no incluye git. El repositorio lo clona el runner con su
+    # propia imagen, así que dentro del job no hay binario, y los plugins de
+    # fecha y autoría lo necesitan para leer la historia.
+    - apt-get update -qq && apt-get install -y -qq --no-install-recommends git
     - pip install --no-cache-dir -r docs/requirements.txt
     # --strict convierte los avisos en errores: un enlace roto tumba el job en
     # vez de publicarse. En documentación de compliance, un enlace que no lleva
