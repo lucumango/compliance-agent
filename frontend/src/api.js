@@ -1,4 +1,10 @@
-const BASE = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000";
+// Se le quitan las barras finales: pegar la URL del backend con la barra que
+// añaden los paneles de despliegue al copiarla es lo normal, y dejarla produce
+// //api/salud, que el servidor no reconoce como ruta y devuelve 404.
+const BASE = (import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000").replace(
+  /\/+$/,
+  ""
+);
 const CLAVE = import.meta.env.VITE_API_KEY ?? "";
 
 /**
