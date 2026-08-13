@@ -1,0 +1,8 @@
+# Solo para construir el sitio de documentación en CI. Nada que ver con las
+# dependencias del backend.
+#
+# mkdocs va fijado a propósito: la 2.0 trae cambios incompatibles que rompen
+# los plugins y el tema, y sin fijarlo el sitio dejaría de construirse el día
+# que se publique.
+mkdocs==1.6.1
+mkdocs-material==9.7.7

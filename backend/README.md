@@ -8,7 +8,7 @@ recuperación con citas, diagramas Mermaid, calculadora de multas, API HTTP y
 frontend React. Falta la Fase 2 (grafo, gap analysis, jurisprudencia).
 
 Frontend: [compliance-agent](https://github.com/lucumango/compliance-agent).
-Despliegue: ver [DEPLOY.md](DEPLOY.md).
+Despliegue: ver [docs/DEPLOY.md](../docs/DEPLOY.md).
 
 ## Qué hace hoy
 

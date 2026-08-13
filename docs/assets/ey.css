@@ -1,0 +1,47 @@
+/* Ajustes de marca EY sobre el tema Material. Ver DESIGN.md.
+   Las dos reglas de marca: sin border-radius, y el amarillo nunca como texto
+   sobre fondo claro (contraste 2.2:1) — solo como fondo, borde o acento. */
+
+:root {
+  --md-primary-fg-color: #161d23;
+  --md-accent-fg-color: #161d23;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-accent-fg-color: #ffe600;
+}
+
+/* EY es angular. */
+.md-typeset table:not([class]),
+.md-typeset pre > code,
+.md-typeset .admonition,
+.md-search__form,
+.md-typeset details {
+  border-radius: 0 !important;
+}
+
+/* El amarillo va de acento estructural, no de texto. */
+.md-typeset h1,
+.md-typeset h2 {
+  border-bottom: 2px solid #ffe600;
+  padding-bottom: 0.2em;
+}
+
+.md-header {
+  border-bottom: 3px solid #ffe600;
+}
+
+.md-typeset a {
+  color: var(--md-primary-fg-color);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+[data-md-color-scheme="slate"] .md-typeset a {
+  color: #ffe600;
+}
+
+/* Los diagramas anchos desbordan dentro de su caja, no en la página. */
+.md-typeset .mermaid {
+  overflow-x: auto;
+}

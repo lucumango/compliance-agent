@@ -1,0 +1,74 @@
+site_name: CARLOS
+site_description: Compliance Audit Regulatory Logic Operational System — documentación
+docs_dir: docs
+site_dir: public # GitLab Pages publica lo que haya en public/
+
+theme:
+  name: material
+  language: es
+  font: false # Sin Google Fonts: la documentación puede leerse sin salir a internet.
+  palette:
+    # El tema sigue al sistema, con conmutador manual, igual que la aplicación.
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Seguir al sistema
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: yellow
+      toggle:
+        icon: material/brightness-7
+        name: Modo oscuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: yellow
+      toggle:
+        icon: material/brightness-4
+        name: Modo claro
+  features:
+    - navigation.instant
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+
+extra_css:
+  - assets/ey.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  # superfences es lo que permite que los bloques ```mermaid se rendericen en
+  # vez de salir como código. Los diagramas de GRAFO.md y DATOS.md dependen de
+  # esto.
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search:
+      lang: es
+
+nav:
+  - Inicio: index.md
+  - Cómo funciona: SISTEMA.md
+  - Fuentes del corpus: FUENTES.md
+  - Cargar documentos: INGESTA.md
+  - Grafo de trazabilidad: GRAFO.md
+  - Historial de chats: DATOS.md
+  - Sistema de diseño: DESIGN.md
+  - Desplegar: DEPLOY.md
+  - Pendiente: PENDIENTE.md

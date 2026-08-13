@@ -1,0 +1,31 @@
+# Publica la documentación como sitio en GitLab Pages.
+#
+# GitLab sirve lo que el job deje en public/ (site_dir en mkdocs.yml).
+#
+# Visibilidad: por defecto un sitio de Pages en un proyecto privado solo lo ven
+# los miembros. Para hacerlo público:
+#   Settings -> General -> Visibility -> Pages -> Everyone
+
+pages:
+  stage: deploy
+  image: python:3.12-slim
+  script:
+    - pip install --no-cache-dir -r docs/requirements.txt
+    # --strict convierte los avisos en errores: un enlace roto tumba el job en
+    # vez de publicarse. En documentación de compliance, un enlace que no lleva
+    # a ninguna parte es peor que un job en rojo.
+    - mkdocs build --strict
+  artifacts:
+    paths:
+      - public
+  rules:
+    # Solo desde main, y solo si cambió algo que afecte al sitio.
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - docs/**/*
+        - mkdocs.yml
+        - .gitlab-ci.yml
+    # Permite lanzarlo a mano desde la interfaz cuando haga falta.
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+      allow_failure: true

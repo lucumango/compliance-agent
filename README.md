@@ -30,7 +30,7 @@ Fuentes:
 | [docs/DATOS.md](docs/DATOS.md) | Esquema de BD para el historial de chats (propuesta) |
 | [docs/DESIGN.md](docs/DESIGN.md) | Sistema de diseño y modo oscuro |
 | [EJECUTAR.md](EJECUTAR.md) | Levantar el proyecto en local |
-| [backend/DEPLOY.md](backend/DEPLOY.md) | Desplegar |
+| [docs/DEPLOY.md](docs/DEPLOY.md) | Desplegar en Vercel y Render |
 
 ## Dónde vive el repo
 
