@@ -62,6 +62,11 @@ class NormaMeta:
     materia: str
     entidad_reguladora: list[str]
     parser: str  # "ley" | "iso"
+    # Maquetación del PDF de origen. Cambia cómo se interpreta el articulado:
+    #   "el_peruano"  publicación en el diario oficial, cada artículo una vez
+    #   "spij"        descarga concordada del SPIJ, que trae el texto original
+    #                 y detrás cada versión que lo sustituyó. Se toma la última.
+    formato: str = "el_peruano"
     fecha_publicacion: str | None = None
     url_fuente: str | None = None
     metadata_verificada: bool = False
@@ -154,16 +159,115 @@ REGISTRY: list[NormaMeta] = [
         materia="laft",
         entidad_reguladora=["SBS", "UIF-Perú"],
         parser="ley",
+        formato="spij",
+        fecha_publicacion="2002-04-12",  # leído de la portada del concordado
         notas=(
-            "Escaneo de El Peruano procesado por OCR; el texto puede contener "
-            "errores de reconocimiento y requiere cotejo con SPIJ."
+            "Texto concordado del SPIJ, actualizado al 01/10/2025 según "
+            "portada. Sustituye al escaneo con OCR que se cargó primero. "
+            "Cuando un artículo ha sido modificado, el corpus recoge la "
+            "última versión, no la original de 2002."
         ),
         por_que_relevante=(
             "Crea la UIF y fija el deber de los sujetos obligados de comunicar "
-            "operaciones sospechosas. Es la única norma de LA/FT cargada y con "
-            "21 unidades es, con diferencia, la cobertura más flaca del "
-            "corpus: no incluye las resoluciones SBS de gestión de riesgos, "
-            "que es donde vive el detalle operativo."
+            "operaciones sospechosas. Es la norma cabecera del régimen de "
+            "LA/FT: casi todo lo demás del corpus en esta materia la "
+            "reglamenta o la modifica."
+        ),
+        estado_texto="consolidado",
+        consolidado_a="2025-10-01",
+        relaciones=[
+            # Estas tres están absorbidas en el texto concordado: su articulado
+            # vive ya dentro de la Ley 27693 tal como se carga. Se registran
+            # como aristas y no como texto propio porque cargarlas aparte
+            # duplicaría los mismos artículos en dos redacciones distintas, y
+            # la recuperación devolvería la vieja tan a menudo como la vigente.
+            Relacion(
+                tipo="modificada_por",
+                destino="Ley 28009",
+                nota="Absorbida en el texto concordado.",
+            ),
+            Relacion(
+                tipo="modificada_por",
+                destino="Ley 28306",
+                nota="Absorbida en el texto concordado.",
+            ),
+            Relacion(
+                tipo="modificada_por",
+                destino="ley_29038",
+                nota="Incorpora la UIF a la SBS. Absorbida en el concordado.",
+                en_corpus=True,
+            ),
+            Relacion(
+                tipo="reglamentada_por",
+                destino="DS 020-2017-JUS",
+                nota="Reglamento vigente. Aún no cargado.",
+            ),
+        ],
+    ),
+    NormaMeta(
+        norma_id="ley_29038",
+        archivo="ley_29038.pdf",
+        tipo="ley",
+        numero="29038",
+        nombre=(
+            "Ley que incorpora la Unidad de Inteligencia Financiera del Perú "
+            "(UIF-Perú) a la Superintendencia de Banca, Seguros y AFP"
+        ),
+        materia="laft",
+        entidad_reguladora=["SBS", "UIF-Perú"],
+        parser="ley",
+        por_que_relevante=(
+            "Traslada la UIF a la SBS, que es lo que explica que hoy el "
+            "supervisor en materia de LA/FT sea la Superintendencia y no un "
+            "organismo aparte. Corta, pero determina a quién se reporta."
+        ),
+        estado_texto="consolidado",
+        relaciones=[
+            Relacion(
+                tipo="modifica_a",
+                destino="ley_27693",
+                nota="Su contenido está absorbido en el concordado de la 27693.",
+                en_corpus=True,
+            ),
+        ],
+    ),
+    NormaMeta(
+        norma_id="dl_1106",
+        archivo="dl_1106.pdf",
+        tipo="ley",
+        numero="1106",
+        nombre=(
+            "Decreto Legislativo de lucha eficaz contra el lavado de activos y "
+            "otros delitos relacionados a la minería ilegal y crimen organizado"
+        ),
+        materia="laft",
+        entidad_reguladora=["Ministerio Público", "UIF-Perú"],
+        parser="ley",
+        por_que_relevante=(
+            "Tipifica el lavado de activos y sus penas. La Ley 27693 dice a "
+            "quién hay que reportar; esta dice qué conducta es delito, que es "
+            "lo que un programa de prevención tiene que evitar."
+        ),
+        estado_texto="consolidado",
+    ),
+    NormaMeta(
+        norma_id="dl_1372",
+        archivo="dl_1372.pdf",
+        tipo="ley",
+        numero="1372",
+        nombre=(
+            "Decreto Legislativo que regula la obligación de las personas "
+            "jurídicas y entes jurídicos de informar la identificación de los "
+            "beneficiarios finales"
+        ),
+        materia="laft",
+        entidad_reguladora=["SUNAT", "UIF-Perú"],
+        parser="ley",
+        por_que_relevante=(
+            "Obliga a identificar y declarar al beneficiario final. Es una "
+            "obligación operativa concreta, con plazos y sanciones, que recae "
+            "sobre cualquier persona jurídica: de las pocas del corpus que "
+            "generan trabajo periódico y no solo deberes genéricos."
         ),
         estado_texto="consolidado",
     ),

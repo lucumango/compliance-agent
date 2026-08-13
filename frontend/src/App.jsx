@@ -7,6 +7,7 @@ import {
   DollarSign,
   FileSearch,
   Filter,
+  Landmark,
   Loader2,
   Moon,
   ScanLine,
@@ -74,6 +75,17 @@ const EJEMPLOS = [
     icono: Building2,
     texto:
       "¿Qué medidas administrativas se aplican a una persona jurídica por cohecho?",
+  },
+  // LA/FT es hoy la materia con más normas del corpus (Ley 27693, Ley 29038,
+  // DL 1106 y DL 1372) y no tenía ni un ejemplo.
+  {
+    icono: Landmark,
+    texto: "¿Quién está obligado a declarar el beneficiario final y en qué plazo?",
+  },
+  {
+    icono: Search,
+    texto:
+      "¿Cuándo debe comunicarse una operación sospechosa a la UIF-Perú?",
   },
 ];
 

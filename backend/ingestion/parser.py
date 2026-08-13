@@ -371,6 +371,15 @@ def parse_articulos(raw_text: str, formato: str = "el_peruano") -> list[Articulo
             # Signatures and promulgation formulae carry no obligations; they
             # only exist here to bound the preceding unit's text.
             continue
+        # Dentro de un bloque de disposiciones, las unidades se rotulan con
+        # ordinales ("Primera", "Segunda"), nunca con números. Un "Artículo 18"
+        # aquí es el articulado de OTRA norma citado por una disposición
+        # modificatoria —el artículo 18 del Código Tributario dentro del
+        # DL 1372, por ejemplo—, no articulado propio. La monotonicidad no lo
+        # detecta porque 18 viene después de 10 y parece continuar la serie.
+        if marker.kind == "articulo" and cur_bloque is not None:
+            continue
+
         if marker.kind == "disposicion" and cur_bloque is None:
             # An ordinal word outside a disposiciones block is ordinary prose.
             continue

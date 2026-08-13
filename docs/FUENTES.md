@@ -4,26 +4,56 @@ Qué hay en el corpus, de dónde salió y por qué está. Este archivo y
 `backend/ingestion/registry.py` deben contar lo mismo: el registry es la
 verdad que ejecuta el código, este documento es la versión legible.
 
-**Última verificación: 2026-08-12** (`ingestion.validate`: 701 unidades,
-0 problemas · `rag.eval`: 8/8).
+**Última verificación: 2026-08-13** (`ingestion.validate`: 754 unidades,
+0 problemas · `rag.eval`: 11/11).
 
 ## Qué hay cargado hoy
 
 | Norma | Materia | Unidades | Documentos incluidos | Estado del texto |
 |---|---|---|---|---|
-| **Ley 29733** — Protección de Datos Personales | `proteccion_datos` | 194 | Ley (51) + DS aprobatorio (4) + Reglamento DS 003-2013-JUS (139) | Consolidado (Editora Perú). Texto nativo, sin OCR |
-| **Ley 29783** — Seguridad y Salud en el Trabajo | `sst_laboral` | 252 | Ley (113) + DS aprobatorio (2) + Reglamento DS 005-2012-TR (137) | Consolidado al 28/04/2022 según portada. Texto nativo |
-| **Ley 27693** — Crea la UIF-Perú | `laft` | 21 | Ley (21) | ⚠ Escaneo, 4/4 páginas por OCR. Requiere cotejo |
-| **Ley 30424** — Responsabilidad admin. de personas jurídicas | `anticorrupcion` | 30 | Ley (19 art. + 11 disposiciones) | ⚠⚠ Texto **original de 2016** + OCR 4/4 páginas |
-| **ISO 37001:2016** — Antisoborno | `antisoborno` | 204 | Requisitos, cláusulas 1–10 (97) + Anexo A (107) | Traducción oficial. Texto nativo. Copyright ISO |
+| **Ley 29783** — Seguridad y Salud en el Trabajo | `sst_laboral` | 252 | Ley (113) + DS aprobatorio (2) + Reglamento DS 005-2012-TR (137) | Consolidado al 28/04/2022 |
+| **ISO 37001:2016** — Antisoborno | `antisoborno` | 204 | Requisitos, cláusulas 1–10 (97) + Anexo A (107) | Traducción oficial. Copyright ISO |
+| **Ley 29733** — Protección de Datos Personales | `proteccion_datos` | 194 | Ley (51) + DS aprobatorio (4) + Reglamento DS 003-2013-JUS (139) | Consolidado (Editora Perú) |
+| **DL 1106** — Lucha contra el lavado de activos | `laft` | 33 | Decreto Legislativo | Consolidado |
+| **Ley 30424** — Responsabilidad admin. de personas jurídicas | `anticorrupcion` | 30 | Ley | ⚠⚠ **Original de 2016** · OCR |
+| **DL 1372** — Beneficiario final | `laft` | 19 | Decreto Legislativo | Consolidado |
+| **Ley 27693** — Crea la UIF-Perú | `laft` | 18 | Ley | Consolidado al 01/10/2025 (SPIJ) |
+| **Ley 29038** — Incorpora la UIF a la SBS | `laft` | 4 | Ley | Consolidado |
 
-**Total: 701 unidades citables.** Una "unidad" es un artículo, una disposición
-complementaria o una cláusula ISO — la granularidad a la que el asistente cita.
+**Total: 754 unidades citables** en 8 normas. Una "unidad" es un artículo, una
+disposición complementaria o una cláusula ISO — la granularidad a la que el
+asistente cita.
 
-Los cinco PDFs de origen viven en `backend/data/raw/normativas/` y están
-versionados, así que el corpus se puede reconstruir entero desde cero.
+Los PDFs de origen viven en `backend/data/raw/normativas/` y están versionados,
+así que el corpus se puede reconstruir entero desde cero.
 
-## Las dos fuentes que hay que mirar con cuidado
+## El formato SPIJ y por qué importa
+
+La Ley 27693 se carga desde una **descarga concordada del SPIJ**, no desde el
+diario oficial. Ese formato no trae el articulado una vez: trae el texto
+original y, detrás, cada versión que lo fue sustituyendo, todas con el mismo
+número y entrecomilladas.
+
+**El corpus se queda siempre con la última**, que es la vigente. Sin ese
+tratamiento el parser conservaba la primera, dejando el texto de 2002 en un
+documento cuya portada dice *"Actualizado al 1 de octubre de 2025"* — un texto
+ya sustituido presentado como vigente, y sin ninguna señal de serlo.
+
+Se activa con `formato="spij"` en el registro. Para el diario oficial se deja
+`"el_peruano"`, que es el valor por defecto.
+
+## Las modificatorias absorbidas no se cargan aparte
+
+Las leyes 28009, 28306 y 29038 modifican la 27693, y su articulado **ya vive
+dentro del texto concordado**. Cargarlas además como normas propias duplicaría
+los mismos artículos en dos redacciones distintas, y la recuperación devolvería
+la vieja tan a menudo como la vigente.
+
+Se registran como **relaciones en el grafo**, no como texto citable. La
+excepción es la Ley 29038, que sí está cargada porque tiene contenido propio
+—la adscripción de la UIF a la SBS— además de modificar la 27693.
+
+## La fuente que hay que mirar con cuidado
 
 Esto es lo que más fácil se olvida, y es justo lo que importa en compliance.
 
@@ -43,15 +73,18 @@ cite esta norma. Pero el aviso no corrige el contenido.
 
 → *Acción pendiente:* conseguir el texto consolidado (SPIJ) y reingerir.
 
-### Ley 27693 y Ley 30424 vienen de escaneo
+### La Ley 30424 viene de escaneo
 
-Ambas son escaneos de El Peruano sin capa de texto: las 4 páginas de cada una
-pasaron por OCR (Tesseract, español). El OCR va bien —`ingestion.validate` no
-detecta huecos ni duplicados en la numeración— pero puede haber errores de
-reconocimiento dentro del cuerpo del artículo.
+Es un escaneo de El Peruano sin capa de texto: sus 4 páginas pasaron por OCR
+(Tesseract, español). El OCR va bien —`ingestion.validate` no detecta huecos ni
+duplicados en la numeración— pero puede haber errores de reconocimiento dentro
+del cuerpo del artículo.
 
-`extraccion.requiere_cotejo: true` lo marca por norma, y el frontend lo muestra
-en el panel lateral con el icono de escaneo.
+`extraccion.requiere_cotejo: true` lo marca, y el frontend lo muestra en el
+panel lateral con el icono de escaneo.
+
+La Ley 27693 **ya no está en este caso**: se sustituyó su escaneo por el texto
+concordado del SPIJ, con capa de texto nativa.
 
 ## Cómo se registra una fuente
 
@@ -68,6 +101,7 @@ Cada entrada es un `NormaMeta`:
 | `materia` | Agrupa el corpus y alimenta el filtro de la interfaz | `proteccion_datos` |
 | `entidad_reguladora` | Quién fiscaliza | `["ANPD", "MINJUSDH"]` |
 | `parser` | `ley` (Título→Capítulo→Artículo) o `iso` (cláusulas decimales) | `ley` |
+| `formato` | `el_peruano` (por defecto) o `spij` — ver arriba | `spij` |
 | `fecha_publicacion` | **Solo si se lee del documento.** Si no, `None` | `2016-04-21` |
 | `url_fuente` | Igual: solo si es verificable | `None` |
 | `metadata_verificada` | `False` mientras no se coteje con SPIJ / El Peruano | `False` |
@@ -80,7 +114,7 @@ Cada entrada es un `NormaMeta`:
 constancia de en qué estado está. En un producto de compliance una fecha
 inventada es peor que una fecha ausente.
 
-Hoy las cinco normas tienen `metadata_verificada: false`. Cotejarlas contra
+Hoy las ocho normas tienen `metadata_verificada: false`. Cotejarlas contra
 SPIJ es trabajo pendiente y está pensado como tarea aparte de la ingesta.
 
 ### `notas` es el campo que llega al usuario
@@ -134,20 +168,26 @@ Añadir una nueva no requiere tocar el frontend: sale de `/api/normas`.
 
 | Materia | Normas |
 |---|---|
+| `laft` | Ley 27693, Ley 29038, DL 1106, DL 1372 |
 | `proteccion_datos` | Ley 29733 |
 | `sst_laboral` | Ley 29783 |
-| `laft` | Ley 27693 |
 | `anticorrupcion` | Ley 30424 |
 | `antisoborno` | ISO 37001 |
 
+LA/FT pasó de ser la materia más flaca del corpus a la que más normas agrupa.
+
 ## Cobertura que falta
 
-Del plan de producto original, sigue sin cargarse:
-
-- **Reglamento de la Ley 30424** (DS 002-2019-JUS) — especialmente relevante
-  porque define el modelo de prevención, que es la parte accionable de la ley.
-- **Resoluciones SBS** de gestión de riesgos LA/FT — el corpus de LA/FT hoy son
-  21 unidades, con diferencia el más flaco.
-- **Texto consolidado de la Ley 30424** (ver arriba).
+- **Texto consolidado de la Ley 30424** — el hueco más serio: ver arriba.
+- **Reglamento de la Ley 30424** (DS 002-2019-JUS) — define el modelo de
+  prevención, que es la parte accionable de la ley. El PDF está disponible pero
+  viene mezclado con normas ajenas en la misma página de El Peruano; hay que
+  recortarlo antes de ingerirlo.
+- **Reglamento de la Ley 27693** (DS 020-2017-JUS) — parsea con un hueco en el
+  decreto aprobatorio; pendiente de revisar.
+- **Ley 32209 y Ley 31740** — vienen en páginas de El Peruano con otras normas
+  delante. Mismo tratamiento que el anterior.
+- **Resoluciones SBS** de gestión de riesgos LA/FT — donde vive el detalle
+  operativo del régimen.
 
 Para añadir cualquiera de ellos: [INGESTA.md](INGESTA.md).

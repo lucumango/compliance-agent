@@ -1,0 +1,687 @@
+{
+  "norma_id": "dl_1106",
+  "tipo": "ley",
+  "numero": "1106",
+  "nombre": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado",
+  "materia": "laft",
+  "entidad_reguladora": [
+    "Ministerio Público",
+    "UIF-Perú"
+  ],
+  "fecha_publicacion": null,
+  "url_fuente": null,
+  "metadata_verificada": false,
+  "notas": "",
+  "por_que_relevante": "Tipifica el lavado de activos y sus penas. La Ley 27693 dice a quién hay que reportar; esta dice qué conducta es delito, que es lo que un programa de prevención tiene que evitar.",
+  "estado_texto": "consolidado",
+  "consolidado_a": null,
+  "relaciones": [],
+  "extraccion": {
+    "archivo": "dl_1106.pdf",
+    "paginas": 9,
+    "paginas_ocr": 0,
+    "requiere_cotejo": false
+  },
+  "unidades": [
+    {
+      "id": "dl_1106::ley::art_1",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "1",
+      "titulo": "- Actos de conversión y transferencia",
+      "texto": "- Actos de conversión y transferencia\nEl que convierte o transﬁ ere dinero, bienes, efectos \no ganancias cuyo origen ilícito conoce o debía presumir, \ncon la ﬁ nalidad de evitar la identiﬁ cación de su origen, su \nincautación o decomiso, será reprimido con pena privativa \nde la libertad no menor de ocho ni mayor de quince años y \ncon ciento veinte a trescientos cincuenta días multa.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 1",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 1\n\n- Actos de conversión y transferencia\nEl que convierte o transﬁ ere dinero, bienes, efectos \no ganancias cuyo origen ilícito conoce o debía presumir, \ncon la ﬁ nalidad de evitar la identiﬁ cación de su origen, su \nincautación o decomiso, será reprimido con pena privativa \nde la libertad no menor de ocho ni mayor de quince años y \ncon ciento veinte a trescientos cincuenta días multa."
+    },
+    {
+      "id": "dl_1106::ley::art_2",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "2",
+      "titulo": "- Actos de ocultamiento y tenencia",
+      "texto": "- Actos de ocultamiento y tenencia\nEl que adquiere, utiliza, guarda, administra, custodia, \nrecibe, oculta o mantiene en su poder dinero, bienes, \nefectos o ganancias, cuyo origen ilícito conoce o debía \npresumir, con la ﬁ nalidad de evitar la identiﬁ cación de su \norigen, su incautación o decomiso, será reprimido con \npena privativa de la libertad no menor de ocho ni mayor \nde quince años y con ciento veinte a trescientos cincuenta \ndías multa.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 2",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 2\n\n- Actos de ocultamiento y tenencia\nEl que adquiere, utiliza, guarda, administra, custodia, \nrecibe, oculta o mantiene en su poder dinero, bienes, \nefectos o ganancias, cuyo origen ilícito conoce o debía \npresumir, con la ﬁ nalidad de evitar la identiﬁ cación de su \norigen, su incautación o decomiso, será reprimido con \npena privativa de la libertad no menor de ocho ni mayor \nde quince años y con ciento veinte a trescientos cincuenta \ndías multa."
+    },
+    {
+      "id": "dl_1106::ley::art_3",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "3",
+      "titulo": "- Transporte, traslado, ingreso o salida",
+      "texto": "- Transporte, traslado, ingreso o salida \npor territorio nacional de dinero o títulos valores de \norigen ilícito\nEl que transporta o traslada dentro del territorio \nnacional dinero o títulos valores cuyo origen ilícito conoce \no debía presumir, con la ﬁ nalidad de evitar la identiﬁ cación \nde su origen, su incautación o decomiso; o hace ingresar \no salir del país tales bienes con igual ﬁ nalidad, será \nreprimido con pena privativa de libertad no menor de ocho \nni mayor de quince años y con ciento veinte a trescientos \ncincuenta días multa.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 3",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 3\n\n- Transporte, traslado, ingreso o salida \npor territorio nacional de dinero o títulos valores de \norigen ilícito\nEl que transporta o traslada dentro del territorio \nnacional dinero o títulos valores cuyo origen ilícito conoce \no debía presumir, con la ﬁ nalidad de evitar la identiﬁ cación \nde su origen, su incautación o decomiso; o hace ingresar \no salir del país tales bienes con igual ﬁ nalidad, será \nreprimido con pena privativa de libertad no menor de ocho \nni mayor de quince años y con ciento veinte a trescientos \ncincuenta días multa."
+    },
+    {
+      "id": "dl_1106::ley::art_4",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "4",
+      "titulo": "-",
+      "texto": "- \nCircunstancias \nagravantes \ny \natenuantes\nLa pena será privativa de la libertad no menor de diez \nni mayor de veinte años y trescientos sesenta y cinco a \nsetecientos treinta días multa, cuando:\n1. El agente utilice o se sirva de su condición de \nfuncionario público o de agente del sector inmobiliario, \nﬁ nanciero, bancario o bursátil.\n2. El agente cometa el delito en calidad de integrante \nde una organización criminal.\n3. El valor del dinero, bienes, efectos o ganancias \ninvolucrados sea superior al equivalente a quinientas \n(500) Unidades Impositivas Tributarias.\nLa pena será privativa de la libertad no menor de \nveinticinco años cuando el dinero, bienes, efectos o \nganancias provienen de la minería ilegal, tráﬁ co ilícito \nde drogas, terrorismo, secuestro, extorsión o trata de \npersonas.\nLa pena será privativa de la libertad no menor de \ncuatro ni mayor de seis años y de ochenta a ciento diez \ndías multa, cuando el valor del dinero, bienes, efectos o \nganancias involucrados no sea superior al equivalente \na cinco (5) Unidades Impositivas Tributarias. La misma \npena se aplicará a quien proporcione a las autoridades \ninformación eﬁ caz para evitar la consumación del delito, \nidentiﬁ car y capturar a sus autores o partícipes, así \ncomo detectar o incautar los activos objeto de los actos \ndescritos en los artículos 1º, 2º y 3º del presente Decreto \nLegislativo.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 4",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 4\n\n- \nCircunstancias \nagravantes \ny \natenuantes\nLa pena será privativa de la libertad no menor de diez \nni mayor de veinte años y trescientos sesenta y cinco a \nsetecientos treinta días multa, cuando:\n1. El agente utilice o se sirva de su condición de \nfuncionario público o de agente del sector inmobiliario, \nﬁ nanciero, bancario o bursátil.\n2. El agente cometa el delito en calidad de integrante \nde una organización criminal.\n3. El valor del dinero, bienes, efectos o ganancias \ninvolucrados sea superior al equivalente a quinientas \n(500) Unidades Impositivas Tributarias.\nLa pena será privativa de la libertad no menor de \nveinticinco años cuando el dinero, bienes, efectos o \nganancias provienen de la minería ilegal, tráﬁ co ilícito \nde drogas, terrorismo, secuestro, extorsión o trata de \npersonas.\nLa pena será privativa de la libertad no menor de \ncuatro ni mayor de seis años y de ochenta a ciento diez \ndías multa, cuando el valor del dinero, bienes, efectos o \nganancias involucrados no sea superior al equivalente \na cinco (5) Unidades Impositivas Tributarias. La misma \npena se aplicará a quien proporcione a las autoridades \ninformación eﬁ caz para evitar la consumación del delito, \nidentiﬁ car y capturar a sus autores o partícipes, así \ncomo detectar o incautar los activos objeto de los actos \ndescritos en los artículos 1º, 2º y 3º del presente Decreto \nLegislativo."
+    },
+    {
+      "id": "dl_1106::ley::art_5",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "5",
+      "titulo": "-",
+      "texto": "- \nOmisión \nde \ncomunicación \nde \noperaciones o transacciones sospechosas\nEl que incumpliendo sus obligaciones funcionales o \nprofesionales, omite comunicar a la autoridad competente, \nlas transacciones u operaciones sospechosas que hubiere \ndetectado, según las leyes y normas reglamentarias, \nserá reprimido con pena privativa de la libertad no menor \nde cuatro ni mayor de ocho años, con ciento veinte a \ndoscientos cincuenta días multa e inhabilitación no menor \nde cuatro ni mayor de seis años, de conformidad con los \nincisos 1), 2) y 4) del artículo 36º del Código Penal.\nLa omisión por culpa de la comunicación de \ntransacciones u operaciones sospechosas será reprimida \ncon pena de multa de ochenta a ciento cincuenta días \nmulta e inhabilitación de uno a tres años, de conformidad \ncon los incisos 1), 2) y 4) del artículo 36º del Código \nPenal.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 5",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 5\n\n- \nOmisión \nde \ncomunicación \nde \noperaciones o transacciones sospechosas\nEl que incumpliendo sus obligaciones funcionales o \nprofesionales, omite comunicar a la autoridad competente, \nlas transacciones u operaciones sospechosas que hubiere \ndetectado, según las leyes y normas reglamentarias, \nserá reprimido con pena privativa de la libertad no menor \nde cuatro ni mayor de ocho años, con ciento veinte a \ndoscientos cincuenta días multa e inhabilitación no menor \nde cuatro ni mayor de seis años, de conformidad con los \nincisos 1), 2) y 4) del artículo 36º del Código Penal.\nLa omisión por culpa de la comunicación de \ntransacciones u operaciones sospechosas será reprimida \ncon pena de multa de ochenta a ciento cincuenta días \nmulta e inhabilitación de uno a tres años, de conformidad \ncon los incisos 1), 2) y 4) del artículo 36º del Código \nPenal."
+    },
+    {
+      "id": "dl_1106::ley::art_6",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "6",
+      "titulo": "- Rehusamiento, retardo y falsedad en",
+      "texto": "- Rehusamiento, retardo y falsedad en \nel suministro de información\nEl que rehúsa o retarda suministrar a la autoridad \ncompetente, \nla \ninformación \neconómica, \nﬁ nanciera, \ncontable, mercantil o empresarial que le sea requerida, \nen el marco de una investigación o juzgamiento por \ndelito de lavado de activos, o deliberadamente presta \nla información de modo inexacto o brinda información \nfalsa, será reprimido con pena privativa de la libertad no \nmenor de dos ni mayor de cuatro años, con cincuenta a \nochenta días multa e inhabilitación no mayor de tres años \nde conformidad con los incisos 1), 2) y 4) del artículo 36º \ndel Código Penal.\nSi la conducta descrita se realiza en el marco de una \ninvestigación o juzgamiento por delito de lavado de activos \nvinculado a la minería ilegal o al crimen organizado, o si el \nvalor del dinero, bienes, efectos o ganancias involucrados \nes superior al equivalente a quinientas (500) Unidades \nImpositivas Tributarias, el agente será reprimido con \npena privativa de libertad no menor de tres ni mayor de \ncinco años, con ochenta a ciento cincuenta días multa e \ninhabilitación no mayor de cuatro años, de conformidad \ncon los incisos 1), 2) y 4) del artículo 36º del Código \nPenal.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 6",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 6\n\n- Rehusamiento, retardo y falsedad en \nel suministro de información\nEl que rehúsa o retarda suministrar a la autoridad \ncompetente, \nla \ninformación \neconómica, \nﬁ nanciera, \ncontable, mercantil o empresarial que le sea requerida, \nen el marco de una investigación o juzgamiento por \ndelito de lavado de activos, o deliberadamente presta \nla información de modo inexacto o brinda información \nfalsa, será reprimido con pena privativa de la libertad no \nmenor de dos ni mayor de cuatro años, con cincuenta a \nochenta días multa e inhabilitación no mayor de tres años \nde conformidad con los incisos 1), 2) y 4) del artículo 36º \ndel Código Penal.\nSi la conducta descrita se realiza en el marco de una \ninvestigación o juzgamiento por delito de lavado de activos \nvinculado a la minería ilegal o al crimen organizado, o si el \nvalor del dinero, bienes, efectos o ganancias involucrados \nes superior al equivalente a quinientas (500) Unidades \nImpositivas Tributarias, el agente será reprimido con \npena privativa de libertad no menor de tres ni mayor de \ncinco años, con ochenta a ciento cincuenta días multa e \ninhabilitación no mayor de cuatro años, de conformidad \ncon los incisos 1), 2) y 4) del artículo 36º del Código \nPenal."
+    },
+    {
+      "id": "dl_1106::ley::art_7",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "7",
+      "titulo": "- Reglas de investigación",
+      "texto": "- Reglas de investigación\nPara la investigación de los delitos previstos en el \npresente Decreto Legislativo, el Fiscal podrá solicitar al \nJuez el levantamiento del secreto bancario, el secreto \nde las comunicaciones, la reserva tributaria y la reserva \nbursátil. La información obtenida en estos casos sólo será \nutilizada en relación con la investigación de los hechos \nque la motivaron.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 7",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 7\n\n- Reglas de investigación\nPara la investigación de los delitos previstos en el \npresente Decreto Legislativo, el Fiscal podrá solicitar al \nJuez el levantamiento del secreto bancario, el secreto \nde las comunicaciones, la reserva tributaria y la reserva \nbursátil. La información obtenida en estos casos sólo será \nutilizada en relación con la investigación de los hechos \nque la motivaron."
+    },
+    {
+      "id": "dl_1106::ley::art_8",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "8",
+      "titulo": "- Consecuencias accesorias aplicables",
+      "texto": "- Consecuencias accesorias aplicables \na personas jurídicas\nSi los delitos contemplados en los artículos 1º, 2º y \n3º del presente Decreto Legislativo fueren cometidos en \nejercicio de la actividad de cualquier persona jurídica o \nutilizando su organización o servicios, para favorecerlos \no encubrirlos, el juez deberá aplicar, según la gravedad y \nnaturaleza de los hechos o la relevancia de la intervención \nen el hecho punible, las siguientes consecuencias \naccesorias de manera alternativa o conjunta:\n1. Multa con un valor no menor de cincuenta ni mayor \nde trescientas Unidades Impositivas Tributarias.\n2. Clausura deﬁ nitiva de locales o establecimientos.\n3. Suspensión de actividades por un plazo no mayor \nde tres años.\n4. Prohibición de realizar en el futuro actividades, de \nla clase de aquellas en cuyo ejercicio se haya cometido, \nfavorecido o encubierto el delito.\n5. Cancelación de licencias, derechos y otras \nautorizaciones administrativas o municipales.\n6. Disolución de la persona jurídica.\n\nEl Peruano\nLima, jueves 19 de abril de 2012\n464383\nSimultáneamente a la medida impuesta, el juez \nordenará a la autoridad competente que disponga la \nintervención de la persona jurídica para salvaguardar los \nderechos de los trabajadores y de los acreedores, hasta \npor un periodo de dos años.\nEl cambio de la razón social o denominación de la \npersona jurídica o su reorganización societaria, no impide \nla aplicación de estas medidas.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 8",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 8\n\n- Consecuencias accesorias aplicables \na personas jurídicas\nSi los delitos contemplados en los artículos 1º, 2º y \n3º del presente Decreto Legislativo fueren cometidos en \nejercicio de la actividad de cualquier persona jurídica o \nutilizando su organización o servicios, para favorecerlos \no encubrirlos, el juez deberá aplicar, según la gravedad y \nnaturaleza de los hechos o la relevancia de la intervención \nen el hecho punible, las siguientes consecuencias \naccesorias de manera alternativa o conjunta:\n1. Multa con un valor no menor de cincuenta ni mayor \nde trescientas Unidades Impositivas Tributarias.\n2. Clausura deﬁ nitiva de locales o establecimientos.\n3. Suspensión de actividades por un plazo no mayor \nde tres años.\n4. Prohibición de realizar en el futuro actividades, de \nla clase de aquellas en cuyo ejercicio se haya cometido, \nfavorecido o encubierto el delito.\n5. Cancelación de licencias, derechos y otras \nautorizaciones administrativas o municipales.\n6. Disolución de la persona jurídica.\n\nEl Peruano\nLima, jueves 19 de abril de 2012\n464383\nSimultáneamente a la medida impuesta, el juez \nordenará a la autoridad competente que disponga la \nintervención de la persona jurídica para salvaguardar los \nderechos de los trabajadores y de los acreedores, hasta \npor un periodo de dos años.\nEl cambio de la razón social o denominación de la \npersona jurídica o su reorganización societaria, no impide \nla aplicación de estas medidas."
+    },
+    {
+      "id": "dl_1106::ley::art_9",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "9",
+      "titulo": "- Decomiso",
+      "texto": "- Decomiso\nEn todos los casos el Juez resolverá la incautación \no el decomiso del dinero, bienes, efectos o ganancias \ninvolucrados, conforme a lo previsto en el artículo 102º \ndel Código Penal.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 9",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 9\n\n- Decomiso\nEn todos los casos el Juez resolverá la incautación \no el decomiso del dinero, bienes, efectos o ganancias \ninvolucrados, conforme a lo previsto en el artículo 102º \ndel Código Penal."
+    },
+    {
+      "id": "dl_1106::ley::art_10",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "10",
+      "titulo": "- Autonomía del delito y prueba",
+      "texto": "- Autonomía del delito y prueba \nindiciaria\nEl lavado de activos es un delito autónomo por lo que \npara su investigación y procesamiento no es necesario \nque las actividades criminales que produjeron el dinero, \nlos bienes, efectos o ganancias, hayan sido descubiertas, \nse encuentren sometidas a investigación, proceso judicial \no hayan sido previamente objeto de prueba o de sentencia \ncondenatoria.\nEl conocimiento del origen ilícito que tiene o que \ndebía presumir el agente de los delitos que contempla el \npresente Decreto Legislativo, corresponde a actividades \ncriminales como los delitos de minería ilegal, el tráﬁ co \nilícito de drogas, el terrorismo, los delitos contra la \nadministración pública, el secuestro, el proxenetismo, la \ntrata de personas, el tráﬁ co ilícito de armas, tráﬁ co ilícito \nde migrantes, los delitos tributarios, la extorsión, el robo, \nlos delitos aduaneros o cualquier otro con capacidad de \ngenerar ganancias ilegales, con excepción de los actos \ncontemplados en el artículo 194º del Código Penal. El \norigen ilícito que conoce o debía presumir el agente del \ndelito podrá inferirse de los indicios concurrentes en cada \ncaso.\nTambién podrá ser considerado autor del delito y por \ntanto sujeto de investigación y juzgamiento por lavado \nde activos, quien ejecutó o participó en las actividades \ncriminales generadoras del dinero, bienes, efectos o \nganancias.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 10",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 10\n\n- Autonomía del delito y prueba \nindiciaria\nEl lavado de activos es un delito autónomo por lo que \npara su investigación y procesamiento no es necesario \nque las actividades criminales que produjeron el dinero, \nlos bienes, efectos o ganancias, hayan sido descubiertas, \nse encuentren sometidas a investigación, proceso judicial \no hayan sido previamente objeto de prueba o de sentencia \ncondenatoria.\nEl conocimiento del origen ilícito que tiene o que \ndebía presumir el agente de los delitos que contempla el \npresente Decreto Legislativo, corresponde a actividades \ncriminales como los delitos de minería ilegal, el tráﬁ co \nilícito de drogas, el terrorismo, los delitos contra la \nadministración pública, el secuestro, el proxenetismo, la \ntrata de personas, el tráﬁ co ilícito de armas, tráﬁ co ilícito \nde migrantes, los delitos tributarios, la extorsión, el robo, \nlos delitos aduaneros o cualquier otro con capacidad de \ngenerar ganancias ilegales, con excepción de los actos \ncontemplados en el artículo 194º del Código Penal. El \norigen ilícito que conoce o debía presumir el agente del \ndelito podrá inferirse de los indicios concurrentes en cada \ncaso.\nTambién podrá ser considerado autor del delito y por \ntanto sujeto de investigación y juzgamiento por lavado \nde activos, quien ejecutó o participó en las actividades \ncriminales generadoras del dinero, bienes, efectos o \nganancias."
+    },
+    {
+      "id": "dl_1106::ley::art_11",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "11",
+      "titulo": "-",
+      "texto": "- \nProhibición \nde \nbeneﬁ cios \npenitenciarios\nQuienes incurran en la agravante contemplada \nen el segundo párrafo del artículo 4º del presente \nDecreto Legislativo no podrán acogerse a los beneﬁ cios \npenitenciarios de redención de la pena por el trabajo y la \neducación, semilibertad y liberación condicional.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 11",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 11\n\n- \nProhibición \nde \nbeneﬁ cios \npenitenciarios\nQuienes incurran en la agravante contemplada \nen el segundo párrafo del artículo 4º del presente \nDecreto Legislativo no podrán acogerse a los beneﬁ cios \npenitenciarios de redención de la pena por el trabajo y la \neducación, semilibertad y liberación condicional."
+    },
+    {
+      "id": "dl_1106::ley::art_12",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "12",
+      "titulo": "- Facultades especiales para la lucha",
+      "texto": "- Facultades especiales para la lucha \ncontra el lavado de activos vinculado especialmente a \nla minería ilegal y otras formas de crimen organizado\n1. En el marco de la lucha eﬁ caz contra el lavado de \nactivos, vinculado especialmente a la minería ilegal u \notras formas de crimen organizado, el Juez, a solicitud del \nFiscal o del Procurador Público, podrá ordenar:\na) La interceptación, incautación y ulterior apertura \nde todo tipo de correspondencia que reciba o remita \nel imputado, aun bajo nombre supuesto, o de aquella \ncorrespondencia \nque, \nen \nrazón \nde \nespeciales \ncircunstancias, se presumiese que emana de él o de \nla que él pudiere ser el destinatario, cuando existen \nmotivos razonablemente fundados para inferir que existe \ninformación útil para la investigación. Para esta diligencia \ntambién podrá solicitar a las empresas de mensajería \nespecializada, públicas o privadas, que suministren la \nrelación de envíos hechos por solicitud del imputado o \ndirigidos a él. Si la documentación se encuentra en clave o \nen otro idioma, inmediatamente ordenará el desciframiento \npor peritos en criptografía o su traducción.\nb) La interceptación y grabación de comunicaciones \ntelefónicas, radiales, electrónicas u otras formas de \ncomunicación, cuando existan suﬁ cientes elementos de \nconvicción de la presunta comisión del delito. Para tales \nefectos, las empresas telefónicas o de telecomunicaciones \nestán obligadas a prestar las facilidades necesarias para \nla realización de la diligencia y a guardar secreto acerca \nde la misma, salvo que sean citados como testigos. La \nmedida también puede dirigirse contra terceros que reciben \no realizan comunicaciones por cuenta del investigado o \ncuando éste utiliza la comunicación de terceros.\n2. La orden judicial se emitirá cuando estas medidas \nsean indispensables y absolutamente necesarias para el \ndebido esclarecimiento de los hechos investigados.\n3. \nEstas \nmedidas \nse \nrealizarán \nde \nforma \nestrictamente \nreservada \ny \nsin \nconocimiento \ndel \nafectado. En el caso previsto en el inciso a) del numeral \n1 del presente artículo, la medida se prolongará por el \ntiempo estrictamente necesario, el cual no será mayor \nal período de la investigación; en el caso previsto en \nel inciso b) del citado numeral, la medida no podrá \nextenderse por un plazo mayor a los treinta (30) días \nnaturales y excepcionalmente podrá prorrogarse por \nplazos sucesivos previa solicitud del Fiscal y posterior \ndecisión judicial debidamente motivada.\n4. El Juez resolverá, mediante trámite reservado y \nde modo inmediato, teniendo a la vista los recaudos que \njustiﬁ quen el requerimiento ﬁ scal. La denegación de la \nsolicitud podrá ser apelada por el Fiscal e igualmente se \ntramitará de forma reservada por el Superior Tribunal, sin \ntrámite alguno e inmediatamente.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 12",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 12\n\n- Facultades especiales para la lucha \ncontra el lavado de activos vinculado especialmente a \nla minería ilegal y otras formas de crimen organizado\n1. En el marco de la lucha eﬁ caz contra el lavado de \nactivos, vinculado especialmente a la minería ilegal u \notras formas de crimen organizado, el Juez, a solicitud del \nFiscal o del Procurador Público, podrá ordenar:\na) La interceptación, incautación y ulterior apertura \nde todo tipo de correspondencia que reciba o remita \nel imputado, aun bajo nombre supuesto, o de aquella \ncorrespondencia \nque, \nen \nrazón \nde \nespeciales \ncircunstancias, se presumiese que emana de él o de \nla que él pudiere ser el destinatario, cuando existen \nmotivos razonablemente fundados para inferir que existe \ninformación útil para la investigación. Para esta diligencia \ntambién podrá solicitar a las empresas de mensajería \nespecializada, públicas o privadas, que suministren la \nrelación de envíos hechos por solicitud del imputado o \ndirigidos a él. Si la documentación se encuentra en clave o \nen otro idioma, inmediatamente ordenará el desciframiento \npor peritos en criptografía o su traducción.\nb) La interceptación y grabación de comunicaciones \ntelefónicas, radiales, electrónicas u otras formas de \ncomunicación, cuando existan suﬁ cientes elementos de \nconvicción de la presunta comisión del delito. Para tales \nefectos, las empresas telefónicas o de telecomunicaciones \nestán obligadas a prestar las facilidades necesarias para \nla realización de la diligencia y a guardar secreto acerca \nde la misma, salvo que sean citados como testigos. La \nmedida también puede dirigirse contra terceros que reciben \no realizan comunicaciones por cuenta del investigado o \ncuando éste utiliza la comunicación de terceros.\n2. La orden judicial se emitirá cuando estas medidas \nsean indispensables y absolutamente necesarias para el \ndebido esclarecimiento de los hechos investigados.\n3. \nEstas \nmedidas \nse \nrealizarán \nde \nforma \nestrictamente \nreservada \ny \nsin \nconocimiento \ndel \nafectado. En el caso previsto en el inciso a) del numeral \n1 del presente artículo, la medida se prolongará por el \ntiempo estrictamente necesario, el cual no será mayor \nal período de la investigación; en el caso previsto en \nel inciso b) del citado numeral, la medida no podrá \nextenderse por un plazo mayor a los treinta (30) días \nnaturales y excepcionalmente podrá prorrogarse por \nplazos sucesivos previa solicitud del Fiscal y posterior \ndecisión judicial debidamente motivada.\n4. El Juez resolverá, mediante trámite reservado y \nde modo inmediato, teniendo a la vista los recaudos que \njustiﬁ quen el requerimiento ﬁ scal. La denegación de la \nsolicitud podrá ser apelada por el Fiscal e igualmente se \ntramitará de forma reservada por el Superior Tribunal, sin \ntrámite alguno e inmediatamente."
+    },
+    {
+      "id": "dl_1106::ley::art_13",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "13",
+      "titulo": "- Audiencia de control judicial",
+      "texto": "- Audiencia de control judicial\n1. Una vez ejecutadas las diligencias previstas en \nel anterior artículo y realizadas las investigaciones \ninmediatas en atención a los resultados de las mismas, \nsiempre que los ﬁ nes de la investigación lo permitan \ny no se ponga en peligro la vida o la integridad física \nde terceras personas, se pondrá en conocimiento \ndel afectado todo lo actuado, quien podrá solicitar el \ncontrol judicial en el plazo de tres (3) días de notiﬁ cado, \ncon la ﬁ nalidad de revisar la legalidad de las medidas \nadoptadas.\n2. La audiencia judicial se realizará dentro de \nlas veinticuatro (24) horas siguientes y contará con \nla presencia del Fiscal, del Procurador Público y del \nimputado junto con su abogado defensor, así como de \nlas demás partes procesales. Asimismo, podrán asistir los \nefectivos policiales y demás personas que intervinieron en \nla diligencia.\n3. El Juez evaluará si las diligencias y actuaciones se \nrealizaron dentro del marco de la orden judicial emitida \ny veriﬁ cará los resultados, haciendo valer los derechos \ndel afectado. Para tal ﬁ n, podrá, si lo estima conveniente, \ninterrogar directamente a los comparecientes y, después \nde escuchar los argumentos del Fiscal, decidirá de plano \nsobre la validez de la medida.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 13",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 13\n\n- Audiencia de control judicial\n1. Una vez ejecutadas las diligencias previstas en \nel anterior artículo y realizadas las investigaciones \ninmediatas en atención a los resultados de las mismas, \nsiempre que los ﬁ nes de la investigación lo permitan \ny no se ponga en peligro la vida o la integridad física \nde terceras personas, se pondrá en conocimiento \ndel afectado todo lo actuado, quien podrá solicitar el \ncontrol judicial en el plazo de tres (3) días de notiﬁ cado, \ncon la ﬁ nalidad de revisar la legalidad de las medidas \nadoptadas.\n2. La audiencia judicial se realizará dentro de \nlas veinticuatro (24) horas siguientes y contará con \nla presencia del Fiscal, del Procurador Público y del \nimputado junto con su abogado defensor, así como de \nlas demás partes procesales. Asimismo, podrán asistir los \nefectivos policiales y demás personas que intervinieron en \nla diligencia.\n3. El Juez evaluará si las diligencias y actuaciones se \nrealizaron dentro del marco de la orden judicial emitida \ny veriﬁ cará los resultados, haciendo valer los derechos \ndel afectado. Para tal ﬁ n, podrá, si lo estima conveniente, \ninterrogar directamente a los comparecientes y, después \nde escuchar los argumentos del Fiscal, decidirá de plano \nsobre la validez de la medida."
+    },
+    {
+      "id": "dl_1106::ley::art_14",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "14",
+      "titulo": "Entrega vigilada",
+      "texto": "Entrega vigilada\n1. Cuando sea necesario para los ﬁ nes de una \ninvestigación por el delito de lavado de activos, vinculado \nespecialmente a la minería ilegal u otras formas de \ncrimen organizado, y siempre que existan motivos \nrazonablemente fundados para estimar que se produce \nel transporte de armas, explosivos, municiones, moneda \nfalsiﬁ cada, insumos químicos o cualquier otro bien de \ncarácter delictivo, o cuando haya información de agente \nencubierto acerca de la existencia de una actividad criminal \ncontinua en ese sentido, el Fiscal, de oﬁ cio o a instancia \ndel Procurador Público, podrá disponer la realización de \nentregas vigiladas de objetos cuya posesión, transporte, \nenajenación, compra, alquiler o simple tenencia se \nencuentre prohibida.\n2. A estos efectos se entiende como entrega vigilada \nla técnica en virtud de la cual se permite que mercancías \nilícitas o sospechosas circulen dentro del territorio nacional \no entren o salgan de él, sin interferencia de las autoridades \ny bajo la vigilancia de agentes especializados.\n3. Cuando participe un agente encubierto, éste sólo \nestá facultado para entregar por sí o por interpuesta \npersona el objeto de la transacción ilegal, o facilitar su \nentrega por iniciativa del investigado.\n\nEl Peruano\nLima, jueves 19 de abril de 2012\n464384\n4. Para asegurar el éxito de esta diligencia, el Fiscal \npodrá disponer que la autoridad policial realice acciones \nde inteligencia y/o vigilancia especial.\n5. Durante el procedimiento de entrega vigilada se \nutilizarán, si fuere posible, los medios técnicos idóneos \nque permitan establecer la intervención del investigado.\n6. Rige en lo pertinente la audiencia de control judicial \nprevista en el artículo 13º.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 14",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 14\n\nEntrega vigilada\n1. Cuando sea necesario para los ﬁ nes de una \ninvestigación por el delito de lavado de activos, vinculado \nespecialmente a la minería ilegal u otras formas de \ncrimen organizado, y siempre que existan motivos \nrazonablemente fundados para estimar que se produce \nel transporte de armas, explosivos, municiones, moneda \nfalsiﬁ cada, insumos químicos o cualquier otro bien de \ncarácter delictivo, o cuando haya información de agente \nencubierto acerca de la existencia de una actividad criminal \ncontinua en ese sentido, el Fiscal, de oﬁ cio o a instancia \ndel Procurador Público, podrá disponer la realización de \nentregas vigiladas de objetos cuya posesión, transporte, \nenajenación, compra, alquiler o simple tenencia se \nencuentre prohibida.\n2. A estos efectos se entiende como entrega vigilada \nla técnica en virtud de la cual se permite que mercancías \nilícitas o sospechosas circulen dentro del territorio nacional \no entren o salgan de él, sin interferencia de las autoridades \ny bajo la vigilancia de agentes especializados.\n3. Cuando participe un agente encubierto, éste sólo \nestá facultado para entregar por sí o por interpuesta \npersona el objeto de la transacción ilegal, o facilitar su \nentrega por iniciativa del investigado.\n\nEl Peruano\nLima, jueves 19 de abril de 2012\n464384\n4. Para asegurar el éxito de esta diligencia, el Fiscal \npodrá disponer que la autoridad policial realice acciones \nde inteligencia y/o vigilancia especial.\n5. Durante el procedimiento de entrega vigilada se \nutilizarán, si fuere posible, los medios técnicos idóneos \nque permitan establecer la intervención del investigado.\n6. Rige en lo pertinente la audiencia de control judicial \nprevista en el artículo 13º."
+    },
+    {
+      "id": "dl_1106::ley::art_15",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "15",
+      "titulo": "- Búsqueda selectiva en bases de",
+      "texto": "- Búsqueda selectiva en bases de \ndatos\nPara la lucha contra el lavado de activos vinculado \nespecialmente a la minería ilegal u otras formas de crimen \norganizado, la autoridad policial, por iniciativa propia o a \ninstancia del Fiscal, podrá realizar las comparaciones \nde datos registradas en bases mecánicas, magnéticas \nu otras similares, siempre y cuando se trate del simple \ncotejo de informaciones de acceso público.\nCuando \nse \nrequiera \nefectuar \nuna \nbúsqueda \nselectiva en las bases de datos, que implique el acceso \na información conﬁ dencial referida al investigado o, \ninclusive, la obtención de datos derivados del análisis \ncruzado de las mismas, deberá mediar autorización del \nJuez y se aplicará, en lo pertinente, lo dispuesto en los \nartículos 12º y 13º.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 15",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 15\n\n- Búsqueda selectiva en bases de \ndatos\nPara la lucha contra el lavado de activos vinculado \nespecialmente a la minería ilegal u otras formas de crimen \norganizado, la autoridad policial, por iniciativa propia o a \ninstancia del Fiscal, podrá realizar las comparaciones \nde datos registradas en bases mecánicas, magnéticas \nu otras similares, siempre y cuando se trate del simple \ncotejo de informaciones de acceso público.\nCuando \nse \nrequiera \nefectuar \nuna \nbúsqueda \nselectiva en las bases de datos, que implique el acceso \na información conﬁ dencial referida al investigado o, \ninclusive, la obtención de datos derivados del análisis \ncruzado de las mismas, deberá mediar autorización del \nJuez y se aplicará, en lo pertinente, lo dispuesto en los \nartículos 12º y 13º."
+    },
+    {
+      "id": "dl_1106::ley::art_16",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "16",
+      "titulo": "- Actuación excepcional de las Fuerzas",
+      "texto": "- Actuación excepcional de las Fuerzas \nArmadas en auxilio del Ministerio Público\nEn los lugares de difícil acceso que implique además \nla ausencia de efectivos suﬁ cientes de la Policía Nacional \ndel Perú o sin logística o infraestructura necesaria, el \nFiscal en su calidad de titular de la acción penal, puede \nexcepcionalmente solicitar la intervención de las Fuerzas \nArmadas para las acciones de interdicción de la minería \nilegal, lavado de activos u otras formas de crimen \norganizado.\nLas Fuerzas Armadas en el marco de lo dispuesto por \nla Constitución Política del Perú, el Decreto Legislativo \nNº 1100 y el presente Decreto Legislativo, colaborará con \nel Ministerio Público para asegurar el cumplimiento de la \npresente norma.\nLa intervención de las Fuerzas Armadas no implica \nen modo alguno la restricción, suspensión, ni afectación \nde los derechos fundamentales consagrados en la \nConstitución Política del Perú.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 16",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 16\n\n- Actuación excepcional de las Fuerzas \nArmadas en auxilio del Ministerio Público\nEn los lugares de difícil acceso que implique además \nla ausencia de efectivos suﬁ cientes de la Policía Nacional \ndel Perú o sin logística o infraestructura necesaria, el \nFiscal en su calidad de titular de la acción penal, puede \nexcepcionalmente solicitar la intervención de las Fuerzas \nArmadas para las acciones de interdicción de la minería \nilegal, lavado de activos u otras formas de crimen \norganizado.\nLas Fuerzas Armadas en el marco de lo dispuesto por \nla Constitución Política del Perú, el Decreto Legislativo \nNº 1100 y el presente Decreto Legislativo, colaborará con \nel Ministerio Público para asegurar el cumplimiento de la \npresente norma.\nLa intervención de las Fuerzas Armadas no implica \nen modo alguno la restricción, suspensión, ni afectación \nde los derechos fundamentales consagrados en la \nConstitución Política del Perú."
+    },
+    {
+      "id": "dl_1106::ley::art_17",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "17",
+      "titulo": "- Colaboración eﬁ caz",
+      "texto": "- Colaboración eﬁ caz\nEn el marco de la lucha contra el delito de lavado de \nactivos, el Ministerio Público podrá celebrar acuerdos de \nbeneﬁ cios y colaboración eﬁ caz con quien se encuentre o \nno sometido a una investigación o proceso penal, o con \nquien haya sido sentenciado, a ﬁ n de que preste a las \nautoridades su colaboración y brinde información eﬁ caz \npara la acción de la justicia penal.\nPara tales efectos, serán de aplicación los presupuestos, \nalcances y procedimiento establecidos en la Ley Nº 27378, \nLey que establece beneﬁ cios por colaboración eﬁ caz en el \námbito de la criminalidad organizada.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1106, Artículo 17",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Artículo 17\n\n- Colaboración eﬁ caz\nEn el marco de la lucha contra el delito de lavado de \nactivos, el Ministerio Público podrá celebrar acuerdos de \nbeneﬁ cios y colaboración eﬁ caz con quien se encuentre o \nno sometido a una investigación o proceso penal, o con \nquien haya sido sentenciado, a ﬁ n de que preste a las \nautoridades su colaboración y brinde información eﬁ caz \npara la acción de la justicia penal.\nPara tales efectos, serán de aplicación los presupuestos, \nalcances y procedimiento establecidos en la Ley Nº 27378, \nLey que establece beneﬁ cios por colaboración eﬁ caz en el \námbito de la criminalidad organizada."
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_finales_primera",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "PRIMERA",
+      "titulo": "Mejora del control de operaciones",
+      "texto": "Mejora del control de operaciones \nsospechosas\nLas instituciones sometidas al control y supervisión de \nla Superintendencia de Banca, Seguros y Administradoras \nPrivadas de Fondos de Pensiones, estarán obligadas \na adoptar medidas de control apropiadas y suﬁ cientes, \norientadas a evitar que en la realización de sus \noperaciones se produzca el ocultamiento, manejo, \ninversión o aprovechamiento en cualquier forma de \ndinero u otros bienes provenientes de la minería ilegal, \nasí como de cualquier otra actividad de crimen organizado \no destinados a su ﬁ nanciación, o para dar apariencia de \nlegalidad a las actividades delictivas o a las transacciones \ny fondos vinculados con las mismas.\nLos sujetos obligados establecidos a través de la \nLey Nº 27693 deberán reportar bajo responsabilidad de \nforma inmediata y suﬁ ciente a la Unidad de Inteligencia \nFinanciera cualquier información relevante sobre manejo \nde activos o pasivos u otros recursos, cuya cuantía o \ncaracterísticas no guarden relación con la actividad \neconómica de sus clientes, o sobre transacciones de sus \nusuarios que por su número, por las cantidades transadas \no por las características particulares de las mismas, \npuedan conducir razonablemente a sospechar que se está \nutilizando a la entidad para transferir, manejar, aprovechar \no invertir recursos provenientes de actividades delictivas \no destinados a su ﬁ nanciación.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS FINALES"
+      },
+      "cita": "Ley 1106, Primera Disposición Complementaria Final",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Finales · Primera Disposición Complementaria Final\n\nMejora del control de operaciones \nsospechosas\nLas instituciones sometidas al control y supervisión de \nla Superintendencia de Banca, Seguros y Administradoras \nPrivadas de Fondos de Pensiones, estarán obligadas \na adoptar medidas de control apropiadas y suﬁ cientes, \norientadas a evitar que en la realización de sus \noperaciones se produzca el ocultamiento, manejo, \ninversión o aprovechamiento en cualquier forma de \ndinero u otros bienes provenientes de la minería ilegal, \nasí como de cualquier otra actividad de crimen organizado \no destinados a su ﬁ nanciación, o para dar apariencia de \nlegalidad a las actividades delictivas o a las transacciones \ny fondos vinculados con las mismas.\nLos sujetos obligados establecidos a través de la \nLey Nº 27693 deberán reportar bajo responsabilidad de \nforma inmediata y suﬁ ciente a la Unidad de Inteligencia \nFinanciera cualquier información relevante sobre manejo \nde activos o pasivos u otros recursos, cuya cuantía o \ncaracterísticas no guarden relación con la actividad \neconómica de sus clientes, o sobre transacciones de sus \nusuarios que por su número, por las cantidades transadas \no por las características particulares de las mismas, \npuedan conducir razonablemente a sospechar que se está \nutilizando a la entidad para transferir, manejar, aprovechar \no invertir recursos provenientes de actividades delictivas \no destinados a su ﬁ nanciación."
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_finales_segunda",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "SEGUNDA",
+      "titulo": "Destino de bienes incautados o",
+      "texto": "Destino de bienes incautados o \ndecomisados\nLa administración del dinero, bienes, efectos o \nganancias ilegales que hayan sido incautados por los \ndelitos previstos en el presente Decreto Legislativo se \nadecuará a lo establecido en las disposiciones sobre la \nmateria previstas en la legislación vigente.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS FINALES"
+      },
+      "cita": "Ley 1106, Segunda Disposición Complementaria Final",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Finales · Segunda Disposición Complementaria Final\n\nDestino de bienes incautados o \ndecomisados\nLa administración del dinero, bienes, efectos o \nganancias ilegales que hayan sido incautados por los \ndelitos previstos en el presente Decreto Legislativo se \nadecuará a lo establecido en las disposiciones sobre la \nmateria previstas en la legislación vigente."
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_finales_tercera",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "TERCERA",
+      "titulo": "Capacitación de Fiscales y otros",
+      "texto": "Capacitación de Fiscales y otros \nfuncionarios\nEl Ministerio Público diseñará y pondrá en ejecución \nun programa de capacitación contra el lavado de activos \nvinculado a la minería ilegal y otras formas de crimen \norganizado, así como a su ﬁ nanciamiento, destinado a \nintroducir habilidades y competencias en los ﬁ scales en \nlos procesos de investigación, para la mayor eﬁ cacia. \nEsta capacitación involucra a la Policía Nacional del \nPerú Nacional del Perú y a los integrantes de las Fuerzas \nArmadas que se estime pertinente.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS FINALES"
+      },
+      "cita": "Ley 1106, Tercera Disposición Complementaria Final",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Finales · Tercera Disposición Complementaria Final\n\nCapacitación de Fiscales y otros \nfuncionarios\nEl Ministerio Público diseñará y pondrá en ejecución \nun programa de capacitación contra el lavado de activos \nvinculado a la minería ilegal y otras formas de crimen \norganizado, así como a su ﬁ nanciamiento, destinado a \nintroducir habilidades y competencias en los ﬁ scales en \nlos procesos de investigación, para la mayor eﬁ cacia. \nEsta capacitación involucra a la Policía Nacional del \nPerú Nacional del Perú y a los integrantes de las Fuerzas \nArmadas que se estime pertinente."
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_finales_cuarta",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "CUARTA",
+      "titulo": "Coordinación interinstitucional",
+      "texto": "Coordinación interinstitucional\nLas entidades del Estado, en los ámbitos nacional, \nregional y local, y las empresas en las que el Estado \ntiene participación, brindan su colaboración a la Unidad \nde Inteligencia Financiera del Perú – UIF-Perú, para el \ncumplimiento de su misión institucional, proporcionando \ninformación y cualquier otra forma de cooperación \nnecesaria para combatir el delito de lavado de activos, \nvinculado especialmente a la minería ilegal u otras formas \nde crimen organizado.\nAsí mismo, la UIF-PERU mantendrá relaciones de \ncoordinación con el consejo de defensa jurídica del Estado, \na ﬁ n de lograr una mayor eﬁ cacia en la lucha contra el \ndelito de lavado de activos, vinculado especialmente a la \nminería ilegal u otras formas de crimen organizado.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS FINALES"
+      },
+      "cita": "Ley 1106, Cuarta Disposición Complementaria Final",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Finales · Cuarta Disposición Complementaria Final\n\nCoordinación interinstitucional\nLas entidades del Estado, en los ámbitos nacional, \nregional y local, y las empresas en las que el Estado \ntiene participación, brindan su colaboración a la Unidad \nde Inteligencia Financiera del Perú – UIF-Perú, para el \ncumplimiento de su misión institucional, proporcionando \ninformación y cualquier otra forma de cooperación \nnecesaria para combatir el delito de lavado de activos, \nvinculado especialmente a la minería ilegal u otras formas \nde crimen organizado.\nAsí mismo, la UIF-PERU mantendrá relaciones de \ncoordinación con el consejo de defensa jurídica del Estado, \na ﬁ n de lograr una mayor eﬁ cacia en la lucha contra el \ndelito de lavado de activos, vinculado especialmente a la \nminería ilegal u otras formas de crimen organizado."
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_finales_quinta",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "QUINTA",
+      "titulo": "Financiamiento",
+      "texto": "Financiamiento\nLos \ngastos \nque \ndemande \nla \naplicación \ndel \npresente Decreto Legislativo se ejecutan con cargo \na los presupuestos institucionales de las entidades \ncompetentes.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS FINALES"
+      },
+      "cita": "Ley 1106, Quinta Disposición Complementaria Final",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Finales · Quinta Disposición Complementaria Final\n\nFinanciamiento\nLos \ngastos \nque \ndemande \nla \naplicación \ndel \npresente Decreto Legislativo se ejecutan con cargo \na los presupuestos institucionales de las entidades \ncompetentes."
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_transitorias_primera",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "PRIMERA",
+      "titulo": "Vigencia",
+      "texto": "Vigencia\nEl presente Decreto Legislativo entrará en vigencia a \npartir del día siguiente de su publicación, con excepción \nde la Cuarta Disposición Complementaria Modiﬁ catoria \nque entrará en vigencia a los 60 días naturales.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS TRANSITORIAS"
+      },
+      "cita": "Ley 1106, Primera Disposición Complementaria Transitoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Transitorias · Primera Disposición Complementaria Transitoria\n\nVigencia\nEl presente Decreto Legislativo entrará en vigencia a \npartir del día siguiente de su publicación, con excepción \nde la Cuarta Disposición Complementaria Modiﬁ catoria \nque entrará en vigencia a los 60 días naturales."
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_transitorias_segunda",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "SEGUNDA",
+      "titulo": "Plazo para información de instrumentos",
+      "texto": "Plazo para información de instrumentos \nde \ngestión \npara \ndetección \nde \noperaciones \nsospechosas\nPara el cumplimiento de lo dispuesto en el artículo \n14º de la Ley Nº 27693, Ley que crea la Unidad de \nInteligencia Financiera – Perú, los sujetos obligados \ndeben informar a la Unidad de Inteligencia Financiera \nen el plazo de noventa (90) días naturales computados \na partir de la vigencia del presente Decreto Legislativo, \nsobre los mecanismos implementados para la detección \nde operaciones inusuales y sospechosas, así como \nsobre la elaboración del Manual donde conste el sistema \npara detectar operaciones sospechosas de la comisión \ndel delito de lavado de activos y el ﬁ nanciamiento de \nterrorismo.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS TRANSITORIAS"
+      },
+      "cita": "Ley 1106, Segunda Disposición Complementaria Transitoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Transitorias · Segunda Disposición Complementaria Transitoria\n\nPlazo para información de instrumentos \nde \ngestión \npara \ndetección \nde \noperaciones \nsospechosas\nPara el cumplimiento de lo dispuesto en el artículo \n14º de la Ley Nº 27693, Ley que crea la Unidad de \nInteligencia Financiera – Perú, los sujetos obligados \ndeben informar a la Unidad de Inteligencia Financiera \nen el plazo de noventa (90) días naturales computados \na partir de la vigencia del presente Decreto Legislativo, \nsobre los mecanismos implementados para la detección \nde operaciones inusuales y sospechosas, así como \nsobre la elaboración del Manual donde conste el sistema \npara detectar operaciones sospechosas de la comisión \ndel delito de lavado de activos y el ﬁ nanciamiento de \nterrorismo."
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_transitorias_tercera",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "TERCERA",
+      "titulo": "Implementación del Registro",
+      "texto": "Implementación del Registro\nLa inscripción en el Registro establecido en la Quinta \nDisposición Complementaria Modiﬁ catoria de la Ley \n\nEl Peruano\nLima, jueves 19 de abril de 2012\n464385\nNº 27693 deberá efectuarse en un plazo no mayor de \nciento veinte (120) días naturales computados a partir de \nla entrada en vigencia del presente Decreto Legislativo. \nEn dicho plazo, la Superintendencia de Banca, Seguros \ny Administradoras Privadas de Fondos de Pensiones \nemitirá las disposiciones necesarias para el cumplimiento \nde dicha obligación.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS TRANSITORIAS"
+      },
+      "cita": "Ley 1106, Tercera Disposición Complementaria Transitoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Transitorias · Tercera Disposición Complementaria Transitoria\n\nImplementación del Registro\nLa inscripción en el Registro establecido en la Quinta \nDisposición Complementaria Modiﬁ catoria de la Ley \n\nEl Peruano\nLima, jueves 19 de abril de 2012\n464385\nNº 27693 deberá efectuarse en un plazo no mayor de \nciento veinte (120) días naturales computados a partir de \nla entrada en vigencia del presente Decreto Legislativo. \nEn dicho plazo, la Superintendencia de Banca, Seguros \ny Administradoras Privadas de Fondos de Pensiones \nemitirá las disposiciones necesarias para el cumplimiento \nde dicha obligación."
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_modificatorias_primera",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "PRIMERA",
+      "titulo": "Modiﬁ caciones a la Ley Nº 27693, Ley",
+      "texto": "Modiﬁ caciones a la Ley Nº 27693, Ley \nque crea la Unidad de Inteligencia Financiera\nModifíquense los artículos 3, 9, 10 numeral 10.2.3 \ninciso b), 10-A numeral 10-A.7 y 12 de la Ley Nº 27693, \nLey que crea la Unidad de Inteligencia Financiera, los \ncuales tendrán el siguiente tenor:",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1106, Primera Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Modificatorias · Primera Disposición Complementaria Modificatoria\n\nModiﬁ caciones a la Ley Nº 27693, Ley \nque crea la Unidad de Inteligencia Financiera\nModifíquense los artículos 3, 9, 10 numeral 10.2.3 \ninciso b), 10-A numeral 10-A.7 y 12 de la Ley Nº 27693, \nLey que crea la Unidad de Inteligencia Financiera, los \ncuales tendrán el siguiente tenor:"
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_modificatorias_segunda",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "SEGUNDA",
+      "titulo": "Incorporación de la Quinta y Sexta",
+      "texto": "Incorporación de la Quinta y Sexta \nDisposición Complementaria, Transitoria y Final de la \nLey Nº 27693\nIncorpórense \nla \nQuinta \ny \nSexta \nDisposición \nComplementaria, Transitoria y Final a la Ley Nº 27693, en \nlos términos siguientes:\n“Quinta: Registro de empresas y personas que \nefectúan operaciones ﬁ nancieras o de cambio de \nmoneda\nCréase el Registro de Empresas y Personas que \nefectúan Operaciones Financieras o de Cambio de \nMoneda, el cual será supervisado y reglamentado por la \nSuperintendencia de Banca, Seguros y Administradoras \nPrivadas de Fondos de Pensiones.\nLa inscripción en el referido Registro es obligatoria \npara:\na) Las personas naturales o jurídicas dedicadas a la \ncompra y venta de divisas o moneda extranjera.\nb) Las empresas de créditos, préstamos y empeño.\nPara ejercer las actividades descritas en los \nincisos precedentes, las correspondientes personas \nnaturales o jurídicas deberán inscribirse en el Registro, \nconforme al procedimiento que para tal efecto señale la \nSuperintendencia de Banca, Seguros y Administradoras \nPrivadas de Fondos de Pensiones.\nEl \nincumplimiento \nde \nla \ninscripción \ngenerará \nla cancelación de la licencia de funcionamiento o \nautorización de actividad por la respectiva municipalidad, \nsin perjuicio de que la Superintendencia de Banca, \nSeguros y Administradoras Privadas de Fondos de \nPensiones disponga el cierre de los locales, conforme a \nlas atribuciones conferidas en la Ley Nº 26702.\nSexta: Prohibición de ejercer la actividad de \ntransferencia de fondos por empresas no autorizadas\nEl servicio de recepción y envío de órdenes de \ntransferencia de fondos solo podrá ser brindado por \nlas empresas debidamente autorizadas para ello por la \nSuperintendencia de Banca, Seguros y Administradoras \nPrivadas de Fondos de Pensiones, así como por las \nCooperativas de Ahorro y Crédito supervisadas por \nla Federación Nacional de Cooperativas de Ahorro y \nCrédito del Perú-FENACREP, ya sea como representante \nde empresas de alcance internacional o en forma \nindependiente mediante contratos suscritos con empresas \ncorresponsales del exterior.\nAsimismo, sólo podrán brindar el servicio postal \nde remesas (giros postales) a través de un contrato de \nconcesión postal, los concesionarios postales que se \nencuentren debidamente autorizados para tal efecto \npor el Ministerio de Transportes y Comunicaciones, así \ncomo el operador designado para el cumplimiento de las \nobligaciones del Convenio Postal Universal.\nEl incumplimiento de esta disposición será sancionado \nmediante la cancelación de la licencia de funcionamiento, \nprevia \ncomunicación \nde \nla \nSuperintendencia \nde \nBanca, \nSeguros \ny \nAdministradoras \nPrivadas \nde \nFondos de Pensiones o del Ministerio de Transportes y \nComunicaciones. La Superintendencia de Banca, Seguros \ny Administradoras Privadas de Fondos de Pensiones y \nel Ministerio de Transportes y Comunicaciones quedan \nfacultados para disponer el cierre de los locales de las \nempresas que incumplan lo dispuesto en la presente \ndisposición.”",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1106, Segunda Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Modificatorias · Segunda Disposición Complementaria Modificatoria\n\nIncorporación de la Quinta y Sexta \nDisposición Complementaria, Transitoria y Final de la \nLey Nº 27693\nIncorpórense \nla \nQuinta \ny \nSexta \nDisposición \nComplementaria, Transitoria y Final a la Ley Nº 27693, en \nlos términos siguientes:\n“Quinta: Registro de empresas y personas que \nefectúan operaciones ﬁ nancieras o de cambio de \nmoneda\nCréase el Registro de Empresas y Personas que \nefectúan Operaciones Financieras o de Cambio de \nMoneda, el cual será supervisado y reglamentado por la \nSuperintendencia de Banca, Seguros y Administradoras \nPrivadas de Fondos de Pensiones.\nLa inscripción en el referido Registro es obligatoria \npara:\na) Las personas naturales o jurídicas dedicadas a la \ncompra y venta de divisas o moneda extranjera.\nb) Las empresas de créditos, préstamos y empeño.\nPara ejercer las actividades descritas en los \nincisos precedentes, las correspondientes personas \nnaturales o jurídicas deberán inscribirse en el Registro, \nconforme al procedimiento que para tal efecto señale la \nSuperintendencia de Banca, Seguros y Administradoras \nPrivadas de Fondos de Pensiones.\nEl \nincumplimiento \nde \nla \ninscripción \ngenerará \nla cancelación de la licencia de funcionamiento o \nautorización de actividad por la respectiva municipalidad, \nsin perjuicio de que la Superintendencia de Banca, \nSeguros y Administradoras Privadas de Fondos de \nPensiones disponga el cierre de los locales, conforme a \nlas atribuciones conferidas en la Ley Nº 26702.\nSexta: Prohibición de ejercer la actividad de \ntransferencia de fondos por empresas no autorizadas\nEl servicio de recepción y envío de órdenes de \ntransferencia de fondos solo podrá ser brindado por \nlas empresas debidamente autorizadas para ello por la \nSuperintendencia de Banca, Seguros y Administradoras \nPrivadas de Fondos de Pensiones, así como por las \nCooperativas de Ahorro y Crédito supervisadas por \nla Federación Nacional de Cooperativas de Ahorro y \nCrédito del Perú-FENACREP, ya sea como representante \nde empresas de alcance internacional o en forma \nindependiente mediante contratos suscritos con empresas \ncorresponsales del exterior.\nAsimismo, sólo podrán brindar el servicio postal \nde remesas (giros postales) a través de un contrato de \nconcesión postal, los concesionarios postales que se \nencuentren debidamente autorizados para tal efecto \npor el Ministerio de Transportes y Comunicaciones, así \ncomo el operador designado para el cumplimiento de las \nobligaciones del Convenio Postal Universal.\nEl incumplimiento de esta disposición será sancionado \nmediante la cancelación de la licencia de funcionamiento, \nprevia \ncomunicación \nde \nla \nSuperintendencia \nde \nBanca, \nSeguros \ny \nAdministradoras \nPrivadas \nde \nFondos de Pensiones o del Ministerio de Transportes y \nComunicaciones. La Superintendencia de Banca, Seguros \ny Administradoras Privadas de Fondos de Pensiones y \nel Ministerio de Transportes y Comunicaciones quedan \nfacultados para disponer el cierre de los locales de las \nempresas que incumplan lo dispuesto en la presente \ndisposición.”"
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_modificatorias_tercera",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "TERCERA",
+      "titulo": "Modiﬁ cación de los artículos 17º y 18º",
+      "texto": "Modiﬁ cación de los artículos 17º y 18º \ndel Texto Único Ordenado de la Ley Nº 27806, Ley \nde Transparencia y Acceso a la Información Pública, \naprobado por Decreto Supremo Nº 043-2003-PCM\nModifíquense el artículo 17º numeral 5 y el artículo 18º \ndel Decreto Supremo Nº 043-2003-PCM, en los términos \nsiguientes:",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1106, Tercera Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Modificatorias · Tercera Disposición Complementaria Modificatoria\n\nModiﬁ cación de los artículos 17º y 18º \ndel Texto Único Ordenado de la Ley Nº 27806, Ley \nde Transparencia y Acceso a la Información Pública, \naprobado por Decreto Supremo Nº 043-2003-PCM\nModifíquense el artículo 17º numeral 5 y el artículo 18º \ndel Decreto Supremo Nº 043-2003-PCM, en los términos \nsiguientes:"
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_modificatorias_cuarta",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "CUARTA",
+      "titulo": "Modiﬁ cación de la Sexta Disposición",
+      "texto": "Modiﬁ cación de la Sexta Disposición \nComplementaria, Transitoria y Final de la Ley Nº \n28306\nModifíquese la Sexta Disposición Complementaria, \nTransitoria y Final de la Ley Nº 28306, en los términos \nsiguientes:\n“Sexta: Obligación de declarar el ingreso y/o salida \nde dinero en efectivo\n6.1. Establézcase la obligación para toda persona, \nnacional o extranjera, que ingrese o salga del país, \n\nEl Peruano\nLima, jueves 19 de abril de 2012\n464388\nde declarar bajo juramento instrumentos ﬁ nancieros \nnegociables emitidos “al portador” o dinero en efectivo \nque porte consigo por sumas superiores a US$ 10,000.00 \n(Diez mil y 00/100 dólares de los Estados Unidos de \nAmérica), o su equivalente en moneda nacional u otra \nextranjera.\n6.2. Asimismo, queda expresamente prohibido para \ntoda persona, nacional o extranjera, que ingrese o salga del \npaís, llevar consigo instrumentos ﬁ nancieros negociables \nemitidos “al portador” o dinero en efectivo por montos \nsuperiores a US$ 30,000.00 (Treinta mil y 00/100 dólares \nde los Estados Unidos de América) o su equivalente en \nmoneda nacional u otra extranjera. El ingreso o salida \nde dichos importes deberá efectuarse necesariamente \na través de empresas legalmente autorizadas por la \nSuperintendencia de Banca, Seguros y Administradoras \nPrivadas de Fondos de Pensiones para realizar ese tipo \nde operaciones.\n6.3. En caso de incumplimiento de lo dispuesto \nen los numerales precedentes, la Superintendencia \nNacional de Aduanas y de Administración Tributaria \ndispondrá:\na.- La retención temporal del monto íntegro de dinero \nen efectivo o de los instrumentos ﬁ nancieros negociables \nemitidos “al portador” y la aplicación de una sanción \nequivalente al treinta por ciento (30%) del valor no \ndeclarado, como consecuencia de la omisión o falsedad \ndel importe declarado bajo juramento por parte de su \nportador.\nb.- La retención temporal del monto de dinero en \nefectivo o de los instrumentos ﬁ nancieros negociables \nemitidos “al portador” que exceda los US $30,000.00 \n(treinta mil y 00/100 dólares de los Estados Unidos de \nAmérica).\nEl dinero retenido será depositado en una cuenta del \nBanco de la Nación donde se mantendrá en custodia. \nLos instrumentos ﬁ nancieros negociables emitidos “al \nportador” también serán entregados al Banco de la Nación \nen custodia.\nLa Superintendencia Nacional de Aduanas y de \nAdministración Tributaria informará inmediatamente a \nla Unidad de Inteligencia Financiera del Perú sobre la \nretención efectuada.\nCorresponde al portador acreditar ante la Unidad de \nInteligencia Financiera del Perú, el origen lícito del dinero \nen un plazo máximo de setentidós (72) horas de producida \nla retención.\n6.4. La no acreditación del origen lícito del dinero o \nde los instrumentos ﬁ nancieros negociables emitidos “al \nportador” en el plazo establecido, se considera indicio de \nla comisión del delito de lavado de activos, sin perjuicio \nde la presunta comisión de otros delitos. En estos casos, \nla Unidad de Inteligencia Financiera del Perú informará \nal Ministerio Público para que proceda conforme a sus \natribuciones.\n6.5. El dinero o los instrumentos ﬁ nancieros negociables \nemitidos “al portador” retenidos como consecuencia de la \naplicación de la presente norma seguirá el procedimiento \nestablecido en las disposiciones previstas en la legislación \npenal y en las leyes especiales.\n6.6. Las obligaciones y prohibiciones establecidas \nen la presente disposición no serán aplicables a los \ninstrumentos ﬁ nancieros negociables diferentes a los \nemitidos “al portador”, independientemente de su valor; \nno obstante, los mismos deberán ser obligatoriamente \ndeclarados bajo juramento al momento de su ingreso o \nsalida del país.\n6.7. Mediante Decreto Supremo refrendado por \nlos Ministros de Economía y Finanzas, Justicia y \nDerechos Humanos e Interior, previa opinión técnica \nde la Unidad de Inteligencia Financiera del Perú, se \naprobará el reglamento de lo dispuesto en la presente \nDisposición, el cual contendrá los mecanismos \nnecesarios para su implementación y para el efectivo \ncontrol, fiscalización de lo dispuesto y devolución de \nlos bienes retenidos.”",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1106, Cuarta Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Modificatorias · Cuarta Disposición Complementaria Modificatoria\n\nModiﬁ cación de la Sexta Disposición \nComplementaria, Transitoria y Final de la Ley Nº \n28306\nModifíquese la Sexta Disposición Complementaria, \nTransitoria y Final de la Ley Nº 28306, en los términos \nsiguientes:\n“Sexta: Obligación de declarar el ingreso y/o salida \nde dinero en efectivo\n6.1. Establézcase la obligación para toda persona, \nnacional o extranjera, que ingrese o salga del país, \n\nEl Peruano\nLima, jueves 19 de abril de 2012\n464388\nde declarar bajo juramento instrumentos ﬁ nancieros \nnegociables emitidos “al portador” o dinero en efectivo \nque porte consigo por sumas superiores a US$ 10,000.00 \n(Diez mil y 00/100 dólares de los Estados Unidos de \nAmérica), o su equivalente en moneda nacional u otra \nextranjera.\n6.2. Asimismo, queda expresamente prohibido para \ntoda persona, nacional o extranjera, que ingrese o salga del \npaís, llevar consigo instrumentos ﬁ nancieros negociables \nemitidos “al portador” o dinero en efectivo por montos \nsuperiores a US$ 30,000.00 (Treinta mil y 00/100 dólares \nde los Estados Unidos de América) o su equivalente en \nmoneda nacional u otra extranjera. El ingreso o salida \nde dichos importes deberá efectuarse necesariamente \na través de empresas legalmente autorizadas por la \nSuperintendencia de Banca, Seguros y Administradoras \nPrivadas de Fondos de Pensiones para realizar ese tipo \nde operaciones.\n6.3. En caso de incumplimiento de lo dispuesto \nen los numerales precedentes, la Superintendencia \nNacional de Aduanas y de Administración Tributaria \ndispondrá:\na.- La retención temporal del monto íntegro de dinero \nen efectivo o de los instrumentos ﬁ nancieros negociables \nemitidos “al portador” y la aplicación de una sanción \nequivalente al treinta por ciento (30%) del valor no \ndeclarado, como consecuencia de la omisión o falsedad \ndel importe declarado bajo juramento por parte de su \nportador.\nb.- La retención temporal del monto de dinero en \nefectivo o de los instrumentos ﬁ nancieros negociables \nemitidos “al portador” que exceda los US $30,000.00 \n(treinta mil y 00/100 dólares de los Estados Unidos de \nAmérica).\nEl dinero retenido será depositado en una cuenta del \nBanco de la Nación donde se mantendrá en custodia. \nLos instrumentos ﬁ nancieros negociables emitidos “al \nportador” también serán entregados al Banco de la Nación \nen custodia.\nLa Superintendencia Nacional de Aduanas y de \nAdministración Tributaria informará inmediatamente a \nla Unidad de Inteligencia Financiera del Perú sobre la \nretención efectuada.\nCorresponde al portador acreditar ante la Unidad de \nInteligencia Financiera del Perú, el origen lícito del dinero \nen un plazo máximo de setentidós (72) horas de producida \nla retención.\n6.4. La no acreditación del origen lícito del dinero o \nde los instrumentos ﬁ nancieros negociables emitidos “al \nportador” en el plazo establecido, se considera indicio de \nla comisión del delito de lavado de activos, sin perjuicio \nde la presunta comisión de otros delitos. En estos casos, \nla Unidad de Inteligencia Financiera del Perú informará \nal Ministerio Público para que proceda conforme a sus \natribuciones.\n6.5. El dinero o los instrumentos ﬁ nancieros negociables \nemitidos “al portador” retenidos como consecuencia de la \naplicación de la presente norma seguirá el procedimiento \nestablecido en las disposiciones previstas en la legislación \npenal y en las leyes especiales.\n6.6. Las obligaciones y prohibiciones establecidas \nen la presente disposición no serán aplicables a los \ninstrumentos ﬁ nancieros negociables diferentes a los \nemitidos “al portador”, independientemente de su valor; \nno obstante, los mismos deberán ser obligatoriamente \ndeclarados bajo juramento al momento de su ingreso o \nsalida del país.\n6.7. Mediante Decreto Supremo refrendado por \nlos Ministros de Economía y Finanzas, Justicia y \nDerechos Humanos e Interior, previa opinión técnica \nde la Unidad de Inteligencia Financiera del Perú, se \naprobará el reglamento de lo dispuesto en la presente \nDisposición, el cual contendrá los mecanismos \nnecesarios para su implementación y para el efectivo \ncontrol, fiscalización de lo dispuesto y devolución de \nlos bienes retenidos.”"
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_modificatorias_quinta",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "QUINTA",
+      "titulo": "Incorporación del Artículo 9º-A a la Ley",
+      "texto": "Incorporación del Artículo 9º-A a la Ley \nNº 27693, Ley que crea la Unidad de Inteligencia \nFinanciera – UIF-Perú\nIncorpórese el Artículo 9º-A a la Ley Nº 27693, en los \ntérminos siguientes:",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1106, Quinta Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Modificatorias · Quinta Disposición Complementaria Modificatoria\n\nIncorporación del Artículo 9º-A a la Ley \nNº 27693, Ley que crea la Unidad de Inteligencia \nFinanciera – UIF-Perú\nIncorpórese el Artículo 9º-A a la Ley Nº 27693, en los \ntérminos siguientes:"
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_modificatorias_sexta",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "SEXTA",
+      "titulo": "Modiﬁ cación de los artículos 16º del",
+      "texto": "Modiﬁ cación de los artículos 16º del \nDecreto Legislativo del Notariado, Decreto Legislativo \nNº 1049\nModifíquese el inciso o) e incorpórese el inciso p) \nal artículo 16º del Decreto Legislativo Nº 1049 en los \ntérminos siguientes:",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1106, Sexta Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Modificatorias · Sexta Disposición Complementaria Modificatoria\n\nModiﬁ cación de los artículos 16º del \nDecreto Legislativo del Notariado, Decreto Legislativo \nNº 1049\nModifíquese el inciso o) e incorpórese el inciso p) \nal artículo 16º del Decreto Legislativo Nº 1049 en los \ntérminos siguientes:"
+    },
+    {
+      "id": "dl_1106::ley::disp_disposiciones_complementarias_modificatorias_s_tima",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "SÉTIMA",
+      "titulo": "Modiﬁ cación de los artículos 55º del",
+      "texto": "Modiﬁ cación de los artículos 55º del \nDecreto Legislativo del Notariado, Decreto Legislativo \nNº 1049\nModifíquese el artículo 55º del Decreto Legislativo del \nNotariado, Decreto Legislativo Nº 1049 en los términos \nsiguientes:",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1106, Sétima Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposiciones Complementarias Modificatorias · Sétima Disposición Complementaria Modificatoria\n\nModiﬁ cación de los artículos 55º del \nDecreto Legislativo del Notariado, Decreto Legislativo \nNº 1049\nModifíquese el artículo 55º del Decreto Legislativo del \nNotariado, Decreto Legislativo Nº 1049 en los términos \nsiguientes:"
+    },
+    {
+      "id": "dl_1106::ley::disp_disposici_n_complementaria_derogatoria_nica",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "ÚNICA",
+      "titulo": "Deróguese la Ley Nº 27765, Ley Penal contra",
+      "texto": "Deróguese la Ley Nº 27765, Ley Penal contra \nel Lavado de Activos, modiﬁ cada por el Decreto Legislativo \nNº 986 y las demás normas que se opongan al presente \nDecreto Legislativo.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": null,
+        "seccion": null,
+        "bloque": "DISPOSICIÓN COMPLEMENTARIA DEROGATORIA"
+      },
+      "cita": "Ley 1106, Única Disposición Complementaria Derogatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo de lucha eficaz contra el lavado de activos y otros delitos relacionados a la minería ilegal y crimen organizado (Ley 1106) · Disposición Complementaria Derogatoria · Única Disposición Complementaria Derogatoria\n\nDeróguese la Ley Nº 27765, Ley Penal contra \nel Lavado de Activos, modiﬁ cada por el Decreto Legislativo \nNº 986 y las demás normas que se opongan al presente \nDecreto Legislativo."
+    }
+  ]
+}

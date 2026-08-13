@@ -167,7 +167,7 @@ def ingest_norma(meta: NormaMeta) -> dict:
     if meta.parser == "iso":
         unidades = [_unit_from_clausula(meta, c) for c in parse_iso(full_text)]
     else:
-        for doc_tipo, articulos in parse_norma(full_text).items():
+        for doc_tipo, articulos in parse_norma(full_text, meta.formato).items():
             unidades += [_unit_from_articulo(meta, doc_tipo, a) for a in articulos]
 
     return {

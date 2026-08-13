@@ -57,6 +57,25 @@ CASOS: list[tuple[str, str | None, int]] = [
         "iso_37001::clausula_5.2",
         5,
     ),
+    # LA/FT. El corpus pasó de una norma a cuatro en esta materia, y sin casos
+    # propios la evaluación seguiría midiendo solo lo que había antes.
+    (
+        "¿Qué conducta constituye delito de lavado de activos?",
+        "dl_1106::ley::art_1",
+        5,
+    ),
+    (
+        # El artículo 1 es el que fija a quién alcanza la obligación; el 3 solo
+        # define qué se entiende por beneficiario final.
+        "¿Quién está obligado a declarar el beneficiario final?",
+        "dl_1372::ley::art_1",
+        5,
+    ),
+    (
+        "¿A qué entidad quedó adscrita la Unidad de Inteligencia Financiera?",
+        "ley_29038::ley::art_1",
+        5,
+    ),
 ]
 
 

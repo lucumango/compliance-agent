@@ -3,7 +3,7 @@
 **Compliance Audit Regulatory Logic Operational System**
 
 Responde consultas sobre normativa peruana **citando artículo por artículo**, a
-partir de un corpus cerrado de 701 unidades extraídas de 5 documentos
+partir de un corpus cerrado de 754 unidades extraídas de 8 documentos
 normativos. Cuando el corpus no cubre la consulta, lo dice en vez de improvisar.
 
 ```
@@ -31,15 +31,20 @@ Fuentes:
 
 ## El corpus, de un vistazo
 
-| Norma | Unidades | Estado |
-|---|---|---|
-| Ley 29733 — Protección de Datos Personales | 194 | Consolidado |
-| Ley 29783 — Seguridad y Salud en el Trabajo | 252 | Consolidado al 28/04/2022 |
-| ISO 37001:2016 — Antisoborno | 204 | Traducción oficial |
-| Ley 30424 — Responsabilidad admin. de PJ | 30 | ⚠ Texto original de 2016 · OCR |
-| Ley 27693 — Crea la UIF-Perú | 21 | ⚠ OCR |
+| Norma | Materia | Unidades | Estado del texto |
+|---|---|---|---|
+| **Ley 29783** — Seguridad y Salud en el Trabajo | `sst_laboral` | 252 | Consolidado al 28/04/2022 |
+| **ISO 37001:2016** — Antisoborno | `antisoborno` | 204 | Traducción oficial |
+| **Ley 29733** — Protección de Datos Personales | `proteccion_datos` | 194 | Consolidado |
+| **DL 1106** — Lucha contra el lavado de activos | `laft` | 33 | Consolidado |
+| **Ley 30424** — Responsabilidad admin. de personas jurídicas | `anticorrupcion` | 30 | ⚠⚠ Original de 2016 · OCR |
+| **DL 1372** — Beneficiario final | `laft` | 19 | Consolidado |
+| **Ley 27693** — Crea la UIF-Perú | `laft` | 18 | Consolidado al 01/10/2025 (SPIJ) |
+| **Ley 29038** — Incorpora la UIF a la SBS | `laft` | 4 | Consolidado |
 
-Las dos marcadas requieren cuidado: el detalle está en
+**Total: 754 unidades citables** en 8 normas.
+
+La Ley 30424 requiere cuidado: el detalle está en
 [Fuentes del corpus](FUENTES.md).
 
 ## El caso negativo es el que importa

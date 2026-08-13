@@ -1,0 +1,407 @@
+{
+  "norma_id": "dl_1372",
+  "tipo": "ley",
+  "numero": "1372",
+  "nombre": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales",
+  "materia": "laft",
+  "entidad_reguladora": [
+    "SUNAT",
+    "UIF-Perú"
+  ],
+  "fecha_publicacion": null,
+  "url_fuente": null,
+  "metadata_verificada": false,
+  "notas": "",
+  "por_que_relevante": "Obliga a identificar y declarar al beneficiario final. Es una obligación operativa concreta, con plazos y sanciones, que recae sobre cualquier persona jurídica: de las pocas del corpus que generan trabajo periódico y no solo deberes genéricos.",
+  "estado_texto": "consolidado",
+  "consolidado_a": null,
+  "relaciones": [],
+  "extraccion": {
+    "archivo": "dl_1372.pdf",
+    "paginas": 10,
+    "paginas_ocr": 0,
+    "requiere_cotejo": false
+  },
+  "unidades": [
+    {
+      "id": "dl_1372::ley::art_1",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "1",
+      "titulo": "- Objeto",
+      "texto": "- Objeto \nEl Decreto Legislativo regula la obligación de las \npersonas jurídicas y/o entes jurídicos de informar sobre la \nidentificación de sus beneficiarios finales.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "I",
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1372, Artículo 1",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Capítulo I · Artículo 1\n\n- Objeto \nEl Decreto Legislativo regula la obligación de las \npersonas jurídicas y/o entes jurídicos de informar sobre la \nidentificación de sus beneficiarios finales."
+    },
+    {
+      "id": "dl_1372::ley::art_2",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "2",
+      "titulo": "- Finalidad",
+      "texto": "- Finalidad\n2.1 La finalidad del presente Decreto Legislativo es \notorgar a las autoridades competentes acceso oportuno a \ninformación precisa y actualizada sobre el beneficiario final \nde la persona jurídica y/o ente jurídico, a fin de fortalecer \nla lucha contra la evasión y elusión tributaria, garantizar \nel cumplimiento de las obligaciones de asistencia \nadministrativa mutua en materia tributaria, así como la \nlucha contra el lavado de activos y el financiamiento del \nterrorismo.\n2.2 Las obligaciones de identificar, obtener, actualizar, \ndeclarar, conservar y proporcionar la información sobre \nel beneficiario final a que se refiere el presente Decreto \nLegislativo son de obligatorio cumplimiento aun cuando \nla persona jurídica y/o ente jurídico se encuentre bajo \nun procedimiento o acuerdo de disolución, liquidación o \nquiebra; en cuyo caso, los liquidadores o interventores \ndetentan tales obligaciones. \nLuego de la extinción o plazo de duración o culminación \nde la persona jurídica o ente jurídico, según corresponda, \nel plazo de conservación de la documentación que \nrespalda la información sobre el beneficiario final será el \nprevisto en el artículo 49 del Código de Comercio, salvo \nque sea de aplicación uno distinto establecido en una ley \nespecial.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "I",
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1372, Artículo 2",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Capítulo I · Artículo 2\n\n- Finalidad\n2.1 La finalidad del presente Decreto Legislativo es \notorgar a las autoridades competentes acceso oportuno a \ninformación precisa y actualizada sobre el beneficiario final \nde la persona jurídica y/o ente jurídico, a fin de fortalecer \nla lucha contra la evasión y elusión tributaria, garantizar \nel cumplimiento de las obligaciones de asistencia \nadministrativa mutua en materia tributaria, así como la \nlucha contra el lavado de activos y el financiamiento del \nterrorismo.\n2.2 Las obligaciones de identificar, obtener, actualizar, \ndeclarar, conservar y proporcionar la información sobre \nel beneficiario final a que se refiere el presente Decreto \nLegislativo son de obligatorio cumplimiento aun cuando \nla persona jurídica y/o ente jurídico se encuentre bajo \nun procedimiento o acuerdo de disolución, liquidación o \nquiebra; en cuyo caso, los liquidadores o interventores \ndetentan tales obligaciones. \nLuego de la extinción o plazo de duración o culminación \nde la persona jurídica o ente jurídico, según corresponda, \nel plazo de conservación de la documentación que \nrespalda la información sobre el beneficiario final será el \nprevisto en el artículo 49 del Código de Comercio, salvo \nque sea de aplicación uno distinto establecido en una ley \nespecial."
+    },
+    {
+      "id": "dl_1372::ley::art_3",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "3",
+      "titulo": "- Definiciones y referencias",
+      "texto": "- Definiciones y referencias\n3.1 Se entiende por:\na) Beneficiario Final:\nSe refiere a: \na.1) la persona natural que efectiva y finalmente posee \no controla personas jurídicas o entes jurídicos, conforme a \nlo previsto en el artículo 4; y/o,\na.2) la persona natural que finalmente posee o controla \nun cliente o en cuyo nombre se realiza una transacción. \nPara los efectos del literal a.2) entiéndase por “cliente” \na la definición prevista en el numeral 19.1 del artículo \n19 del Reglamento de la Ley N° 27693, Ley que crea la \nUnidad de Inteligencia Financiera – Perú (UIF – Perú).\nLas expresiones “finalmente posee o controla” o \ncontrol efectivo final utilizadas en el presente Decreto \nLegislativo se refieren a situaciones en que la propiedad \ny/o control se ejerce a través de una cadena de propiedad \no a través de cualquier otro medio de control que no es un \ncontrol directo. \nLas acepciones de beneficiario final contenidas en el \npresente literal son aplicables, según corresponda, para \nlos efectos del presente Decreto Legislativo, las normas \ncomplementarias aplicables y las referidas a la asistencia \nadministrativa mutua en materia tributaria, así como las \nque regulan el Sistema de Prevención del Lavado de \nActivos y el Financiamiento del Terrorismo. \nb) Declaración de Beneficiario Final: \nSe refiere a la declaración jurada informativa prevista \nen el numeral 15.3 del artículo 87 del Código Tributario, \nque contiene la información del beneficiario final a que se \nrefiere el literal a.1) precedente, que deban presentar los \nadministrados ante la SUNAT, de acuerdo a las normas \nreglamentarias y en la forma, plazo y condiciones que esta \nestablezca mediante Resolución de Superintendencia.\nc) Obligados a presentar la declaración de beneficiario \nfinal: \nSon las personas jurídicas y los entes jurídicos \nobligados a identificar, obtener, actualizar, declarar, \nconservar y proporcionar la información sobre los \nbeneficiarios finales a que se refiere el literal a.1) \nprecedente, incluyendo la documentación sustentatoria.\nd) Entes Jurídicos:\nSe refiere a: \ni) los patrimonios autónomos gestionados por \nterceros que carecen de personalidad jurídica; o ii) los \ncontratos y otros acuerdos permitidos por la normativa \nvigente en los que dos o más personas, que se asocian \ntemporalmente, tienen un derecho o interés común \npara realizar una actividad determinada sin constituir \nuna persona jurídica. Se consideran en esta categoría \na los fondos de inversión, fondos mutuos de inversión \nen valores, patrimonios fideicometidos domiciliados en \nel Perú o patrimonios fideicometidos o trust constituidos \no establecidos en el extranjero con administrador o \nprotector domiciliado en el Perú, y consorcios, entre \notros. \nLas acepciones de ente jurídico contenidas en el \npresente literal son aplicables, según corresponda, para \nlos efectos del presente Decreto Legislativo, las normas \ncomplementarias aplicables y las referidas a la asistencia \nadministrativa mutua en materia tributaria.\ne) Autoridades Competentes: \nSe refiere a todos los organismos incluidos en el \nDecreto Legislativo, así como a los organismos de \nsupervisión y control en materia de prevención del lavado \nde activos y del financiamiento del terrorismo a los que \nse refiere el numeral 9.A.2 del artículo 9.A de la Ley N° \n27693, respecto a la lucha contra la evasión y elusión \ntributaria y a la asistencia administrativa mutua en materia \ntributaria se entiende como autoridad competente a la \nSUNAT.\nf) SBS:\nA la Superintendencia de Banca, Seguros y \nAdministradoras Privadas de Fondo de Pensiones.\n\nJueves 2 de agosto de 2018 / \n El Peruano\ng) SMV:\nA la Superintendencia de Mercado de Valores.\nh) SUNAT:\nA la Superintendencia Nacional de Aduanas y de \nAdministración Tributaria.\ni) UIF:\nA la Unidad de Inteligencia Financiera del Perú, unidad \nespecializada de la SBS.\nj) Código Tributario:\nAl aprobado mediante Decreto Legislativo N° 816 \ncuyo Texto Único Ordenado ha sido aprobado mediante \nDecreto Supremo N° 133-2013-EF.\nk) Ley N° 27693:\nLey que crea la Unidad de Inteligencia Financiera – \nPerú (UIF-Perú).\n3.2 Cuando se haga referencia a un artículo sin \nmencionar la norma a la que pertenece, se entiende \nreferido al presente Decreto Legislativo. Asimismo, \ncuando se señalen numerales o incisos o literales sin \nindicar el artículo al que pertenecen, se entienden \nreferidos al artículo o párrafos o numeral en el que se \nmencionan respectivamente.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "I",
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1372, Artículo 3",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Capítulo I · Artículo 3\n\n- Definiciones y referencias\n3.1 Se entiende por:\na) Beneficiario Final:\nSe refiere a: \na.1) la persona natural que efectiva y finalmente posee \no controla personas jurídicas o entes jurídicos, conforme a \nlo previsto en el artículo 4; y/o,\na.2) la persona natural que finalmente posee o controla \nun cliente o en cuyo nombre se realiza una transacción. \nPara los efectos del literal a.2) entiéndase por “cliente” \na la definición prevista en el numeral 19.1 del artículo \n19 del Reglamento de la Ley N° 27693, Ley que crea la \nUnidad de Inteligencia Financiera – Perú (UIF – Perú).\nLas expresiones “finalmente posee o controla” o \ncontrol efectivo final utilizadas en el presente Decreto \nLegislativo se refieren a situaciones en que la propiedad \ny/o control se ejerce a través de una cadena de propiedad \no a través de cualquier otro medio de control que no es un \ncontrol directo. \nLas acepciones de beneficiario final contenidas en el \npresente literal son aplicables, según corresponda, para \nlos efectos del presente Decreto Legislativo, las normas \ncomplementarias aplicables y las referidas a la asistencia \nadministrativa mutua en materia tributaria, así como las \nque regulan el Sistema de Prevención del Lavado de \nActivos y el Financiamiento del Terrorismo. \nb) Declaración de Beneficiario Final: \nSe refiere a la declaración jurada informativa prevista \nen el numeral 15.3 del artículo 87 del Código Tributario, \nque contiene la información del beneficiario final a que se \nrefiere el literal a.1) precedente, que deban presentar los \nadministrados ante la SUNAT, de acuerdo a las normas \nreglamentarias y en la forma, plazo y condiciones que esta \nestablezca mediante Resolución de Superintendencia.\nc) Obligados a presentar la declaración de beneficiario \nfinal: \nSon las personas jurídicas y los entes jurídicos \nobligados a identificar, obtener, actualizar, declarar, \nconservar y proporcionar la información sobre los \nbeneficiarios finales a que se refiere el literal a.1) \nprecedente, incluyendo la documentación sustentatoria.\nd) Entes Jurídicos:\nSe refiere a: \ni) los patrimonios autónomos gestionados por \nterceros que carecen de personalidad jurídica; o ii) los \ncontratos y otros acuerdos permitidos por la normativa \nvigente en los que dos o más personas, que se asocian \ntemporalmente, tienen un derecho o interés común \npara realizar una actividad determinada sin constituir \nuna persona jurídica. Se consideran en esta categoría \na los fondos de inversión, fondos mutuos de inversión \nen valores, patrimonios fideicometidos domiciliados en \nel Perú o patrimonios fideicometidos o trust constituidos \no establecidos en el extranjero con administrador o \nprotector domiciliado en el Perú, y consorcios, entre \notros. \nLas acepciones de ente jurídico contenidas en el \npresente literal son aplicables, según corresponda, para \nlos efectos del presente Decreto Legislativo, las normas \ncomplementarias aplicables y las referidas a la asistencia \nadministrativa mutua en materia tributaria.\ne) Autoridades Competentes: \nSe refiere a todos los organismos incluidos en el \nDecreto Legislativo, así como a los organismos de \nsupervisión y control en materia de prevención del lavado \nde activos y del financiamiento del terrorismo a los que \nse refiere el numeral 9.A.2 del artículo 9.A de la Ley N° \n27693, respecto a la lucha contra la evasión y elusión \ntributaria y a la asistencia administrativa mutua en materia \ntributaria se entiende como autoridad competente a la \nSUNAT.\nf) SBS:\nA la Superintendencia de Banca, Seguros y \nAdministradoras Privadas de Fondo de Pensiones.\n\nJueves 2 de agosto de 2018 / \n El Peruano\ng) SMV:\nA la Superintendencia de Mercado de Valores.\nh) SUNAT:\nA la Superintendencia Nacional de Aduanas y de \nAdministración Tributaria.\ni) UIF:\nA la Unidad de Inteligencia Financiera del Perú, unidad \nespecializada de la SBS.\nj) Código Tributario:\nAl aprobado mediante Decreto Legislativo N° 816 \ncuyo Texto Único Ordenado ha sido aprobado mediante \nDecreto Supremo N° 133-2013-EF.\nk) Ley N° 27693:\nLey que crea la Unidad de Inteligencia Financiera – \nPerú (UIF-Perú).\n3.2 Cuando se haga referencia a un artículo sin \nmencionar la norma a la que pertenece, se entiende \nreferido al presente Decreto Legislativo. Asimismo, \ncuando se señalen numerales o incisos o literales sin \nindicar el artículo al que pertenecen, se entienden \nreferidos al artículo o párrafos o numeral en el que se \nmencionan respectivamente."
+    },
+    {
+      "id": "dl_1372::ley::art_4",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "4",
+      "titulo": "- Criterios para la determinación del",
+      "texto": "- Criterios para la determinación del \nbeneficiario final de las personas jurídicas y entes \njurídicos a que se refiere el literal a.1) del párrafo 3.1 \ndel artículo 3.\n4.1 Los siguientes criterios determinan la condición de \nbeneficiario final de las personas jurídicas a que se refiere \nel literal a.1) del párrafo 3.1 del artículo 3:\na) La persona natural que directa o indirectamente \na través de cualquier modalidad de adquisición posee \ncomo mínimo el diez por ciento (10%) del capital de una \npersona jurídica. \nLas personas jurídicas deben informar sobre los \nbeneficiarios finales indicando los porcentajes de \nparticipación en el capital de la persona jurídica.\nSe incluye en el presente literal, la información \nrelativa a la cadena de titularidad en los casos en que el \nbeneficiario final lo sea indirectamente.\nb) Una persona natural que, actuando individualmente \no con otros como una unidad de decisión, o a través de \notras personas naturales o jurídicas o entes jurídicos, \nostente facultades, por medios distintos a la propiedad, \npara designar o remover a la mayor parte de los órganos \nde administración, dirección o supervisión, o tenga poder \nde decisión en los acuerdos financieros, operativos y/o \ncomerciales que se adopten, o que ejerza otra forma de \ncontrol de la persona jurídica.\nSe incluye en el presente literal a la información \nrelativa a la cadena de control en los casos en los que el \nbeneficiario final lo sea por medios distintos a la propiedad. \nc) Cuando no se identifique a ninguna persona natural \nbajo los criterios señalados en los literales a) o b), se \nconsiderará como beneficiario final a la persona natural \nque ocupa el puesto administrativo superior.\n4.2 Los siguientes criterios determinan la condición de \nbeneficiario final de los entes jurídicos a los que se refiere \nel literal a.1) del párrafo 3.1 del artículo 3:\na) En el caso de fideicomisos o fondo de inversión, \nlas personas naturales que ostenten la calidad de \nfideicomitente, fiduciario, fideicomisario o grupo de \nbeneficiarios y cualquier otra persona natural que teniendo \nla calidad de partícipe o inversionista ejerza el control \nefectivo final del patrimonio, resultados o utilidades en un \nfideicomiso o fondo de inversión, según corresponda.\nb) En otros tipos de entes jurídicos, beneficiario final \nes la persona natural que ostente una posición similar \no equivalente a las mencionadas en a); y en el caso del \ntrust constituido de acuerdo a las fuentes del derecho \nextranjero, además la persona natural que ostente la \ncalidad de protector o administrador.\n4.3 Sin perjuicio de lo establecido en los párrafos \nanteriores sobre los alcances del término “beneficiario \nfinal” este debe interpretarse en consonancia con las \nrecomendaciones del Grupo de Acción Financiera \nInternacional (GAFI) y sus notas interpretativas expedidas \na la fecha de publicación del Decreto Legislativo.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "II",
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1372, Artículo 4",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Capítulo II · Artículo 4\n\n- Criterios para la determinación del \nbeneficiario final de las personas jurídicas y entes \njurídicos a que se refiere el literal a.1) del párrafo 3.1 \ndel artículo 3.\n4.1 Los siguientes criterios determinan la condición de \nbeneficiario final de las personas jurídicas a que se refiere \nel literal a.1) del párrafo 3.1 del artículo 3:\na) La persona natural que directa o indirectamente \na través de cualquier modalidad de adquisición posee \ncomo mínimo el diez por ciento (10%) del capital de una \npersona jurídica. \nLas personas jurídicas deben informar sobre los \nbeneficiarios finales indicando los porcentajes de \nparticipación en el capital de la persona jurídica.\nSe incluye en el presente literal, la información \nrelativa a la cadena de titularidad en los casos en que el \nbeneficiario final lo sea indirectamente.\nb) Una persona natural que, actuando individualmente \no con otros como una unidad de decisión, o a través de \notras personas naturales o jurídicas o entes jurídicos, \nostente facultades, por medios distintos a la propiedad, \npara designar o remover a la mayor parte de los órganos \nde administración, dirección o supervisión, o tenga poder \nde decisión en los acuerdos financieros, operativos y/o \ncomerciales que se adopten, o que ejerza otra forma de \ncontrol de la persona jurídica.\nSe incluye en el presente literal a la información \nrelativa a la cadena de control en los casos en los que el \nbeneficiario final lo sea por medios distintos a la propiedad. \nc) Cuando no se identifique a ninguna persona natural \nbajo los criterios señalados en los literales a) o b), se \nconsiderará como beneficiario final a la persona natural \nque ocupa el puesto administrativo superior.\n4.2 Los siguientes criterios determinan la condición de \nbeneficiario final de los entes jurídicos a los que se refiere \nel literal a.1) del párrafo 3.1 del artículo 3:\na) En el caso de fideicomisos o fondo de inversión, \nlas personas naturales que ostenten la calidad de \nfideicomitente, fiduciario, fideicomisario o grupo de \nbeneficiarios y cualquier otra persona natural que teniendo \nla calidad de partícipe o inversionista ejerza el control \nefectivo final del patrimonio, resultados o utilidades en un \nfideicomiso o fondo de inversión, según corresponda.\nb) En otros tipos de entes jurídicos, beneficiario final \nes la persona natural que ostente una posición similar \no equivalente a las mencionadas en a); y en el caso del \ntrust constituido de acuerdo a las fuentes del derecho \nextranjero, además la persona natural que ostente la \ncalidad de protector o administrador.\n4.3 Sin perjuicio de lo establecido en los párrafos \nanteriores sobre los alcances del término “beneficiario \nfinal” este debe interpretarse en consonancia con las \nrecomendaciones del Grupo de Acción Financiera \nInternacional (GAFI) y sus notas interpretativas expedidas \na la fecha de publicación del Decreto Legislativo."
+    },
+    {
+      "id": "dl_1372::ley::art_5",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "5",
+      "titulo": "- Criterios para determinar al beneficiario",
+      "texto": "- Criterios para determinar al beneficiario \nfinal y procedimiento de debida diligencia en el \nsistema de prevención y lucha contra el lavado de \nactivos y del financiamiento de terrorismo\nPara los fines de lucha contra el lavado de activos \ny financiamiento de terrorismo, los sujetos obligados \nconforme a las normas sobre dichas materias aplican \nlos criterios y el procedimiento de debida diligencia que \npermitan identificar al beneficiario final de acuerdo a lo \ndispuesto en la Ley N° 27693 y su reglamento, así como \npor las normas que emita la SBS y la SMV, en el ámbito \nde sus competencias.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "II",
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1372, Artículo 5",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Capítulo II · Artículo 5\n\n- Criterios para determinar al beneficiario \nfinal y procedimiento de debida diligencia en el \nsistema de prevención y lucha contra el lavado de \nactivos y del financiamiento de terrorismo\nPara los fines de lucha contra el lavado de activos \ny financiamiento de terrorismo, los sujetos obligados \nconforme a las normas sobre dichas materias aplican \nlos criterios y el procedimiento de debida diligencia que \npermitan identificar al beneficiario final de acuerdo a lo \ndispuesto en la Ley N° 27693 y su reglamento, así como \npor las normas que emita la SBS y la SMV, en el ámbito \nde sus competencias."
+    },
+    {
+      "id": "dl_1372::ley::art_6",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "6",
+      "titulo": "- Mecanismos que deben adoptar las",
+      "texto": "- Mecanismos que deben adoptar las \npersonas jurídicas o entes jurídicos para obtener \ny conservar la información actualizada sobre el \nbeneficiario final\n6.1 Para asegurar el acceso y disponibilidad de la \ninformación adecuada y precisa sobre el beneficiario \nfinal a que se refiere el literal a.1) del párrafo 3.1 del \nartículo 3 y el artículo 4, las personas jurídicas o entes \njurídicos deben implementar un procedimiento interno \nque comprenda mecanismos razonables para obtener \ny conservar información sobre la identificación de su(s) \nbeneficiario(s) final(es).\nSe entiende que la información es adecuada si \nes suficiente, relevante y válida para fundamentar la \nidentificación; y precisa, si es concreta, inequívoca y \ndesprovista de ambigüedades. \n6.2 Para los efectos previstos en el párrafo 6.1, las \npersonas jurídicas o entes jurídicos deben adoptar los \nsiguientes mecanismos:\na) Identificar y validar adecuadamente al beneficiario \nfinal de las personas jurídicas o entes jurídicos. A este \nefecto todas las personas que califican como beneficiarios \nfinales, conforme a lo previsto en el literal a.1) del párrafo \n3.1 del artículo 3 se encuentran obligadas a revelar su \nidentidad a las personas jurídicas o entes jurídicos, \nsegún corresponda, así como proporcionar sus nombres, \napellidos, tipo y número de documento de identidad, lugar \nde residencia y los demás datos que se establezcan \nmediante Decreto Supremo. \nb) Acceder y mantener disponible la información \nadecuada, precisa y actualizada acerca de los datos de la \nidentidad de los beneficiarios finales y demás datos que \nse establezcan mediante Decreto Supremo, para lo cual \nestos últimos proporcionan la información sustentatoria \ny actualizada de su condición como tal a las personas \njurídicas o entes jurídicos, según corresponda; e informan \ncualquier cambio en su condición.\n6.3 Sin perjuicio de lo establecido en el párrafo 6.2 las \npersonas jurídicas o entes jurídicos deberán:\na) Verificar los datos de identidad del beneficiario final \ny demás datos que se establezcan mediante Decreto \n\nJueves 2 de agosto de 2018\nSupremo, a través de documentos, datos e información \nadecuada y confiable de manera sustentada. \nb) Mantener actualizada la información del beneficiario \nfinal que establezca el Decreto Legislativo y normas \nreglamentarias.\nc) Conservar la información del beneficiario final, de \nla cadena de titularidad y de la documentación que le \nsirva de sustento durante el plazo que señale la normativa \nespecífica. En caso de que la información del beneficiario \nfinal sea llevada por terceros, estos últimos seguirán \nsiendo responsables de dicha conservación. \nCuando luego de aplicados los criterios para la \ndeterminación del beneficiario final a que se refiere el \nartículo 4, según corresponda, no se pueda obtener la \ninformación sobre su identificación , las personas jurídicas \no entes jurídicos están obligados a publicar este hecho en \ncualquier medio de comunicación idóneo que permita el \nconocimiento del público en general. \nd) Proporcionar y/o permitir el acceso oportuno de las \nautoridades competentes a la información del beneficiario \nfinal, incluyendo el acceso a la documentación que le \nsirve de sustento.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "III",
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1372, Artículo 6",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Capítulo III · Artículo 6\n\n- Mecanismos que deben adoptar las \npersonas jurídicas o entes jurídicos para obtener \ny conservar la información actualizada sobre el \nbeneficiario final\n6.1 Para asegurar el acceso y disponibilidad de la \ninformación adecuada y precisa sobre el beneficiario \nfinal a que se refiere el literal a.1) del párrafo 3.1 del \nartículo 3 y el artículo 4, las personas jurídicas o entes \njurídicos deben implementar un procedimiento interno \nque comprenda mecanismos razonables para obtener \ny conservar información sobre la identificación de su(s) \nbeneficiario(s) final(es).\nSe entiende que la información es adecuada si \nes suficiente, relevante y válida para fundamentar la \nidentificación; y precisa, si es concreta, inequívoca y \ndesprovista de ambigüedades. \n6.2 Para los efectos previstos en el párrafo 6.1, las \npersonas jurídicas o entes jurídicos deben adoptar los \nsiguientes mecanismos:\na) Identificar y validar adecuadamente al beneficiario \nfinal de las personas jurídicas o entes jurídicos. A este \nefecto todas las personas que califican como beneficiarios \nfinales, conforme a lo previsto en el literal a.1) del párrafo \n3.1 del artículo 3 se encuentran obligadas a revelar su \nidentidad a las personas jurídicas o entes jurídicos, \nsegún corresponda, así como proporcionar sus nombres, \napellidos, tipo y número de documento de identidad, lugar \nde residencia y los demás datos que se establezcan \nmediante Decreto Supremo. \nb) Acceder y mantener disponible la información \nadecuada, precisa y actualizada acerca de los datos de la \nidentidad de los beneficiarios finales y demás datos que \nse establezcan mediante Decreto Supremo, para lo cual \nestos últimos proporcionan la información sustentatoria \ny actualizada de su condición como tal a las personas \njurídicas o entes jurídicos, según corresponda; e informan \ncualquier cambio en su condición.\n6.3 Sin perjuicio de lo establecido en el párrafo 6.2 las \npersonas jurídicas o entes jurídicos deberán:\na) Verificar los datos de identidad del beneficiario final \ny demás datos que se establezcan mediante Decreto \n\nJueves 2 de agosto de 2018\nSupremo, a través de documentos, datos e información \nadecuada y confiable de manera sustentada. \nb) Mantener actualizada la información del beneficiario \nfinal que establezca el Decreto Legislativo y normas \nreglamentarias.\nc) Conservar la información del beneficiario final, de \nla cadena de titularidad y de la documentación que le \nsirva de sustento durante el plazo que señale la normativa \nespecífica. En caso de que la información del beneficiario \nfinal sea llevada por terceros, estos últimos seguirán \nsiendo responsables de dicha conservación. \nCuando luego de aplicados los criterios para la \ndeterminación del beneficiario final a que se refiere el \nartículo 4, según corresponda, no se pueda obtener la \ninformación sobre su identificación , las personas jurídicas \no entes jurídicos están obligados a publicar este hecho en \ncualquier medio de comunicación idóneo que permita el \nconocimiento del público en general. \nd) Proporcionar y/o permitir el acceso oportuno de las \nautoridades competentes a la información del beneficiario \nfinal, incluyendo el acceso a la documentación que le \nsirve de sustento."
+    },
+    {
+      "id": "dl_1372::ley::art_7",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "7",
+      "titulo": "- Obligación de entregar la información",
+      "texto": "- Obligación de entregar la información \npor entidades de la administración pública\nLas entidades de la Administración Pública a que \nse refiere el artículo I del Título Preliminar de la Ley del \nProcedimiento Administrativo General, cuyo Texto Único \nOrdenado fue aprobado por Decreto Supremo N° 0062017-JUS, están obligadas a atender los requerimientos \nde información que realicen la SUNAT, la SBS y la SMV y \notras autoridades competentes, a fin de que estas puedan \nidentificar y/o corroborar la información proporcionada de \nlos beneficiarios finales de las personas jurídicas o entes \njurídicos, según corresponda. \nLa SMV y la SBS, en cumplimiento de lo establecido en \nel artículo 62 y en la Octava Disposición Final del Código \nTributario deben proporcionar a la SUNAT, la información \nque tengan disponible del beneficiario final a que se refiere \nel artículo 5 para que esta pueda cumplir con lo señalado \nen el párrafo 8.1 del artículo 8 no pudiendo oponerse \nreserva alguna a dicho deber de información.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "III",
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1372, Artículo 7",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Capítulo III · Artículo 7\n\n- Obligación de entregar la información \npor entidades de la administración pública\nLas entidades de la Administración Pública a que \nse refiere el artículo I del Título Preliminar de la Ley del \nProcedimiento Administrativo General, cuyo Texto Único \nOrdenado fue aprobado por Decreto Supremo N° 0062017-JUS, están obligadas a atender los requerimientos \nde información que realicen la SUNAT, la SBS y la SMV y \notras autoridades competentes, a fin de que estas puedan \nidentificar y/o corroborar la información proporcionada de \nlos beneficiarios finales de las personas jurídicas o entes \njurídicos, según corresponda. \nLa SMV y la SBS, en cumplimiento de lo establecido en \nel artículo 62 y en la Octava Disposición Final del Código \nTributario deben proporcionar a la SUNAT, la información \nque tengan disponible del beneficiario final a que se refiere \nel artículo 5 para que esta pueda cumplir con lo señalado \nen el párrafo 8.1 del artículo 8 no pudiendo oponerse \nreserva alguna a dicho deber de información."
+    },
+    {
+      "id": "dl_1372::ley::art_8",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "8",
+      "titulo": "- De la utilización de la información",
+      "texto": "- De la utilización de la información \nsobre beneficiario final \n8.1 La información del beneficiario final puede ser \nutilizada por la SUNAT, la SBS y la SMV:\na) Para cumplir con la asistencia administrativa mutua \nen materia tributaria de acuerdo con lo establecido en los \ntratados internacionales, las decisiones de la Comisión \nde la Comunidad Andina y para intercambiar información \nentre las indicadas instituciones con la finalidad de cumplir \ncon lo señalado en los literales b) al d).\nb) Para el cumplimiento de las funciones de control del \ncumplimiento de obligaciones tributarias y lucha contra la \nevasión y elusión tributaria que corresponden a la SUNAT.\nc) Para el cumplimiento de las funciones de supervisión \ny análisis financiero de la SBS.\nd) Para el cumplimiento de las funciones de supervisión \ny control del mercado de valores de la SMV.\n8.2 Para asegurar el cumplimiento de lo establecido \nen los artículos 5 y 6, la SBS, la SMV y la SUNAT, según \ncorresponda, pueden exigir la información que resulte \nnecesaria para corroborar la identificación del beneficiario \nfinal y los demás datos de éstos que se establezcan en las \nnormas reglamentarias.\n8.3 De comprobarse la falsedad sobre la información \ndeclarada respecto del beneficiario final se impondrán \nlas sanciones previstas en la normativa sectorial, cuando \ncorresponda; sin perjuicio de iniciarse las acciones penales \na que hubiere lugar conforme a las normas penales.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "III",
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1372, Artículo 8",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Capítulo III · Artículo 8\n\n- De la utilización de la información \nsobre beneficiario final \n8.1 La información del beneficiario final puede ser \nutilizada por la SUNAT, la SBS y la SMV:\na) Para cumplir con la asistencia administrativa mutua \nen materia tributaria de acuerdo con lo establecido en los \ntratados internacionales, las decisiones de la Comisión \nde la Comunidad Andina y para intercambiar información \nentre las indicadas instituciones con la finalidad de cumplir \ncon lo señalado en los literales b) al d).\nb) Para el cumplimiento de las funciones de control del \ncumplimiento de obligaciones tributarias y lucha contra la \nevasión y elusión tributaria que corresponden a la SUNAT.\nc) Para el cumplimiento de las funciones de supervisión \ny análisis financiero de la SBS.\nd) Para el cumplimiento de las funciones de supervisión \ny control del mercado de valores de la SMV.\n8.2 Para asegurar el cumplimiento de lo establecido \nen los artículos 5 y 6, la SBS, la SMV y la SUNAT, según \ncorresponda, pueden exigir la información que resulte \nnecesaria para corroborar la identificación del beneficiario \nfinal y los demás datos de éstos que se establezcan en las \nnormas reglamentarias.\n8.3 De comprobarse la falsedad sobre la información \ndeclarada respecto del beneficiario final se impondrán \nlas sanciones previstas en la normativa sectorial, cuando \ncorresponda; sin perjuicio de iniciarse las acciones penales \na que hubiere lugar conforme a las normas penales."
+    },
+    {
+      "id": "dl_1372::ley::art_9",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "9",
+      "titulo": "- Verificación del cumplimiento de la",
+      "texto": "- Verificación del cumplimiento de la \nobligación de presentación de la declaración del \nbeneficiario final por los notarios públicos\nLa SUNAT pondrá a disposición de los notarios \npúblicos un acceso virtual mediante el cual deben verificar \nla presentación de la declaración jurada del beneficiario \nfinal, presentada por las personas jurídicas o entes \njurídicos.\nLos Notarios Públicos que en el ejercicio de sus \nfunciones tomen conocimiento del incumplimiento de la \npresentación de la declaración jurada del beneficiario \nfinal, deberán informarlo a la SUNAT en la forma, plazo y \ncondiciones que esta establezca mediante resolución de \nsuperintendencia.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1372, Artículo 9",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Capítulo IV · Artículo 9\n\n- Verificación del cumplimiento de la \nobligación de presentación de la declaración del \nbeneficiario final por los notarios públicos\nLa SUNAT pondrá a disposición de los notarios \npúblicos un acceso virtual mediante el cual deben verificar \nla presentación de la declaración jurada del beneficiario \nfinal, presentada por las personas jurídicas o entes \njurídicos.\nLos Notarios Públicos que en el ejercicio de sus \nfunciones tomen conocimiento del incumplimiento de la \npresentación de la declaración jurada del beneficiario \nfinal, deberán informarlo a la SUNAT en la forma, plazo y \ncondiciones que esta establezca mediante resolución de \nsuperintendencia."
+    },
+    {
+      "id": "dl_1372::ley::art_10",
+      "tipo_unidad": "articulo",
+      "documento": "ley",
+      "numero": "10",
+      "titulo": "- Refrendo",
+      "texto": "- Refrendo\nEl Decreto Legislativo es refrendado por el Presidente \ndel Consejo de Ministros, el Ministro de Economía y \nFinanzas y el Ministro de Justicia y Derechos Humanos.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": null
+      },
+      "cita": "Ley 1372, Artículo 10",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Capítulo IV · Artículo 10\n\n- Refrendo\nEl Decreto Legislativo es refrendado por el Presidente \ndel Consejo de Ministros, el Ministro de Economía y \nFinanzas y el Ministro de Justicia y Derechos Humanos."
+    },
+    {
+      "id": "dl_1372::ley::disp_disposiciones_complementarias_finales_primera",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "PRIMERA",
+      "titulo": "Reglamentación",
+      "texto": "Reglamentación\nEl Poder Ejecutivo, mediante decreto supremo, \nreglamenta el presente Decreto Legislativo, en un plazo \nno mayor a ciento veinte (120) días, a fin de regular el \ndetalle de la información que se debe recolectar y declarar \nsobre el beneficiario final; así como, las acciones que \ndeberán realizar e implementar las personas jurídicas y \nentes jurídicos obligados a presentar la declaración de \nbeneficiario final para que puedan acceder, proporcionar y \nconservar dicha información.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS FINALES"
+      },
+      "cita": "Ley 1372, Primera Disposición Complementaria Final",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Disposiciones Complementarias Finales · Primera Disposición Complementaria Final\n\nReglamentación\nEl Poder Ejecutivo, mediante decreto supremo, \nreglamenta el presente Decreto Legislativo, en un plazo \nno mayor a ciento veinte (120) días, a fin de regular el \ndetalle de la información que se debe recolectar y declarar \nsobre el beneficiario final; así como, las acciones que \ndeberán realizar e implementar las personas jurídicas y \nentes jurídicos obligados a presentar la declaración de \nbeneficiario final para que puedan acceder, proporcionar y \nconservar dicha información."
+    },
+    {
+      "id": "dl_1372::ley::disp_disposiciones_complementarias_finales_segunda",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "SEGUNDA",
+      "titulo": "Sobre la definición del beneficiario final",
+      "texto": "Sobre la definición del beneficiario final \ny del procedimiento de debida diligencia que deberán \naplicar las instituciones financieras\nMediante el Decreto Supremo a que se refiere \nel artículo 143-A de la Ley N° 26702, Ley General \ndel Sistema Financiero y del Sistema de Seguros y \nOrgánica de la Superintendencia de Banca y Seguros, \nse establece la definición del beneficiario final para \nefectos del intercambio automático de información, así \ncomo, el procedimiento de debida diligencia que deberán \naplicar las instituciones financieras, considerando las \nrecomendaciones y estándares internacionales existentes \naprobados, como aquellas establecidas en los convenios \ninternacionales.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS FINALES"
+      },
+      "cita": "Ley 1372, Segunda Disposición Complementaria Final",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Disposiciones Complementarias Finales · Segunda Disposición Complementaria Final\n\nSobre la definición del beneficiario final \ny del procedimiento de debida diligencia que deberán \naplicar las instituciones financieras\nMediante el Decreto Supremo a que se refiere \nel artículo 143-A de la Ley N° 26702, Ley General \ndel Sistema Financiero y del Sistema de Seguros y \nOrgánica de la Superintendencia de Banca y Seguros, \nse establece la definición del beneficiario final para \nefectos del intercambio automático de información, así \ncomo, el procedimiento de debida diligencia que deberán \naplicar las instituciones financieras, considerando las \nrecomendaciones y estándares internacionales existentes \naprobados, como aquellas establecidas en los convenios \ninternacionales."
+    },
+    {
+      "id": "dl_1372::ley::disp_disposiciones_complementarias_finales_tercera",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "TERCERA",
+      "titulo": "Suministro de información de los",
+      "texto": "Suministro de información de los \nbeneficiarios finales por los profesionales de derecho \ny de las ciencias contables y financieras, como \ntambién por los Notarios Públicos\nLas comunicaciones entre los profesionales de derecho \no profesionales de ciencias contables y financieras y sus \nclientes solo están protegidas por el secreto profesional \nen la medida que los mencionados profesionales ejerzan \nsu profesión. \nLos referidos profesionales no podrán negarse a \nproporcionar la información solicitada por las autoridades \ncompetentes invocando el derecho al secreto profesional \ncuando actúen, entre otros, como titulares de empresas, \nsocios, accionistas, participacionistas, representantes \nlegales, \napoderados, \nadministradores, \ndirectores, \nmiembros del consejo directivo u ostenten alguna calidad \nprevista en los literales a) y b) del párrafo 4.2 del artículo \n4.\nLa información relacionada a la identificación de \nlos beneficiarios finales de las personas jurídicas y \nentes jurídicos que se proporcione a las autoridades \ncompetentes en cumplimiento de este Decreto Legislativo \npor los profesionales de derecho o ciencias contables y \nfinancieras no constituye violación al secreto profesional \nni tampoco está sujeta a las restricciones sobre revelación \nde información derivadas de la confidencialidad impuesta \npor vía contractual o por cualquier disposición legal o \nreglamentaria.\nLo expuesto en la presente disposición es de \naplicación al Notario Público, en cuanto corresponda.\nDISPOSICION COMPLEMENTARIA TRANSITORIA",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS FINALES"
+      },
+      "cita": "Ley 1372, Tercera Disposición Complementaria Final",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Disposiciones Complementarias Finales · Tercera Disposición Complementaria Final\n\nSuministro de información de los \nbeneficiarios finales por los profesionales de derecho \ny de las ciencias contables y financieras, como \ntambién por los Notarios Públicos\nLas comunicaciones entre los profesionales de derecho \no profesionales de ciencias contables y financieras y sus \nclientes solo están protegidas por el secreto profesional \nen la medida que los mencionados profesionales ejerzan \nsu profesión. \nLos referidos profesionales no podrán negarse a \nproporcionar la información solicitada por las autoridades \ncompetentes invocando el derecho al secreto profesional \ncuando actúen, entre otros, como titulares de empresas, \nsocios, accionistas, participacionistas, representantes \nlegales, \napoderados, \nadministradores, \ndirectores, \nmiembros del consejo directivo u ostenten alguna calidad \nprevista en los literales a) y b) del párrafo 4.2 del artículo \n4.\nLa información relacionada a la identificación de \nlos beneficiarios finales de las personas jurídicas y \nentes jurídicos que se proporcione a las autoridades \ncompetentes en cumplimiento de este Decreto Legislativo \npor los profesionales de derecho o ciencias contables y \nfinancieras no constituye violación al secreto profesional \nni tampoco está sujeta a las restricciones sobre revelación \nde información derivadas de la confidencialidad impuesta \npor vía contractual o por cualquier disposición legal o \nreglamentaria.\nLo expuesto en la presente disposición es de \naplicación al Notario Público, en cuanto corresponda.\nDISPOSICION COMPLEMENTARIA TRANSITORIA"
+    },
+    {
+      "id": "dl_1372::ley::disp_disposiciones_complementarias_finales_nica",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "ÚNICA",
+      "titulo": "Designación del Oficial de Cumplimiento",
+      "texto": "Designación del Oficial de Cumplimiento\nPara el trámite de la designación del oficial de \ncumplimiento, a que se refiere el artículo 10 de la Ley N° \n\nJueves 2 de agosto de 2018 / \n El Peruano\n27693, Ley que crea la Unidad de Inteligencia Financiera \n- Perú, los sujetos obligados deben adjuntar la constancia \nde presentación de la declaración de beneficiario final, \nademás de la información y documentación establecida \nen las normas vigentes sobre prevención del lavado de \nactivos y del financiamiento del terrorismo.\nLos sujetos obligados que, a la fecha de entrada de \nvigencia del presente Decreto Legislativo, cuenten con \noficial de cumplimiento designado o cuenten con una \nsolicitud en trámite para su designación deben presentar \na la UIF, la constancia de presentación de la declaración \nde beneficiario final dentro de los treinta (30) días hábiles \nsiguientes a la fecha establecida para su vencimiento. \nTambién deben presentar la referida constancia en el \nplazo señalado, los sujetos que realicen el trámite para \nla designación de su oficial de cumplimiento a partir de la \nvigencia del presente Decreto Legislativo y hasta antes \nde establecido el plazo de vencimiento de la referida \ndeclaración señalado en el cronograma que apruebe la \nSUNAT. Vencido el plazo de treinta (30) días hábiles antes \nmencionado, la UIF exige en todos los casos la constancia \nde presentación de la declaración del beneficiario final \ncorrespondiente.",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS FINALES"
+      },
+      "cita": "Ley 1372, Única Disposición Complementaria Final",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Disposiciones Complementarias Finales · Única Disposición Complementaria Final\n\nDesignación del Oficial de Cumplimiento\nPara el trámite de la designación del oficial de \ncumplimiento, a que se refiere el artículo 10 de la Ley N° \n\nJueves 2 de agosto de 2018 / \n El Peruano\n27693, Ley que crea la Unidad de Inteligencia Financiera \n- Perú, los sujetos obligados deben adjuntar la constancia \nde presentación de la declaración de beneficiario final, \nademás de la información y documentación establecida \nen las normas vigentes sobre prevención del lavado de \nactivos y del financiamiento del terrorismo.\nLos sujetos obligados que, a la fecha de entrada de \nvigencia del presente Decreto Legislativo, cuenten con \noficial de cumplimiento designado o cuenten con una \nsolicitud en trámite para su designación deben presentar \na la UIF, la constancia de presentación de la declaración \nde beneficiario final dentro de los treinta (30) días hábiles \nsiguientes a la fecha establecida para su vencimiento. \nTambién deben presentar la referida constancia en el \nplazo señalado, los sujetos que realicen el trámite para \nla designación de su oficial de cumplimiento a partir de la \nvigencia del presente Decreto Legislativo y hasta antes \nde establecido el plazo de vencimiento de la referida \ndeclaración señalado en el cronograma que apruebe la \nSUNAT. Vencido el plazo de treinta (30) días hábiles antes \nmencionado, la UIF exige en todos los casos la constancia \nde presentación de la declaración del beneficiario final \ncorrespondiente."
+    },
+    {
+      "id": "dl_1372::ley::disp_disposiciones_complementarias_modificatorias_primera",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "PRIMERA",
+      "titulo": "Modificación del tercer párrafo del literal",
+      "texto": "Modificación del tercer párrafo del literal \na) del numeral 10 y del último párrafo del artículo 62, \ndel primer párrafo del numeral 7, del primer párrafo \ndel numeral 8, del encabezado del numeral 15 y del \nnumeral 15.1 del artículo 87, de los numerales 7 y 8 \ndel artículo 175, los numerales 2, 3 y 27 del artículo \n177, del sexto párrafo del literal b) del artículo 180, \ndel sétimo y octavo ítems del rubro 3, del segundo, \ntercero y del vigésimo sétimo ítems del rubro 5 de las \nTablas de Infracciones y Sanciones I, II y III referidos \na las infracciones de los numerales 7 y 8 del artículo \n175, y de los numerales 2, 3 y 27 del artículo 177; así \ncomo, el cuarto ítem del rubro 4 referido a la infracción \ndel numeral 4 del artículo 176 y de las Notas (10), (11), \n(14) y (20) de las Tablas de Infracciones y Sanciones \nTributarias I y II del Código Tributario. \nModificase el tercer párrafo del literal a) del numeral \n10 y el último párrafo del artículo 62, el primer párrafo del \nnumeral 7, el primer párrafo del numeral 8, el encabezado \ndel numeral 15 y el numeral 15.1 del artículo 87, los \nnumerales 7 y 8 del artículo 175, los numerales 2, 3 y 27 \ndel artículo 177, del sexto párrafo del literal b) del artículo \n180, el sétimo y octavo ítem del rubro 3, el segundo, \ntercero y el vigésimo sétimo ítems del rubro 5 de las \nTablas de Infracciones y Sanciones I, II, III referidos a las \ninfracciones de los numerales 7 y 8 del artículo 175, y \nde los numerales 2, 3 y 27 del artículo 177 del Código \nTributario; así como, el cuarto ítem del rubro 4 referido a la \ninfracción del numeral 4 del artículo 176 y las Notas (10), \n(11), (14) y (20) de las Tablas de Infracciones y Sanciones \nTributarias I y II del Código Tributario, en los siguientes \ntérminos:",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1372, Primera Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Disposiciones Complementarias Modificatorias · Primera Disposición Complementaria Modificatoria\n\nModificación del tercer párrafo del literal \na) del numeral 10 y del último párrafo del artículo 62, \ndel primer párrafo del numeral 7, del primer párrafo \ndel numeral 8, del encabezado del numeral 15 y del \nnumeral 15.1 del artículo 87, de los numerales 7 y 8 \ndel artículo 175, los numerales 2, 3 y 27 del artículo \n177, del sexto párrafo del literal b) del artículo 180, \ndel sétimo y octavo ítems del rubro 3, del segundo, \ntercero y del vigésimo sétimo ítems del rubro 5 de las \nTablas de Infracciones y Sanciones I, II y III referidos \na las infracciones de los numerales 7 y 8 del artículo \n175, y de los numerales 2, 3 y 27 del artículo 177; así \ncomo, el cuarto ítem del rubro 4 referido a la infracción \ndel numeral 4 del artículo 176 y de las Notas (10), (11), \n(14) y (20) de las Tablas de Infracciones y Sanciones \nTributarias I y II del Código Tributario. \nModificase el tercer párrafo del literal a) del numeral \n10 y el último párrafo del artículo 62, el primer párrafo del \nnumeral 7, el primer párrafo del numeral 8, el encabezado \ndel numeral 15 y el numeral 15.1 del artículo 87, los \nnumerales 7 y 8 del artículo 175, los numerales 2, 3 y 27 \ndel artículo 177, del sexto párrafo del literal b) del artículo \n180, el sétimo y octavo ítem del rubro 3, el segundo, \ntercero y el vigésimo sétimo ítems del rubro 5 de las \nTablas de Infracciones y Sanciones I, II, III referidos a las \ninfracciones de los numerales 7 y 8 del artículo 175, y \nde los numerales 2, 3 y 27 del artículo 177 del Código \nTributario; así como, el cuarto ítem del rubro 4 referido a la \ninfracción del numeral 4 del artículo 176 y las Notas (10), \n(11), (14) y (20) de las Tablas de Infracciones y Sanciones \nTributarias I y II del Código Tributario, en los siguientes \ntérminos:"
+    },
+    {
+      "id": "dl_1372::ley::disp_disposiciones_complementarias_modificatorias_segunda",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "SEGUNDA",
+      "titulo": "Incorporación del numeral 12 al tercer",
+      "texto": "Incorporación del numeral 12 al tercer \npárrafo del artículo 16, del numeral 15.4 al artículo \n87, del numeral 28 del artículo 177 y del vigésimo \noctavo ítem del rubro 5 de las Tablas de Infracciones y \nSanciones I, II y III referido a la infracción del numeral \n28 del artículo 177 del Código Tributario.\nIncorporase el numeral 12 al tercer párrafo del artículo \n16, el numeral 15.4 al artículo 87, el numeral 28 del artículo \n177, del vigésimo octavo ítem del rubro 5 de las Tablas de \nInfracciones y Sanciones I, II y III referido a la infracción \ndel numeral 28 del artículo 177 del Código Tributario, en \nlos siguientes términos:",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1372, Segunda Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Disposiciones Complementarias Modificatorias · Segunda Disposición Complementaria Modificatoria\n\nIncorporación del numeral 12 al tercer \npárrafo del artículo 16, del numeral 15.4 al artículo \n87, del numeral 28 del artículo 177 y del vigésimo \noctavo ítem del rubro 5 de las Tablas de Infracciones y \nSanciones I, II y III referido a la infracción del numeral \n28 del artículo 177 del Código Tributario.\nIncorporase el numeral 12 al tercer párrafo del artículo \n16, el numeral 15.4 al artículo 87, el numeral 28 del artículo \n177, del vigésimo octavo ítem del rubro 5 de las Tablas de \nInfracciones y Sanciones I, II y III referido a la infracción \ndel numeral 28 del artículo 177 del Código Tributario, en \nlos siguientes términos:"
+    },
+    {
+      "id": "dl_1372::ley::disp_disposiciones_complementarias_modificatorias_tercera",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "TERCERA",
+      "titulo": "Incorporación del inciso i) e inciso j) al",
+      "texto": "Incorporación del inciso i) e inciso j) al \npárrafo 10.2.1 del numeral 10.2 del artículo 10 de la \nLey N° 27693, Ley que crea la Unidad de Inteligencia \nFinanciera – Perú\nIncorporase el inciso i) y j) al párrafo 10.2.1 del \nnumeral 10.2 del artículo 10 de la Ley N° 27693, Ley que \ncrea la Unidad de Inteligencia Financiera – Perú, en el \nsiguiente término:",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1372, Tercera Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Disposiciones Complementarias Modificatorias · Tercera Disposición Complementaria Modificatoria\n\nIncorporación del inciso i) e inciso j) al \npárrafo 10.2.1 del numeral 10.2 del artículo 10 de la \nLey N° 27693, Ley que crea la Unidad de Inteligencia \nFinanciera – Perú\nIncorporase el inciso i) y j) al párrafo 10.2.1 del \nnumeral 10.2 del artículo 10 de la Ley N° 27693, Ley que \ncrea la Unidad de Inteligencia Financiera – Perú, en el \nsiguiente término:"
+    },
+    {
+      "id": "dl_1372::ley::disp_disposiciones_complementarias_modificatorias_cuarta",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "CUARTA",
+      "titulo": "Modificación de la Ley del Notariado",
+      "texto": "Modificación de la Ley del Notariado \nModifícase los literales d) y p) del artículo 16, y el \nliteral e) del artículo 54 del Decreto Legislativo N° 1049, \nLey de Notariado en los siguientes términos:",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1372, Cuarta Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Disposiciones Complementarias Modificatorias · Cuarta Disposición Complementaria Modificatoria\n\nModificación de la Ley del Notariado \nModifícase los literales d) y p) del artículo 16, y el \nliteral e) del artículo 54 del Decreto Legislativo N° 1049, \nLey de Notariado en los siguientes términos:"
+    },
+    {
+      "id": "dl_1372::ley::disp_disposiciones_complementarias_modificatorias_quinta",
+      "tipo_unidad": "disposicion",
+      "documento": "ley",
+      "numero": "QUINTA",
+      "titulo": "Modificación del primer párrafo del",
+      "texto": "Modificación del primer párrafo del \nnumeral 29 del inciso 3.1 del artículo 3 de la Ley N° \n29038, Ley que incorpora a la Unidad de Inteligencia \nFinanciera del Perú (UIF-PERÚ) a la Superintendencia \nde Banca, Seguros y Administradoras Privadas de \nFondos de Pensiones.\nModificase el primer párrafo del numeral 29 del inciso \n3.1 del artículo 3 de la Ley N° 29038, Ley que incorpora \na la Unidad de Inteligencia Financiera del Perú (UIFPERÚ) a la Superintendencia de Banca, Seguros y \nAdministradoras Privadas de Fondos de Pensiones, en \nlos siguientes términos:",
+      "jerarquia": {
+        "titulo": null,
+        "titulo_nombre": null,
+        "capitulo": "IV",
+        "seccion": null,
+        "bloque": "DISPOSICIONES COMPLEMENTARIAS MODIFICATORIAS"
+      },
+      "cita": "Ley 1372, Quinta Disposición Complementaria Modificatoria",
+      "vigente": true,
+      "modificado_por_texto": null,
+      "modificatorias": [],
+      "texto_para_embedding": "Decreto Legislativo que regula la obligación de las personas jurídicas y entes jurídicos de informar la identificación de los beneficiarios finales (Ley 1372) · Disposiciones Complementarias Modificatorias · Quinta Disposición Complementaria Modificatoria\n\nModificación del primer párrafo del \nnumeral 29 del inciso 3.1 del artículo 3 de la Ley N° \n29038, Ley que incorpora a la Unidad de Inteligencia \nFinanciera del Perú (UIF-PERÚ) a la Superintendencia \nde Banca, Seguros y Administradoras Privadas de \nFondos de Pensiones.\nModificase el primer párrafo del numeral 29 del inciso \n3.1 del artículo 3 de la Ley N° 29038, Ley que incorpora \na la Unidad de Inteligencia Financiera del Perú (UIFPERÚ) a la Superintendencia de Banca, Seguros y \nAdministradoras Privadas de Fondos de Pensiones, en \nlos siguientes términos:"
+    }
+  ]
+}
