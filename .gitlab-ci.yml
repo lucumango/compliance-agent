@@ -9,6 +9,11 @@
 pages:
   stage: deploy
   image: python:3.12-slim
+  variables:
+    # Los plugins de fecha y autoría leen la historia de git. Con el clon
+    # superficial por defecto (profundidad 1) no verían ninguna revisión y
+    # todas las páginas saldrían con la fecha del build.
+    GIT_DEPTH: 0
   script:
     - pip install --no-cache-dir -r docs/requirements.txt
     # --strict convierte los avisos en errores: un enlace roto tumba el job en

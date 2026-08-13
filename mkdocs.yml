@@ -28,6 +28,7 @@ theme:
         icon: material/brightness-4
         name: Modo claro
   features:
+    - navigation.footer
     - navigation.instant
     - navigation.top
     - navigation.tracking
@@ -61,6 +62,19 @@ markdown_extensions:
 plugins:
   - search:
       lang: es
+  # Fecha de última revisión, leída de la historia de git. Se prefiere a una
+  # fecha escrita a mano porque esa se queda vieja en cuanto alguien edita el
+  # documento y se olvida de tocarla.
+  - git-revision-date-localized:
+      locale: es
+      type: datetime
+      timezone: America/Lima
+      enable_creation_date: false
+      fallback_to_build_date: true
+  # Quién lo revisó. Las identidades se unifican con el .mailmap de la raíz.
+  - git-authors:
+      show_contribution: false
+      show_email_address: false
 
 nav:
   - Inicio: index.md

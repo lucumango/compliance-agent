@@ -1,0 +1,5 @@
+# Unifica las identidades con las que se ha firmado el repositorio, para que la
+# documentación publicada muestre un solo nombre. No reescribe la historia:
+# git resuelve el nombre canónico al leerla.
+Daniella Vargas <idaniellavargas@gmail.com> <idaniellavargas@gmail.com>
+Daniella Vargas <idaniellavargas@gmail.com> dani <reglias@lonelynode.local>
