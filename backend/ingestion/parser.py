@@ -30,6 +30,11 @@ _FURNITURE_LINE_RE = re.compile(
     r"|Tabla de Contenido"
     r"|.*El Peruano\s*/.*"
     r"|.*/\s*.*El Peruano.*"
+    # Cabecera y pie de las descargas de SPIJ, que se repiten en cada página y
+    # se cuelan a mitad de un artículo cuando este cruza el salto de página.
+    r"|Sistema Peruano de Informaci[óo]n Jur[íi]dica.*"
+    r"|Ministerio de Justicia\s*"
+    r"|Actualizado al:.*"
     r")\s*$",
     re.MULTILINE | re.IGNORECASE,
 )
@@ -85,8 +90,14 @@ _SECCION_RE = re.compile(r"^\s*SECCI[ÓO]N\s+([IVXLCDM|l]+)\b[ \t]*(.*)$", re.MU
 # Note: no leading \s* here on purpose. It must not swallow the preceding
 # newline, otherwise the line-start check in _find_markers can't tell a real
 # header from a cross-reference like "...visto en el artículo 24".
+# El sufijo de artículo insertado ("13-A", "3-B") va DENTRO del grupo: si se
+# deja fuera, el guion lo consume el separador y "Artículo 3-B" se registra
+# como un segundo "Artículo 3". En El Peruano eso solo producía una unidad
+# mal numerada; en SPIJ, donde las repeticiones son versiones sucesivas del
+# mismo artículo, hacía que un artículo insertado se confundiera con la
+# versión vigente del anterior.
 _ARTICULO_RE = re.compile(
-    r'["“]?Art[íi]culo\s+(\d+[A-Za-z]?)\s*[°ºª\*]?\s*[.\-–:]?\s*',
+    r'["“]?Art[íi]culo\s+(\d+(?:\s*[-–]\s*[A-Za-z])?)\s*[°ºª\*]?\s*[.\-–:]?\s*',
 )
 
 _MODIFICADO_RE = re.compile(
@@ -307,7 +318,29 @@ def _drop_spurious_matches(articulos: list[Articulo]) -> list[Articulo]:
     return result
 
 
-def parse_articulos(raw_text: str) -> list[Articulo]:
+def _ultima_version(articulos: list[Articulo]) -> list[Articulo]:
+    """Se queda con la versión vigente de cada artículo repetido.
+
+    Una descarga concordada de SPIJ no trae el articulado una vez: trae el
+    texto original y, a continuación, cada versión que lo fue sustituyendo,
+    todas con el mismo número y entrecomilladas. La vigente es la última.
+
+    Sin esto, la monotonicidad trata las repeticiones como coincidencias
+    falsas y las pliega dentro del primer artículo, con el resultado de que el
+    corpus se queda con el texto ORIGINAL de un documento cuya portada dice
+    'Actualizado al ...'. Es el peor fallo posible aquí: un texto derogado
+    presentado como vigente, y sin ninguna señal de que lo sea.
+    """
+    result: list[Articulo] = []
+    for art in articulos:
+        if result and result[-1].numero == art.numero:
+            result[-1] = art
+        else:
+            result.append(art)
+    return result
+
+
+def parse_articulos(raw_text: str, formato: str = "el_peruano") -> list[Articulo]:
     text = clean_text(raw_text)
     markers = _find_markers(text)
 
@@ -373,6 +406,8 @@ def parse_articulos(raw_text: str) -> list[Articulo]:
             )
         )
 
+    if formato == "spij":
+        articulos = _ultima_version(articulos)
     return _drop_spurious_matches(articulos)
 
 
@@ -426,9 +461,12 @@ def split_documents(text: str) -> list[Documento]:
     return docs
 
 
-def parse_norma(raw_text: str) -> dict[str, list[Articulo]]:
+def parse_norma(raw_text: str, formato: str = "el_peruano") -> dict[str, list[Articulo]]:
     """Split a raw PDF text into its constituent documents and parse each
     into a flat list of Articulo. Keys are "ley", "decreto_aprobatorio",
     "reglamento" (the latter two only present when found)."""
     text = clean_text(raw_text)
-    return {doc.tipo: parse_articulos(doc.texto) for doc in split_documents(text)}
+    return {
+        doc.tipo: parse_articulos(doc.texto, formato)
+        for doc in split_documents(text)
+    }
