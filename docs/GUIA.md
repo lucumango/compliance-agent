@@ -1,16 +1,14 @@
 # Guía de uso
 
-Para quien va a usar CARLOS en su trabajo, sin necesidad de saber cómo está
+Para quien va a usar CARLOS, sin necesidad de saber cómo está
 construido por dentro. Explica qué puede responder, cómo leer lo que responde y
-—sobre todo— **cuándo no fiarse**.
+cuándo no fiarse.
 
-## Qué es, en una frase
+## Qué es
 
 Un asistente que responde preguntas sobre normativa peruana **citando el
 artículo exacto** del que sale cada afirmación, a partir de un conjunto cerrado
-de normas cargadas. Si la pregunta cae fuera de esas normas, lo dice.
-
-No es un buscador ni un chatbot general. Solo sabe lo que se le ha cargado.
+de normas cargadas. Si la pregunta cae fuera de esas normas, lo declara. Solo sabe lo que se le ha cargado, no es un chatbot general.
 
 ## Sobre qué puedes preguntarle
 
@@ -34,8 +32,7 @@ Si una afirmación no lleva etiqueta, **no está respaldada por el corpus**. Esa
 es la señal más importante de toda la interfaz.
 
 **Los avisos naranjas importan.** Cuando una respuesta se apoya en un texto
-problemático —escaneado, o desactualizado— aparece un aviso arriba. No es
-decorativo: te está diciendo que verifiques esa cita antes de usarla.
+problemático —escaneado, o desactualizado— aparece un aviso arriba. Esto indica que verifiques esa cita antes de usarla.
 
 **"El corpus cargado no contiene una respuesta a esto"** es una respuesta
 correcta, no un fallo. Significa que la norma que resolvería tu duda no está
@@ -113,7 +110,7 @@ de datos.
 Debajo del filtro por materia hay un diagrama que muestra qué norma modifica o
 reglamenta a cuál.
 
-Lo más útil es lo que aparece **con línea discontinua**: normas que sabemos que
+Lo más útil es lo que aparece con línea discontinua: normas que sabemos que
 afectan a las cargadas pero cuyo texto no tenemos. Es el mapa de lo que le
 falta al sistema, a la vista y no escondido en un documento técnico.
 
