@@ -15,23 +15,30 @@ from typing import Iterator
 
 from .anonimizar import anonimizar
 from .diagrama import amerita_diagrama, generar_diagrama
-from .gemini import generar, generar_stream
+from .documentos import ResultadoDoc, buscar as buscar_documentos
+from .gemini import embed_query, generar, generar_stream
 from .retrieval import Buscador, Resultado
 
 _SISTEMA = """Eres un asistente de normativa y compliance del Perú. Respondes \
 únicamente a partir de las FUENTES entregadas.
 
 Reglas estrictas:
-1. Cada afirmación normativa debe citar su fuente con la etiqueta exacta entre \
-corchetes, por ejemplo [F1] o [F3]. No inventes etiquetas.
-2. Si las fuentes no responden la consulta, dilo explícitamente: "El corpus \
+1. Cada afirmación debe citar su fuente con la etiqueta exacta entre \
+corchetes, por ejemplo [F1] o [D2]. No inventes etiquetas.
+2. Hay dos clases de fuente y NO son equivalentes. Las [F] son normativa \
+peruana: obligan. Las [D] son documentos que subió el usuario —políticas \
+internas, contratos, manuales— y solo dicen lo que esa organización decidió. \
+Nunca presentes una [D] como si fuera una obligación legal, ni una [F] como si \
+fuera una decisión interna. Si ambas hablan de lo mismo y difieren, dilo: \
+señala qué exige la norma y qué dice el documento.
+3. Si las fuentes no responden la consulta, dilo explícitamente: "El corpus \
 cargado no contiene una respuesta a esto" e indica qué norma habría que revisar. \
 No completes con conocimiento propio.
-3. No des asesoría legal. Informas y remites a la fuente para que un \
+4. No des asesoría legal. Informas y remites a la fuente para que un \
 profesional valide.
-4. Si citas un plazo, un monto o un porcentaje, transcríbelo tal como aparece \
+5. Si citas un plazo, un monto o un porcentaje, transcríbelo tal como aparece \
 en la fuente. Nunca lo estimes ni lo redondees.
-5. Responde en español, de forma concreta y estructurada. Si la consulta implica \
+6. Responde en español, de forma concreta y estructurada. Si la consulta implica \
 pasos, enuméralos.
 
 FUENTES:
@@ -46,14 +53,22 @@ class Respuesta:
     fuentes: list[Resultado]
     advertencias: list[str]
     diagrama: str | None = None
+    documentos: list[ResultadoDoc] | None = None
 
 
-def _formatear_fuentes(resultados: list[Resultado]) -> str:
+def _formatear_fuentes(
+    resultados: list[Resultado], documentos: list[ResultadoDoc] | None = None
+) -> str:
     bloques = []
     for i, r in enumerate(resultados, 1):
         u = r.unidad
         estado = "" if u.vigente else " [MARCADA COMO NO VIGENTE]"
-        bloques.append(f"[F{i}] {u.cita}{estado}\n{u.texto}")
+        bloques.append(f"[F{i}] NORMA · {u.cita}{estado}\n{u.texto}")
+    for i, d in enumerate(documentos or [], 1):
+        f = d.fragmento
+        bloques.append(
+            f"[D{i}] DOCUMENTO DEL USUARIO · {f.cita}\n{f.texto}"
+        )
     return "\n\n---\n\n".join(bloques)
 
 
@@ -78,27 +93,59 @@ def _advertencias(resultados: list[Resultado]) -> list[str]:
     return avisos
 
 
+def _aviso_documentos(documentos: list[ResultadoDoc]) -> list[str]:
+    if not documentos:
+        return []
+    nombres = sorted({d.fragmento.documento_nombre for d in documentos})
+    return [
+        "La respuesta cita documentos que subiste ("
+        + ", ".join(nombres)
+        + "). Lo que dicen es política interna, no obligación legal."
+    ]
+
+
+def _recuperar(
+    texto: str,
+    buscador: Buscador,
+    k: int,
+    materias: list[str] | None,
+    token: str | None,
+    k_docs: int,
+) -> tuple[list[Resultado], list[ResultadoDoc]]:
+    """Las dos búsquedas, con un solo embedding y cuotas separadas.
+
+    Ver `rag/documentos.py`: no compiten en un ranking común a propósito.
+    """
+    vector = embed_query(texto)
+    corpus = buscador.buscar(texto, k=k, materias=materias, vector=vector)
+    docs = buscar_documentos(texto, token, k=k_docs, vector=vector)
+    return corpus, docs
+
+
 def responder(
     consulta: str,
     buscador: Buscador,
     k: int = 6,
     materias: list[str] | None = None,
     con_diagrama: bool = True,
+    token: str | None = None,
+    k_docs: int = 4,
 ) -> Respuesta:
     # La consulta puede traer datos reales del caso; se enmascaran antes de
     # salir del entorno y se restauran al devolver la respuesta.
     anon = anonimizar(consulta)
 
-    resultados = buscador.buscar(anon.texto, k=k, materias=materias)
-    if not resultados:
+    resultados, docs = _recuperar(anon.texto, buscador, k, materias, token, k_docs)
+    if not resultados and not docs:
         return Respuesta(
             texto="El corpus cargado no contiene información sobre esta consulta.",
             fuentes=[],
             advertencias=[],
+            documentos=[],
         )
 
     prompt = _SISTEMA.format(
-        fuentes=_formatear_fuentes(resultados), consulta=anon.texto
+        fuentes=_formatear_fuentes(resultados, docs), consulta=anon.texto
     )
     texto = anon.restaurar(generar(prompt))
 
@@ -109,8 +156,9 @@ def responder(
     return Respuesta(
         texto=texto,
         fuentes=resultados,
-        advertencias=_advertencias(resultados),
+        advertencias=_advertencias(resultados) + _aviso_documentos(docs),
         diagrama=diagrama,
+        documentos=docs,
     )
 
 
@@ -125,6 +173,7 @@ class Preparacion:
     advertencias: list[str]
     anonimizacion: object
     lleva_diagrama: bool
+    documentos: list[ResultadoDoc]
 
 
 def preparar(
@@ -133,20 +182,23 @@ def preparar(
     k: int = 6,
     materias: list[str] | None = None,
     con_diagrama: bool = True,
+    token: str | None = None,
+    k_docs: int = 4,
 ) -> Preparacion:
     anon = anonimizar(consulta)
-    resultados = buscador.buscar(anon.texto, k=k, materias=materias)
+    resultados, docs = _recuperar(anon.texto, buscador, k, materias, token, k_docs)
 
     return Preparacion(
         prompt=_SISTEMA.format(
-            fuentes=_formatear_fuentes(resultados), consulta=anon.texto
+            fuentes=_formatear_fuentes(resultados, docs), consulta=anon.texto
         )
-        if resultados
+        if (resultados or docs)
         else "",
         fuentes=resultados,
-        advertencias=_advertencias(resultados),
+        advertencias=_advertencias(resultados) + _aviso_documentos(docs),
         anonimizacion=anon,
         lleva_diagrama=con_diagrama and amerita_diagrama(consulta),
+        documentos=docs,
     )
 
 

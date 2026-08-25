@@ -84,6 +84,7 @@ nav:
   - Cargar documentos: INGESTA.md
   - Grafo de trazabilidad: GRAFO.md
   - Historial de chats: DATOS.md
+  - Documentos del usuario: DOCUMENTOS.md
   - Sistema de diseño: DESIGN.md
   - Desplegar: DEPLOY.md
   - Pendiente: PENDIENTE.md
