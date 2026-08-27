@@ -1,16 +1,54 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-PE">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#161D23" />
+
+    <!-- El favicon existía en public/ y no estaba declarado, así que el
+         navegador pedía /favicon.ico, que no existe, y pintaba el icono
+         genérico. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/ey-logo-marca.png" />
+
+    <title>CARLOS — Asistente de normativa peruana</title>
+    <meta
+      name="description"
+      content="Asistente de normativa y compliance del Perú. Responde citando el artículo exacto de un corpus cerrado de normas peruanas, y declara cuándo no tiene la respuesta en vez de improvisarla."
+    />
+
+    <!-- NO INDEXAR. Es una herramienta interna: exige cuenta, guarda
+         conversaciones y admite documentos del cliente. Que aparezca en un
+         buscador no aporta nada y expone la URL a tráfico que solo puede
+         gastar cuota del modelo.
+
+         Si algún día hay una versión pública, esta línea es lo único que hay
+         que quitar: el resto de metadatos ya está puesto para ese momento. -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- Vista previa al pegar el enlace en Teams, Slack o WhatsApp. Esto sí
+         hace falta aunque no se indexe: sin ello el enlace sale como una URL
+         desnuda y nadie sabe qué está abriendo. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="CARLOS" />
+    <meta property="og:locale" content="es_PE" />
+    <meta
+      property="og:title"
+      content="CARLOS — Asistente de normativa peruana"
+    />
+    <meta
+      property="og:description"
+      content="Responde citando el artículo exacto de la norma. Si el corpus no lo cubre, lo dice."
+    />
+    <meta property="og:image" content="/ey-logo.png" />
+    <meta name="twitter:card" content="summary" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>CARLOS — Compliance Audit Regulatory Logic Operational System</title>
   </head>
   <body>
     <div id="root"></div>
