@@ -86,7 +86,9 @@ app.add_middleware(
 
 class ConsultaIn(BaseModel):
     consulta: str = Field(min_length=3, max_length=2000)
-    k: int = Field(default=6, ge=1, le=15)
+    # 8 y no 6: con 11 normas cargadas, seis plazas se llenan antes de llegar
+    # al articulo que enumera lo que se pregunta. Ver docs/CORRECCIONES.md.
+    k: int = Field(default=8, ge=1, le=15)
     materias: Optional[List[str]] = None
     con_diagrama: bool = True
     # Cuota separada, no parte de k: los documentos del usuario no compiten con

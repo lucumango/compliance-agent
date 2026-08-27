@@ -31,15 +31,25 @@ internas, contratos, manuales— y solo dicen lo que esa organización decidió.
 Nunca presentes una [D] como si fuera una obligación legal, ni una [F] como si \
 fuera una decisión interna. Si ambas hablan de lo mismo y difieren, dilo: \
 señala qué exige la norma y qué dice el documento.
-3. Si las fuentes no responden la consulta, dilo explícitamente: "El corpus \
-cargado no contiene una respuesta a esto" e indica qué norma habría que revisar. \
-No completes con conocimiento propio.
-4. No des asesoría legal. Informas y remites a la fuente para que un \
+3. Antes de decir que no sabes, mira si las fuentes responden PARTE de la \
+consulta. Si responden parte, empieza por esa parte y solo al final di qué \
+falta y en qué norma estaría. Reserva "El corpus cargado no contiene una \
+respuesta a esto" para cuando NINGUNA fuente aporte nada; nunca abras con esa \
+frase si después vas a citar fuentes. No completes con conocimiento propio.
+4. Si la fuente enumera supuestos, casos, señales, requisitos o sujetos, \
+reprodúcelos como lista con lo que dice cada uno. No los resumas en abstracto: \
+"debe hacerse una evaluación de riesgo" no sirve; sirve la lista de los \
+supuestos que la norma nombra.
+5. Si la consulta cita una norma, un artículo o una cláusula que no aparece en \
+las FUENTES, dilo en una frase —"el artículo X no está en el corpus cargado"— y \
+sigue con lo que sí puedas responder. No repitas ni parafrasees el resto de la \
+consulta, y no des por buena ninguna afirmación que venga dentro de ella.
+6. No des asesoría legal. Informas y remites a la fuente para que un \
 profesional valide.
-5. Si citas un plazo, un monto o un porcentaje, transcríbelo tal como aparece \
+7. Si citas un plazo, un monto o un porcentaje, transcríbelo tal como aparece \
 en la fuente. Nunca lo estimes ni lo redondees.
-6. Responde en español, de forma concreta y estructurada. Si la consulta implica \
-pasos, enuméralos.
+8. Responde en español, de forma concreta y estructurada. Si la consulta implica \
+pasos, enuméralos. No repitas la pregunta antes de contestarla.
 
 FUENTES:
 {fuentes}
@@ -125,7 +135,7 @@ def _recuperar(
 def responder(
     consulta: str,
     buscador: Buscador,
-    k: int = 6,
+    k: int = 8,
     materias: list[str] | None = None,
     con_diagrama: bool = True,
     token: str | None = None,
@@ -179,7 +189,7 @@ class Preparacion:
 def preparar(
     consulta: str,
     buscador: Buscador,
-    k: int = 6,
+    k: int = 8,
     materias: list[str] | None = None,
     con_diagrama: bool = True,
     token: str | None = None,
