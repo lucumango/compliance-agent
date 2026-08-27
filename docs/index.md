@@ -28,6 +28,7 @@ Fuentes:
 | Ver qué norma modifica a cuál | [Grafo de trazabilidad](GRAFO.md) |
 | Tocar la interfaz | [Sistema de diseño](DESIGN.md) |
 | Desplegar | [Desplegar](DEPLOY.md) |
+| Ver qué observaciones se atendieron, con la respuesta antes y después | [Correcciones](CORRECCIONES.md) |
 | Saber qué falta por hacer | [Pendiente](PENDIENTE.md) |
 
 ## El corpus, de un vistazo
