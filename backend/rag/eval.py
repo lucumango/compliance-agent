@@ -65,10 +65,22 @@ CASOS: list[tuple[str, str | None, int]] = [
         5,
     ),
     (
-        # El artículo 1 es el que fija a quién alcanza la obligación; el 3 solo
-        # define qué se entiende por beneficiario final.
+        # Antes se esperaba dl_1372::ley::art_1, que solo enuncia el objeto del
+        # decreto. Desde que está cargado el DS 003-2019-EF, el artículo que
+        # responde de verdad es el 3 de su reglamento, titulado literalmente
+        # "Obligados a presentar la declaración del beneficiario final". El
+        # caso se actualizó porque la recuperación mejoró, no para taparla.
         "¿Quién está obligado a declarar el beneficiario final?",
-        "dl_1372::ley::art_1",
+        "ds_003_2019_ef::reglamento::art_3",
+        5,
+    ),
+    (
+        # El caso que justifica todo el corpus de privacidad. Con el reglamento
+        # de 2013 esta pregunta no tenía respuesta y el sistema se abstenía,
+        # que era lo correcto pero no lo útil. El artículo 34 del reglamento
+        # vigente fija 48 horas.
+        "¿En cuánto tiempo debo notificar una brecha de datos personales a la ANPD?",
+        "ds_016_2024_jus::reglamento::art_34",
         5,
     ),
     (

@@ -3,7 +3,7 @@
 **Compliance Audit Regulatory Logic Operational System**
 
 Responde consultas sobre normativa peruana **citando artículo por artículo**, a
-partir de un corpus cerrado de 754 unidades extraídas de 8 documentos
+partir de un corpus cerrado de 824 unidades extraídas de 11 documentos
 normativos. Cuando el corpus no cubre la consulta, lo dice en vez de improvisar.
 
 ```
@@ -36,17 +36,20 @@ Fuentes:
 |---|---|---|---|
 | **Ley 29783** — Seguridad y Salud en el Trabajo | `sst_laboral` | 252 | Consolidado al 28/04/2022 |
 | **ISO 37001:2016** — Antisoborno | `antisoborno` | 204 | Traducción oficial |
-| **Ley 29733** — Protección de Datos Personales | `proteccion_datos` | 194 | Consolidado |
+| **DS 016-2024-JUS** — Reglamento de la Ley de Protección de Datos | `proteccion_datos` | 148 | Vigente desde 2024 |
+| **Ley 29733** — Protección de Datos Personales | `proteccion_datos` | 55 | Consolidado |
+| **Res. SBS 789-2018** — Sujetos obligados ante la UIF | `laft` | 45 | Vigente a 04/2026 |
 | **DL 1106** — Lucha contra el lavado de activos | `laft` | 33 | Consolidado |
-| **Ley 30424** — Responsabilidad admin. de personas jurídicas | `anticorrupcion` | 30 | ⚠⚠ Original de 2016 · OCR |
+| **Ley 30424** — Responsabilidad admin. de personas jurídicas | `anticorrupcion` | 33 | Consolidado a 12/2024 |
 | **DL 1372** — Beneficiario final | `laft` | 19 | Consolidado |
-| **Ley 27693** — Crea la UIF-Perú | `laft` | 18 | Consolidado al 01/10/2025 (SPIJ) |
+| **Ley 27693** — Crea la UIF-Perú | `laft` | 18 | Consolidado al 01/10/2025 |
+| **DS 003-2019-EF** — Reglamento del DL 1372 | `laft` | 13 | Consolidado |
 | **Ley 29038** — Incorpora la UIF a la SBS | `laft` | 4 | Consolidado |
 
-**Total: 754 unidades citables** en 8 normas.
+**Total: 824 unidades citables** en 11 normas.
 
-La Ley 30424 requiere cuidado: el detalle está en
-[Fuentes del corpus](FUENTES.md).
+Ninguna está cotejada todavía contra SPIJ: `metadata_verificada` sigue en falso
+en las once. El detalle de cada fuente está en [Fuentes del corpus](FUENTES.md).
 
 ## El caso negativo es el que importa
 

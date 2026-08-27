@@ -35,31 +35,89 @@ _FURNITURE_LINE_RE = re.compile(
     r"|Sistema Peruano de Informaci[óo]n Jur[íi]dica.*"
     r"|Ministerio de Justicia\s*"
     r"|Actualizado al:.*"
+    # "El Peruano" a solas. En el DS 016-2024-JUS la cabecera no cabe en una
+    # línea y sale repartida en tres —fecha, "El Peruano", barra— así que los
+    # patrones de arriba, que la esperan entera, no la reconocían.
+    r"|El Peruano"
     r")\s*$",
     re.MULTILINE | re.IGNORECASE,
 )
 _BARE_PAGE_NUM_RE = re.compile(r"^\s*\d{1,3}\s*$")
 
 
+# Vecinos de la cabecera cuando la maqueta la reparte en varias líneas: la
+# fecha con día de la semana encima, y la barra separadora sola debajo. Ni una
+# ni otra se borran por su cuenta —una fecha suelta puede ser texto legítimo—,
+# solo cuando acompañan a una línea de cabecera.
+_FECHA_DIARIO_RE = re.compile(
+    r"^\s*(?:Lunes|Martes|Mi[ée]rcoles|Jueves|Viernes|S[áa]bado|Domingo)\s+\d{1,2}\s+de\s+"
+    r"\w+\s+de\s+\d{4}\s*$",
+    re.IGNORECASE,
+)
+_BARRA_SOLA_RE = re.compile(r"^\s*/\s*$")
+
+
 def strip_page_furniture(text: str) -> str:
     lines = text.split("\n")
     keep: list[str] = []
-    for i, line in enumerate(lines):
+    i = 0
+    while i < len(lines):
+        line = lines[i]
         if _FURNITURE_LINE_RE.match(line):
-            # The page number sits on the line above the running head; drop it
-            # too, but only in that context so genuine numbered items survive.
-            if keep and _BARE_PAGE_NUM_RE.match(keep[-1]):
+            # El número de página, o la fecha del diario, van en la línea de
+            # encima; se quitan solo en ese contexto para que un ítem numerado
+            # o una fecha del articulado sobrevivan.
+            while keep and (
+                _BARE_PAGE_NUM_RE.match(keep[-1]) or _FECHA_DIARIO_RE.match(keep[-1])
+            ):
                 keep.pop()
+            # Y la barra separadora, en la de abajo.
+            j = i + 1
+            while j < len(lines) and (
+                not lines[j].strip() or _BARRA_SOLA_RE.match(lines[j])
+            ):
+                if _BARRA_SOLA_RE.match(lines[j]):
+                    i = j
+                j += 1
+            i += 1
             continue
         if _BARE_PAGE_NUM_RE.match(line):
             nxt = next((l for l in lines[i + 1 :] if l.strip()), "")
             if _FURNITURE_LINE_RE.match(nxt):
+                i += 1
                 continue
         keep.append(line)
+        i += 1
     return "\n".join(keep)
 
 
+# Espacios que no son el espacio de siempre: el duro (\xa0), el fino y el de
+# cifra. La exportación a PDF del SPIJ los usa como sangría —"\xa0 \xa0 \xa0
+# Artículo 1."— y ahí dejan de ser presentación para convertirse en un
+# problema: `str.strip(" ")` no los quita, así que la comprobación de
+# principio de línea de `_find_markers` veía prefijo no vacío y descartaba
+# TODOS los artículos del documento. Se normalizan antes de nada.
+_ESPACIOS_RAROS_RE = re.compile(r"[\u00a0\u2007\u202f\u2009\u2002-\u2006]")
+
+# Ligaduras tipográficas. El Peruano compone con ellas y la extracción las
+# devuelve tal cual, a veces con un espacio detrás que parte la palabra:
+# "Notiﬁ cación", "beneﬁ ciario ﬁ nal". Así escritas no coinciden con la
+# palabra que alguien teclea en una consulta, y el embedding las trata como
+# otra cosa. El espacio se absorbe solo cuando detrás sigue la palabra.
+_LIGADURAS = {
+    "\ufb00": "ff", "\ufb01": "fi", "\ufb02": "fl",
+    "\ufb03": "ffi", "\ufb04": "ffl", "\ufb05": "st", "\ufb06": "st",
+}
+_LIGADURA_RE = re.compile("([" + "".join(_LIGADURAS) + r"])(\s?)(?=\w)")
+
+
+def _normalizar_ligaduras(texto: str) -> str:
+    return _LIGADURA_RE.sub(lambda m: _LIGADURAS[m.group(1)], texto)
+
+
 def clean_text(text: str) -> str:
+    text = _normalizar_ligaduras(text)
+    text = _ESPACIOS_RAROS_RE.sub(" ", text)
     text = _FORM_FEED_RE.sub("\n", text)
     text = _HYPHEN_BREAK_RE.sub(r"\1\2", text)  # rejoin hyphenated line breaks
     text = _MULTI_SPACE_RE.sub(" ", text)
@@ -134,8 +192,13 @@ _ORDINAL_SIMPLE = (
 # The leading quote marks text substituted by a later norma, exactly as it
 # does for articles ("“Cuarta.- Las auditorías ..."), so it must be optional
 # here too or every amended disposición is missed.
+# El espacio va ANTES de la comilla, no solo después: en el SPIJ la versión que
+# sustituye a una disposición se abre así —' “ PRIMERA. Vigencia'—, con sangría
+# delante del entrecomillado. Con la comilla obligada al principio de línea, esa
+# versión no se reconocía como disposición, y el corpus se quedaba con la
+# redacción derogada más la nota al pie pegada detrás.
 _DISPOSICION_ITEM_RE = re.compile(
-    rf"^[\"“]?[ \t]*((?:D[ÉE]CIM[OA]|VIG[ÉE]SIM[OA])\s+(?:{_ORDINAL_SIMPLE})"
+    rf"^[ \t]*[\"“]?[ \t]*((?:D[ÉE]CIM[OA]|VIG[ÉE]SIM[OA])\s+(?:{_ORDINAL_SIMPLE})"
     rf"|D[ÉE]CIMA|VIG[ÉE]SIMA|{_ORDINAL_SIMPLE})"
     r"\s*[.\-–]+\s*",
     re.MULTILINE | re.IGNORECASE,
@@ -436,6 +499,31 @@ _DECRETO_SUPREMO_RE = re.compile(r"^DECRETO SUPREMO\b", re.MULTILINE)
 _REGLAMENTO_HEADER_RE = re.compile(r"^REGLAMENTO DE LA (?:presente )?LEY\b", re.MULTILINE)
 _PRESIDENTE_RE = re.compile(r"^EL PRESIDENTE DE LA REP[ÚU]BLICA\b", re.MULTILINE)
 
+# El encabezado "REGLAMENTO DE LA LEY..." no basta para situar dónde empieza el
+# reglamento, porque aparece hasta tres veces y solo una es la buena:
+#
+#   1. dentro del título del propio decreto ("DECRETO SUPREMO QUE APRUEBA EL
+#      REGLAMENTO DE LA LEY Nº 29733"), partido en dos líneas por la maqueta;
+#   2. como cabecera repetida en cada página de la sección del reglamento,
+#      que puede caer a mitad de una frase;
+#   3. como encabezado real, cuando el documento lo lleva.
+#
+# Tomar el primero dejaba el articulado del decreto y el del reglamento en un
+# mismo documento. Como la numeración se reinicia en 1, la desambiguación por
+# monotonicidad plegaba TODO el reglamento dentro del artículo 4 del decreto:
+# el DS 016-2024-JUS entraba con 13 unidades en vez de 135.
+#
+# El límite fiable es la fórmula de cierre del decreto: después de la firma no
+# queda nada del decreto, y lo siguiente que abre estructura es el reglamento.
+_CIERRE_DECRETO_RE = re.compile(
+    r"^[ \t]*(?:Dado en la Casa de Gobierno|Reg[íi]strese, com[uú]n[íi]quese)",
+    re.MULTILINE,
+)
+_DECRETA_RE = re.compile(r"^[ \t]*(?:DECRETA|RESUELVE)\s*:", re.MULTILINE)
+_APERTURA_REGLAMENTO_RE = re.compile(
+    r"^[ \t]*(?:T[ÍI]TULO\b|CAP[ÍI]TULO\b|Art[íi]culo\s+(?:I\b|1\b))", re.MULTILINE
+)
+
 
 @dataclass
 class Documento:
@@ -456,7 +544,22 @@ def split_documents(text: str) -> list[Documento]:
     # The reglamento's cover heading sits right before "DECRETO SUPREMO";
     # the closest one before it marks where the Ley text ends.
     ley_end = max(before, default=decreto_pos)
+
+    # Solo valen los encabezados posteriores a la parte dispositiva: los que
+    # caen antes son el título del propio decreto.
+    decreta = _DECRETA_RE.search(text, decreto_pos)
+    if decreta:
+        after = [pos for pos in after if pos > decreta.end()]
     reglamento_start = min(after, default=None)
+
+    # Y si tras la firma del decreto empieza una estructura nueva, ese es el
+    # límite bueno aunque haya un encabezado más adelante: el de más adelante
+    # suele ser la cabecera de página, que cae a mitad de frase.
+    cierre = _CIERRE_DECRETO_RE.search(text, decreta.end() if decreta else decreto_pos)
+    if cierre:
+        apertura = _APERTURA_REGLAMENTO_RE.search(text, cierre.end())
+        if apertura and (reglamento_start is None or apertura.start() < reglamento_start):
+            reglamento_start = apertura.start()
 
     presidente_match = _PRESIDENTE_RE.search(text)
     ley_start = presidente_match.start() if presidente_match else 0

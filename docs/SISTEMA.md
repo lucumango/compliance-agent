@@ -20,7 +20,7 @@ Usuario escribe en el chat
    ├─ 2. gemini.py          embed_query(consulta)  ->  vector de 3072 dims
    │                        (taskType RETRIEVAL_QUERY, distinto al del índice)
    │
-   ├─ 3. retrieval.py       producto punto contra los 701 vectores del índice
+   ├─ 3. retrieval.py       producto punto contra los 824 vectores del índice
    │                        -> las k unidades más parecidas (k=6 por defecto)
    │
    ├─ 4. answer.py          arma el prompt: reglas + FUENTES + consulta
@@ -101,7 +101,7 @@ Repetir ese contexto es lo que permite recuperar el artículo con preguntas
 formuladas *en términos de la ley* ("¿qué dice la ley de datos personales
 sobre…?"), no solo con las palabras que el articulado usa por dentro.
 
-El índice es un `numpy.ndarray` de 701 × 3072 normalizado al construirlo, así
+El índice es un `numpy.ndarray` de 824 × 3072 normalizado al construirlo, así
 que la similitud coseno es un producto punto. A esta escala una búsqueda
 exhaustiva tarda menos de un milisegundo; migrar a pgvector o Qdrant tiene
 sentido cuando el corpus crezca mucho o haya multi-tenancy, no antes.
@@ -195,10 +195,10 @@ que fija cada valor. Una multa calculada con la UIT de otro año está mal.
 
 ## Verificación
 
-| Comando | Qué comprueba | Estado (2026-08-12) |
+| Comando | Qué comprueba | Estado (2026-08-27) |
 |---|---|---|
-| `python -m ingestion.validate` | Numeración sin huecos ni duplicados, texto de página filtrado, unidades vacías, citas presentes | **701 unidades, 0 problemas** |
-| `python -m rag.eval` | 8 consultas de referencia recuperan el artículo que deben, cubriendo las 5 normas | **8/8** |
+| `python -m ingestion.validate` | Numeración sin huecos ni duplicados, texto de página filtrado, unidades vacías, citas presentes | **824 unidades, 0 problemas** |
+| `python -m rag.eval` | 12 consultas de referencia recuperan el artículo que deben, cubriendo las materias del corpus | **12/12** |
 | `npm run build` (frontend) | Compila | OK |
 | `npm run lint` (frontend) | oxlint | Limpio |
 
@@ -215,14 +215,14 @@ respuesta generada — solo la recuperación que la precede.
 - **No es asesoría legal.** El corpus informa; un abogado valida.
 - **La anonimización no reconoce nombres de persona.** "Juan Pérez" viaja al
   modelo tal cual. Hace falta un NER si eso importa para el caso de uso.
-- **La Ley 30424 es el texto de 2016**, sin modificatorias. Ver [FUENTES.md](FUENTES.md).
-- **Fechas y URLs sin verificar:** `metadata_verificada: false` en las 5 normas.
+- **Fechas y URLs sin verificar:** `metadata_verificada: false` en las 11 normas.
+  Nadie ha cotejado todavía el corpus contra SPIJ.
 - **La autenticación es una clave compartida, no cuentas.** Va en el bundle del
   frontend, así que es visible en las herramientas de desarrollo. Y no
   distingue quién es quién.
 - **Un solo régimen en la calculadora de multas:** protección de datos
   (Ley 29733, Art. 39). Los rangos de SST y LA/FT están en normas no cargadas.
-- **`titulo` está truncado en 211 de las 701 unidades.** El parser toma la
+- **`titulo` está truncado en buena parte de las 824 unidades.** El parser toma la
   primera línea *visual* del PDF, que corta a media frase. Hoy es latente —el
   frontend no lo muestra— pero está en el contrato de la API y en los
   embeddings de ISO.

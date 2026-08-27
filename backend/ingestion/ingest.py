@@ -87,12 +87,19 @@ def _singularizar_bloque(bloque: str) -> str:
 
 def _unit_from_articulo(meta: NormaMeta, doc_tipo: str, art) -> dict:
     doc_label = _DOC_LABEL.get(doc_tipo, doc_tipo)
+    nombre_corto = meta.cita_como or f"Ley {meta.numero}"
+    # El decreto que aprueba un reglamento y el reglamento mismo se citan por
+    # el nombre del decreto, no por el de la ley que reglamentan: es lo que
+    # permite ir a buscarlo.
+    # Cuando la norma ya se cita por el número del decreto —"DS 016-2024-JUS"—
+    # anteponerle "Decreto Supremo aprobatorio" repite lo mismo dos veces.
+    if doc_tipo == "ley" or (doc_tipo == "decreto_aprobatorio" and meta.cita_como):
+        base_cita = nombre_corto
+    else:
+        base_cita = f"{doc_label} · {nombre_corto}"
     norma_label = (
-        f"{meta.nombre} (Ley {meta.numero})"
-        if doc_tipo == "ley"
-        else f"{doc_label} de la Ley {meta.numero}"
+        f"{meta.nombre} ({nombre_corto})" if doc_tipo == "ley" else base_cita
     )
-    base_cita = f"Ley {meta.numero}" if doc_tipo == "ley" else f"{doc_label} de la Ley {meta.numero}"
 
     if art.tipo == "disposicion":
         bloque = art.bloque or "Disposiciones Complementarias"
@@ -168,6 +175,9 @@ def ingest_norma(meta: NormaMeta) -> dict:
         unidades = [_unit_from_clausula(meta, c) for c in parse_iso(full_text)]
     else:
         for doc_tipo, articulos in parse_norma(full_text, meta.formato).items():
+            if doc_tipo in meta.documentos_excluidos:
+                print(f"  (omitido: {doc_tipo}, {len(articulos)} unidades)")
+                continue
             unidades += [_unit_from_articulo(meta, doc_tipo, a) for a in articulos]
 
     return {

@@ -86,6 +86,23 @@ class NormaMeta:
     estado_texto: str = "consolidado"
     consolidado_a: str | None = None
 
+    # Cómo se nombra la norma al citarla. Vacío = "Ley <numero>", que vale para
+    # una ley y para nada más: un decreto legislativo citado como "Ley 1372" o
+    # un reglamento como "Reglamento de la Ley 003-2019-EF" son citas que no
+    # existen, y una cita que no se puede buscar no sirve de nada.
+    cita_como: str = ""
+
+    # Documentos del PDF que NO entran al corpus, por su clave: "ley",
+    # "decreto_aprobatorio", "reglamento".
+    #
+    # Existe por un caso concreto: el PDF de la Ley 29733 trae anexo el
+    # reglamento de 2013, derogado por el DS 016-2024-JUS. Cargar los dos deja
+    # al índice con dos reglamentos de la misma ley compitiendo por la misma
+    # consulta, y el que gane depende del embedding, no de cuál rige. Excluir
+    # es preferible a marcar como no vigente: el aviso llega DESPUÉS de que la
+    # recuperación ya haya gastado una plaza en texto derogado.
+    documentos_excluidos: list[str] = field(default_factory=list)
+
     relaciones: list[Relacion] = field(default_factory=list)
 
 
@@ -100,8 +117,9 @@ REGISTRY: list[NormaMeta] = [
         entidad_reguladora=["ANPD", "MINJUSDH"],
         parser="ley",
         notas=(
-            "Texto consolidado (Editora Perú). Incluye el Reglamento aprobado "
-            "por DS 003-2013-JUS como documento anexo."
+            "Texto consolidado (Editora Perú). El PDF trae anexo el Reglamento "
+            "de 2013, que NO se carga: fue derogado por el DS 016-2024-JUS, "
+            "que sí está en el corpus como norma propia."
         ),
         por_que_relevante=(
             "Obliga a toda entidad que trate datos personales en el Perú: "
@@ -111,12 +129,21 @@ REGISTRY: list[NormaMeta] = [
             "calculadora."
         ),
         estado_texto="consolidado",
+        documentos_excluidos=["reglamento"],
         relaciones=[
             Relacion(
                 tipo="reglamentada_por",
-                destino="DS 003-2013-JUS",
-                nota="Incluido en el mismo PDF como documento anexo.",
+                destino="ds_016_2024_jus",
+                nota="Reglamento vigente desde 2024.",
                 en_corpus=True,
+            ),
+            Relacion(
+                tipo="reglamentada_por",
+                destino="DS 003-2013-JUS",
+                nota=(
+                    "Reglamento anterior, derogado. Viene en el mismo PDF y se "
+                    "excluye a propósito para no competir con el vigente."
+                ),
             ),
         ],
     ),
@@ -233,6 +260,7 @@ REGISTRY: list[NormaMeta] = [
     ),
     NormaMeta(
         norma_id="dl_1106",
+        cita_como="DL 1106",
         archivo="dl_1106.pdf",
         tipo="ley",
         numero="1106",
@@ -252,6 +280,7 @@ REGISTRY: list[NormaMeta] = [
     ),
     NormaMeta(
         norma_id="dl_1372",
+        cita_como="DL 1372",
         archivo="dl_1372.pdf",
         tipo="ley",
         numero="1372",
@@ -278,36 +307,46 @@ REGISTRY: list[NormaMeta] = [
         numero="30424",
         nombre=(
             "Ley que regula la responsabilidad administrativa de las personas "
-            "jurídicas por el delito de cohecho activo transnacional"
+            "jurídicas en el proceso penal"
         ),
         materia="anticorrupcion",
         entidad_reguladora=["MINJUSDH", "Ministerio Público"],
         parser="ley",
-        fecha_publicacion="2016-04-21",  # leído de la cabecera del escaneo
+        formato="spij",
+        fecha_publicacion="2016-04-21",
         notas=(
-            "Texto ORIGINAL publicado el 21/04/2016, sin las modificatorias "
-            "posteriores (p. ej. Ley 30835, Ley 31740). No usar como texto "
-            "vigente sin actualizar."
+            "Texto concordado del SPIJ, actualizado a diciembre de 2024. "
+            "Sustituye al escaneo con OCR del texto original de 2016 que se "
+            "cargó primero. Cuando un artículo o una disposición han sido "
+            "modificados, el corpus recoge la última versión: el alcance "
+            "vigente ya no es solo cohecho activo transnacional."
         ),
         por_que_relevante=(
             "Establece la responsabilidad administrativa de la persona "
             "jurídica y el modelo de prevención que la atenúa. Es la norma que "
             "justifica tener un programa de compliance, no solo políticas "
-            "sueltas. ATENCIÓN: el texto cargado es el de 2016 y su alcance "
-            "quedó limitado al cohecho activo transnacional; el vigente cubre "
-            "bastante más."
+            "sueltas."
         ),
-        estado_texto="original",
+        estado_texto="consolidado",
+        consolidado_a="2024-12-31",
         relaciones=[
+            # Absorbidas en el texto concordado: su articulado vive ya dentro
+            # del texto tal como se carga. Cargarlas aparte duplicaría los
+            # mismos artículos en dos redacciones distintas.
+            Relacion(
+                tipo="modificada_por",
+                destino="DL 1352",
+                nota="Absorbido en el texto concordado.",
+            ),
             Relacion(
                 tipo="modificada_por",
                 destino="Ley 30835",
-                nota="Amplía el catálogo de delitos. No cargada.",
+                nota="Amplía el catálogo de delitos. Absorbida en el concordado.",
             ),
             Relacion(
                 tipo="modificada_por",
                 destino="Ley 31740",
-                nota="Modificatoria posterior. No cargada.",
+                nota="Absorbida en el texto concordado.",
             ),
             Relacion(
                 tipo="reglamentada_por",
@@ -320,7 +359,109 @@ REGISTRY: list[NormaMeta] = [
         ],
     ),
     NormaMeta(
+        norma_id="ds_016_2024_jus",
+        cita_como="DS 016-2024-JUS",
+        archivo="ds_016_2024_jus.pdf",
+        tipo="ley",
+        numero="016-2024-JUS",
+        nombre="Reglamento de la Ley de Protección de Datos Personales",
+        materia="proteccion_datos",
+        entidad_reguladora=["ANPD", "MINJUSDH"],
+        parser="ley",
+        notas=(
+            "Publicación en El Peruano de noviembre de 2024. Deroga el "
+            "Reglamento aprobado por DS 003-2013-JUS, que venía anexo al PDF "
+            "de la Ley 29733 y por eso se excluye allí."
+        ),
+        por_que_relevante=(
+            "Es el reglamento vigente de la norma más consultada del corpus. "
+            "Desarrolla lo que la ley enuncia: plazos, formas del "
+            "consentimiento, medidas de seguridad y procedimiento "
+            "sancionador. Sin él, una consulta de privacidad se responde con "
+            "la ley a secas, que casi nunca trae el detalle que se pregunta."
+        ),
+        estado_texto="consolidado",
+        relaciones=[
+            Relacion(
+                tipo="reglamenta_a",
+                destino="ley_29733",
+                nota="Reglamento vigente.",
+                en_corpus=True,
+            ),
+            Relacion(
+                tipo="deroga_a",
+                destino="DS 003-2013-JUS",
+                nota="Reglamento anterior, excluido del corpus.",
+            ),
+        ],
+    ),
+    NormaMeta(
+        norma_id="ds_003_2019_ef",
+        cita_como="DS 003-2019-EF",
+        archivo="ds_003_2019_ef.pdf",
+        tipo="ley",
+        numero="003-2019-EF",
+        nombre="Reglamento del Decreto Legislativo 1372, beneficiario final",
+        materia="laft",
+        entidad_reguladora=["SUNAT", "MEF"],
+        parser="ley",
+        fecha_publicacion="2019-01-08",  # leído de la cabecera de El Peruano
+        notas="Publicación en El Peruano del 08/01/2019.",
+        por_que_relevante=(
+            "Define los umbrales y la forma de la declaración de beneficiario "
+            "final: qué porcentaje de participación obliga a declarar, quién "
+            "declara y con qué formato. El DL 1372 fija el deber; esto es lo "
+            "que se aplica en una debida diligencia real."
+        ),
+        estado_texto="consolidado",
+        relaciones=[
+            Relacion(
+                tipo="reglamenta_a",
+                destino="dl_1372",
+                nota="Reglamento del deber de informar el beneficiario final.",
+                en_corpus=True,
+            ),
+        ],
+    ),
+    NormaMeta(
+        norma_id="res_sbs_789_2018",
+        cita_como="Resolución SBS 789-2018",
+        archivo="res_sbs_789_2018.pdf",
+        tipo="ley",
+        numero="789-2018",
+        nombre=(
+            "Norma para la prevención del lavado de activos y del "
+            "financiamiento del terrorismo aplicable a los sujetos obligados "
+            "bajo supervisión de la UIF-Perú"
+        ),
+        materia="laft",
+        entidad_reguladora=["SBS", "UIF-Perú"],
+        parser="ley",
+        fecha_publicacion="2018-03-03",  # publicada 03/03/2018, emitida 28/02/2018
+        notas=(
+            "Versión descargada del portal de la SBS, marcada como vigente a "
+            "abril de 2026. Existe una descarga anterior de octubre de 2025 "
+            "cuyo texto difiere; se cargó la más reciente."
+        ),
+        por_que_relevante=(
+            "Determina a quién aplica qué régimen de prevención de lavado: "
+            "define los sujetos obligados bajo supervisión de la UIF y las "
+            "obligaciones concretas de cada uno. Es la norma que decide si un "
+            "tercero evaluado está o no dentro del sistema."
+        ),
+        estado_texto="consolidado",
+        relaciones=[
+            Relacion(
+                tipo="reglamenta_a",
+                destino="ley_27693",
+                nota="Desarrolla el régimen de los sujetos obligados.",
+                en_corpus=True,
+            ),
+        ],
+    ),
+    NormaMeta(
         norma_id="iso_37001",
+        cita_como="ISO 37001:2016",
         archivo="iso_37001.pdf",
         tipo="norma_tecnica",
         numero="37001:2016",
