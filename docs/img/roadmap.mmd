@@ -1,0 +1,66 @@
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "fontFamily": "Helvetica Neue, Helvetica, Arial, sans-serif",
+    "primaryColor": "#FFE600",
+    "primaryTextColor": "#2E2E38",
+    "primaryBorderColor": "#2E2E38",
+    "lineColor": "#747480",
+    "textColor": "#2E2E38",
+    "titleColor": "#2E2E38",
+    "sectionBkgColor": "#F2F2F4",
+    "altSectionBkgColor": "#E3E3E8",
+    "sectionBkgColor2": "#F2F2F4",
+    "taskBkgColor": "#C4C4CD",
+    "taskBorderColor": "#747480",
+    "taskTextColor": "#2E2E38",
+    "taskTextDarkColor": "#2E2E38",
+    "taskTextLightColor": "#2E2E38",
+    "taskTextOutsideColor": "#2E2E38",
+    "activeTaskBkgColor": "#FFE600",
+    "activeTaskBorderColor": "#2E2E38",
+    "doneTaskBkgColor": "#747480",
+    "doneTaskBorderColor": "#4B4B55",
+    "critBkgColor": "#2E2E38",
+    "critBorderColor": "#161D23",
+    "gridColor": "#C9C9D1",
+    "todayLineColor": "#161D23"
+  },
+  "gantt": {
+    "barHeight": 22,
+    "barGap": 6,
+    "topPadding": 56,
+    "leftPadding": 240,
+    "gridLineStartPadding": 32,
+    "fontSize": 13,
+    "sectionFontSize": 14,
+    "numberSectionStyles": 3
+  }
+}}%%
+gantt
+    title Hoja de ruta
+    dateFormat  YYYY-MM-DD
+    axisFormat  %b %Y
+    tickInterval 1month
+    todayMarker stroke:#161D23,stroke-width:2px,opacity:0.9
+
+    section Hecho
+    Base · monorepo, UI, corpus y docs   :done, h1, 2026-08-05, 2026-08-14
+
+    section Fase 1 · Confianza
+    Ingesta tanda B · cierra el grafo    :active, f1, 2026-08-14, 12d
+    Ley 30424 consolidada                :crit, f2, after f1, 14d
+    Cotejo contra SPIJ de las 8 normas   :f3, after f2, 21d
+    Titulos truncados y control en validate :f4, 2026-08-26, 10d
+    Pruebas de anonimizacion y multas    :f5, after f4, 14d
+
+    section Fase 2 · Producto
+    Historial de chats en Supabase       :p1, 2026-10-05, 21d
+    Cuentas de usuario reales            :p2, after p1, 21d
+    Multas derivadas del corpus          :p3, 2026-11-16, 24d
+    Regimenes de SST y LA/FT             :p4, after p3, 24d
+
+    section Fase 3 · Plataforma
+    Alertas de vigencia desde el grafo   :l1, 2027-01-11, 40d
+    Nuevas materias del corpus           :l2, 2027-02-01, 60d
+    pgvector y multi-tenant              :l3, after l1, 45d

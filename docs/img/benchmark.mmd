@@ -1,0 +1,77 @@
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "fontFamily": "Helvetica Neue, Helvetica, Arial, sans-serif",
+    "primaryColor": "#FFE600",
+    "primaryTextColor": "#2E2E38",
+    "primaryBorderColor": "#2E2E38",
+    "lineColor": "#747480",
+    "textColor": "#2E2E38",
+    "titleColor": "#2E2E38",
+    "sectionBkgColor": "#F2F2F4",
+    "altSectionBkgColor": "#E3E3E8",
+    "sectionBkgColor2": "#F2F2F4",
+    "taskBkgColor": "#C4C4CD",
+    "taskBorderColor": "#747480",
+    "taskTextColor": "#2E2E38",
+    "taskTextDarkColor": "#2E2E38",
+    "taskTextLightColor": "#2E2E38",
+    "taskTextOutsideColor": "#2E2E38",
+    "activeTaskBkgColor": "#FFE600",
+    "activeTaskBorderColor": "#2E2E38",
+    "doneTaskBkgColor": "#747480",
+    "doneTaskBorderColor": "#4B4B55",
+    "critBkgColor": "#2E2E38",
+    "critBorderColor": "#161D23",
+    "gridColor": "#C9C9D1",
+    "todayLineColor": "#161D23"
+  },
+  "gantt": {
+    "barHeight": 22,
+    "barGap": 6,
+    "topPadding": 56,
+    "leftPadding": 265,
+    "gridLineStartPadding": 32,
+    "fontSize": 13,
+    "sectionFontSize": 14,
+    "numberSectionStyles": 3
+  }
+}}%%
+gantt
+    title Benchmark de evaluacion agentica · cumplimiento y delitos economicos en LatAm
+    dateFormat  YYYY-MM-DD
+    axisFormat  %b %Y
+    tickInterval 1month
+    todayMarker stroke:#161D23,stroke-width:2px,opacity:0.9
+
+    section Diseno
+    Alcance · LA/FT, anticorrupcion, libre competencia :active, d1, 2026-08-17, 15d
+    Taxonomia de capacidades a medir       :active, d2, 2026-08-17, 21d
+    Panel de expertos · 2 compliance, 1 forense, 1 gobernanza :d3, 2026-08-24, 24d
+    Protocolo de anotacion y acuerdo entre anotadores :d4, after d2, 18d
+
+    section Conjunto de evaluacion
+    Casuistica por jurisdiccion            :c1, 2026-09-14, 30d
+    Items de eufemismos y modismos locales :c2, after c1, 35d
+    Items trampa · negaciones y excepciones :c3, 2026-10-19, 30d
+    Items de abstencion · sin respuesta en la norma :c4, after c3, 25d
+    Doble anotacion y adjudicacion         :c5, 2026-11-23, 35d
+    Piloto y calibracion                   :c6, after c5, 21d
+
+    section Propuesta IberLEF 2027
+    Redaccion de la propuesta de tarea     :crit, i1, 2026-10-05, 21d
+    Envio de la propuesta                  :crit, milestone, i2, 2026-10-30, 0d
+    Respuesta del comite                   :i3, 2026-11-02, 30d
+
+    section Linea base y medicion
+    Linea base humana de expertos          :b1, 2027-01-04, 35d
+    Arnes de evaluacion reproducible       :b2, 2027-01-04, 28d
+    Corrida sobre los modelos principales  :b3, after b2, 30d
+    Metricas de calibracion y abstencion   :b4, after b3, 21d
+
+    section Tarea compartida y publicacion
+    Entrega de train y dev a participantes :t1, 2027-02-15, 14d
+    Fase de test y ranking                 :t2, 2027-04-12, 28d
+    Articulo de resumen y working notes    :crit, t3, 2027-05-10, 35d
+    Camera ready                           :crit, milestone, t4, 2027-07-05, 0d
+    IberLEF 2027 · SEPLN                   :milestone, t5, 2027-09-13, 0d

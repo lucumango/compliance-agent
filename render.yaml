@@ -41,3 +41,12 @@ services:
       # El dominio del frontend en Vercel, separado por comas si hay varios.
       - key: ALLOWED_ORIGINS
         sync: false
+      # Cuentas, historial y documentos. Si faltan, la API arranca igual y
+      # responde 503 en /api/documentos: el chat sigue funcionando sin sesión.
+      #
+      # Solo la clave `anon` (o `sb_publishable_...`). La secreta salta row
+      # level security por diseño y no debe salir del panel de Supabase.
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false

@@ -136,6 +136,33 @@ el frontend llama a `127.0.0.1:8000` y en producción falla.
 **El backend en Render:** *Root Directory* = `backend`, runtime Docker. El
 `Dockerfile` está ahí dentro y no necesita nada más.
 
+### Las variables de Supabase
+
+Cuentas, historial y documentos necesitan cuatro variables, dos a cada lado.
+Son el mismo par repetido: Vite solo expone al navegador lo que empieza por
+`VITE_`, así que el backend no puede leer las del frontend ni al revés.
+
+| Dónde | Variable |
+|---|---|
+| Render | `SUPABASE_URL` |
+| Render | `SUPABASE_ANON_KEY` |
+| Vercel | `VITE_SUPABASE_URL` |
+| Vercel | `VITE_SUPABASE_ANON_KEY` |
+
+**Solo la clave `anon`** —o su equivalente `sb_publishable_…`—. La secreta
+(`service_role` o `sb_secret_…`) salta row level security por diseño: con ella
+un fallo no filtra una fila, filtra la tabla. No debe salir del panel de
+Supabase, y el servidor no la necesita para nada.
+
+Si faltan, no se rompe nada: la API arranca igual, `/api/salud` devuelve
+`cuentas: false`, y el chat funciona sin login, historial ni documentos. Es el
+mismo modo en que corre en local sin configurar.
+
+Antes de que entre gente de fuera, en el panel de Supabase: **Authentication →
+Sign In / Providers → Email**. El registro está abierto a cualquier dominio de
+correo, y restringirlo se hace ahí, no en el código — una comprobación en el
+navegador se salta llamando a la API directamente.
+
 ## Antes de exponerlo al público
 
 Dos cosas que hoy **bloquean** un despliegue abierto:
