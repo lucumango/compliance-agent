@@ -15,12 +15,21 @@ from contextlib import asynccontextmanager
 # entiende `list[str] | None`. Los modelos usan typing explícito por eso.
 from typing import List, Optional
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from auth import aviso_de_arranque, limitar_uso, verificar_clave
+import documentos as docs
+import nube
+from auth import (
+    Usuario,
+    aviso_de_arranque,
+    limitar_uso,
+    usuario_opcional,
+    usuario_requerido,
+    verificar_clave,
+)
 from rag.answer import preparar, responder, responder_stream
 from rag.diagrama import generar_diagrama
 from rag.gemini import GeminiError
@@ -80,6 +89,9 @@ class ConsultaIn(BaseModel):
     k: int = Field(default=6, ge=1, le=15)
     materias: Optional[List[str]] = None
     con_diagrama: bool = True
+    # Cuota separada, no parte de k: los documentos del usuario no compiten con
+    # el corpus por las mismas plazas. Ver rag/documentos.py.
+    k_documentos: int = Field(default=4, ge=0, le=8)
 
 
 class FuenteOut(BaseModel):
@@ -93,9 +105,27 @@ class FuenteOut(BaseModel):
     vigente: bool
 
 
+class DocumentoFuenteOut(BaseModel):
+    """Un fragmento de un documento del usuario, citado en la respuesta.
+
+    Se serializa aparte de FuenteOut y no como un caso suyo: la interfaz tiene
+    que poder pintarlos distinto sin adivinar, porque confundir una política
+    interna con una norma es el fallo que más caro sale aquí.
+    """
+
+    etiqueta: str
+    cita: str
+    documento: str
+    documento_id: str
+    pagina: Optional[int]
+    texto: str
+    score: float
+
+
 class ConsultaOut(BaseModel):
     respuesta: str
     fuentes: List[FuenteOut]
+    documentos: List[DocumentoFuenteOut]
     advertencias: List[str]
     diagrama: Optional[str]
     descargo: str
@@ -109,6 +139,10 @@ def salud() -> dict:
         "ok": buscador is not None,
         "unidades_indexadas": len(buscador.unidades) if buscador else 0,
         "uit": {"anio": anio, "valor": valor, "fuente": fuente},
+        # El frontend usa esto para decidir si enseña login e historial o
+        # arranca en modo suelto, en vez de llevarlo en su propia variable de
+        # entorno y arriesgarse a que discrepen.
+        "cuentas": nube.configurado(),
     }
 
 
@@ -183,8 +217,25 @@ def grafo() -> dict:
     return {"nodos": list(nodos.values()), "aristas": aristas}
 
 
+def _documentos_out(resultados) -> list[dict]:
+    return [
+        {
+            "etiqueta": f"D{i}",
+            "cita": d.fragmento.cita,
+            "documento": d.fragmento.documento_nombre,
+            "documento_id": d.fragmento.documento_id,
+            "pagina": d.fragmento.pagina,
+            "texto": d.fragmento.texto,
+            "score": round(d.score, 4),
+        }
+        for i, d in enumerate(resultados or [], 1)
+    ]
+
+
 @app.post("/api/consultar", response_model=ConsultaOut, dependencies=PROTEGIDO)
-def consultar(payload: ConsultaIn) -> ConsultaOut:
+def consultar(
+    payload: ConsultaIn, usuario: Optional[Usuario] = Depends(usuario_opcional)
+) -> ConsultaOut:
     try:
         resp = responder(
             payload.consulta,
@@ -192,6 +243,8 @@ def consultar(payload: ConsultaIn) -> ConsultaOut:
             k=payload.k,
             materias=payload.materias,
             con_diagrama=payload.con_diagrama,
+            token=usuario.token if usuario else None,
+            k_docs=payload.k_documentos,
         )
     except GeminiError as e:
         # 502: el fallo es del proveedor del modelo, no de la petición.
@@ -212,6 +265,7 @@ def consultar(payload: ConsultaIn) -> ConsultaOut:
             )
             for i, r in enumerate(resp.fuentes, 1)
         ],
+        documentos=[DocumentoFuenteOut(**d) for d in _documentos_out(resp.documentos)],
         advertencias=resp.advertencias,
         diagrama=resp.diagrama,
         descargo=DESCARGO,
@@ -225,7 +279,9 @@ def _sse(evento: str, dato: dict) -> str:
 
 
 @app.post("/api/consultar/stream", dependencies=PROTEGIDO)
-def consultar_stream(payload: ConsultaIn) -> StreamingResponse:
+def consultar_stream(
+    payload: ConsultaIn, usuario: Optional[Usuario] = Depends(usuario_opcional)
+) -> StreamingResponse:
     """Igual que /api/consultar pero emitiendo la respuesta por fragmentos.
 
     Orden de los eventos:
@@ -248,6 +304,8 @@ def consultar_stream(payload: ConsultaIn) -> StreamingResponse:
             k=payload.k,
             materias=payload.materias,
             con_diagrama=payload.con_diagrama,
+            token=usuario.token if usuario else None,
+            k_docs=payload.k_documentos,
         )
     except GeminiError as e:
         raise HTTPException(status_code=502, detail=f"Error del modelo: {e}") from e
@@ -269,6 +327,7 @@ def consultar_stream(payload: ConsultaIn) -> StreamingResponse:
                     }
                     for i, r in enumerate(prep.fuentes, 1)
                 ],
+                "documentos": _documentos_out(prep.documentos),
                 "advertencias": prep.advertencias,
             },
         )
@@ -334,3 +393,75 @@ def multa(payload: MultaIn) -> dict:
     except FileNotFoundError as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
     return e.__dict__ | {"descargo": DESCARGO}
+
+
+# ------------------------------------------------------------- documentos
+# El historial no pasa por aquí: el frontend habla con Supabase directamente y
+# row level security lo aisla. Los documentos sí, porque vectorizarlos exige la
+# clave de Gemini, que es del servidor y no puede bajar al navegador.
+
+
+class DocumentoOut(BaseModel):
+    id: str
+    nombre: str
+    tipo: str
+    bytes: int
+    paginas: Optional[int]
+    fragmentos: int
+    estado: str
+    error: Optional[str]
+    creado_en: str
+
+
+@app.get("/api/documentos", response_model=List[DocumentoOut], dependencies=PROTEGIDO)
+def listar_documentos(usuario: Usuario = Depends(usuario_requerido)):
+    try:
+        return docs.listar(usuario.token)
+    except nube.ErrorNube as e:
+        raise HTTPException(status_code=502, detail=str(e)) from e
+
+
+@app.post("/api/documentos", response_model=DocumentoOut, dependencies=PROTEGIDO)
+def subir_documento(
+    archivo: UploadFile = File(...),
+    usuario: Usuario = Depends(usuario_requerido),
+):
+    """Sube, extrae, trocea, vectoriza e indexa un PDF o DOCX.
+
+    Es síncrono a propósito. Un trabajo en segundo plano necesitaría una cola y
+    un sitio donde dejar el archivo mientras espera; para documentos de hasta
+    20 MB la extracción y el indexado caben en la petición, y el usuario ve el
+    resultado en vez de un "procesando" que no sabe cuándo termina.
+    """
+    datos = archivo.file.read()
+    try:
+        fila = docs.procesar(
+            token=usuario.token,
+            usuario_id=usuario.id,
+            nombre=archivo.filename or "documento",
+            datos=datos,
+            content_type=archivo.content_type,
+        )
+    except docs.ErrorExtraccion as e:
+        # 422: el archivo llegó bien, lo que no vale es su contenido.
+        raise HTTPException(status_code=422, detail=str(e)) from e
+    except GeminiError as e:
+        raise HTTPException(status_code=502, detail=f"Error del modelo: {e}") from e
+    except nube.ErrorNube as e:
+        mensaje = str(e)
+        if "duplicate key" in mensaje or "23505" in mensaje:
+            raise HTTPException(
+                status_code=409, detail="Ese archivo ya está subido."
+            ) from e
+        raise HTTPException(status_code=502, detail=mensaje) from e
+    return fila
+
+
+@app.delete("/api/documentos/{documento_id}", status_code=204, dependencies=PROTEGIDO)
+def borrar_documento(
+    documento_id: str, usuario: Usuario = Depends(usuario_requerido)
+) -> None:
+    try:
+        docs.eliminar(usuario.token, documento_id)
+    except nube.ErrorNube as e:
+        raise HTTPException(status_code=502, detail=str(e)) from e

@@ -7,12 +7,27 @@ const BASE = (import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000").replace(
 );
 const CLAVE = import.meta.env.VITE_API_KEY ?? "";
 
+// Token de la sesión, puesto por `sesion.js` cada vez que cambia. Vive aquí y
+// no en el estado de React porque estas funciones no son componentes.
+let TOKEN = null;
+
+export function fijarToken(token) {
+  TOKEN = token || null;
+}
+
 /**
- * Cabeceras comunes. La clave solo se manda si está configurada: en local el
- * backend arranca sin API_KEY y no la pide.
+ * Cabeceras comunes. Dos credenciales distintas que no se sustituyen:
+ *
+ *   X-API-Key     — clave compartida del despliegue. Protege la cuota del
+ *                   modelo. Solo si está configurada.
+ *   Authorization — sesión del usuario. Dice QUIÉN pregunta, y es lo que
+ *                   permite al backend buscar en sus documentos.
  */
 function cabeceras(extra = {}) {
-  return CLAVE ? { ...extra, "X-API-Key": CLAVE } : extra;
+  const h = { ...extra };
+  if (CLAVE) h["X-API-Key"] = CLAVE;
+  if (TOKEN) h.Authorization = `Bearer ${TOKEN}`;
+  return h;
 }
 
 async function pedir(ruta, opciones = {}) {
@@ -109,5 +124,39 @@ export async function consultarStream(consulta, materias, alEvento, señal) {
         // Un mensaje ilegible no debe cortar el resto del stream.
       }
     }
+  }
+}
+
+// ------------------------------------------------------------- documentos
+// Exigen sesión: el backend responde 401 sin ella. La subida no lleva
+// Content-Type a propósito — el navegador tiene que ponerlo él con el
+// `boundary` del multipart, y fijarlo a mano rompe el parseo en el servidor.
+
+export const listarDocumentos = () => pedir("/api/documentos");
+
+export async function subirDocumento(archivo) {
+  const cuerpo = new FormData();
+  cuerpo.append("archivo", archivo);
+
+  const resp = await fetch(`${BASE}/api/documentos`, {
+    method: "POST",
+    headers: cabeceras(),
+    body: cuerpo,
+  });
+  if (!resp.ok) {
+    const detalle = await resp.json().catch(() => null);
+    throw new Error(detalle?.detail ?? `Error ${resp.status}`);
+  }
+  return resp.json();
+}
+
+export async function borrarDocumento(id) {
+  const resp = await fetch(`${BASE}/api/documentos/${id}`, {
+    method: "DELETE",
+    headers: cabeceras(),
+  });
+  if (!resp.ok && resp.status !== 204) {
+    const detalle = await resp.json().catch(() => null);
+    throw new Error(detalle?.detail ?? `Error ${resp.status}`);
   }
 }

@@ -1112,3 +1112,277 @@ a:hover {
 .grafo .diagrama svg {
   max-width: none;
 }
+
+/* ============================================================== sesión ===
+   Entrada, alta de cuenta y el rótulo de quién está dentro. */
+
+.auth-pantalla {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--surface);
+}
+
+.auth-caja {
+  width: min(380px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  background: var(--background);
+  border: 1px solid var(--color-gray-faint);
+  /* La barra amarilla superior es lo único de marca aquí: el logo completo a
+     este tamaño competiría con el formulario, que es lo que hay que mirar. */
+  border-top: 4px solid var(--color-ey-yellow);
+}
+
+.auth-caja h1 {
+  font-size: 22px;
+  line-height: 28px;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.auth-pie {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-muted);
+  margin: -8px 0 4px;
+}
+
+.auth-caja label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.auth-caja input {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-gray-faint);
+  background: var(--background);
+  color: var(--text-primary);
+}
+
+.auth-caja input:focus-visible {
+  outline: 2px solid var(--color-ey-black);
+  outline-offset: -1px;
+}
+
+.auth-error,
+.auth-aviso {
+  font-size: 13px;
+  line-height: 18px;
+  margin: 0;
+  padding: 8px 10px;
+  border-left: 3px solid var(--color-risk-high);
+  background: var(--tint-red);
+  color: var(--color-gray-dark);
+}
+
+.auth-aviso {
+  border-left-color: var(--color-success);
+  background: var(--tint-green);
+}
+
+.auth-cambio {
+  font-family: inherit;
+  font-size: 13px;
+  background: none;
+  border: none;
+  padding: 4px;
+  color: var(--text-secondary);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sesion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sesion-quien {
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================ historial y documentos ===
+   Dos listas en el lateral con la misma anatomía: una fila que abre y un
+   botón de quitar que solo aparece al pasar por encima, para que la lista se
+   lea sin ruido. */
+
+.hist-nueva,
+.docs-subir {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border: 1px solid var(--color-ey-black);
+  background: var(--background);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.hist-nueva:hover:not(:disabled),
+.docs-subir:hover:not(:disabled) {
+  background: var(--color-ey-yellow);
+}
+
+.docs-subir:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.hist-lista,
+.docs-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hist-lista li,
+.docs-lista li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-left: 2px solid transparent;
+}
+
+.hist-lista li.activa {
+  border-left-color: var(--color-ey-yellow);
+  background: var(--color-gray-second);
+}
+
+.docs-lista li.malo {
+  border-left-color: var(--color-risk-high);
+}
+
+.hist-abrir,
+.docs-datos {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 7px 8px;
+  font-family: inherit;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.docs-datos {
+  cursor: default;
+}
+
+.hist-titulo,
+.docs-nombre {
+  font-size: 13px;
+  line-height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hist-quitar,
+.docs-quitar {
+  flex: none;
+  padding: 6px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  /* Invisible hasta que se apunta a la fila: un icono de papelera por
+     conversación convierte la lista en una fila de botones rojos. */
+  opacity: 0;
+  transition: opacity 0.12s ease, color 0.12s ease;
+}
+
+.hist-lista li:hover .hist-quitar,
+.docs-lista li:hover .docs-quitar,
+.hist-quitar:focus-visible,
+.docs-quitar:focus-visible {
+  opacity: 1;
+}
+
+.hist-quitar:hover,
+.docs-quitar:hover {
+  color: var(--color-risk-high);
+}
+
+.docs-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 17px;
+  margin: 0;
+  padding: 8px;
+  background: var(--tint-red);
+  color: var(--color-gray-dark);
+}
+
+.docs-nota {
+  margin-top: -4px;
+}
+
+/* ================================================ citas de documento ===
+   Un documento del usuario NO es normativa, y la interfaz tiene que decirlo
+   sin que haya que leer nada: el amarillo de marca queda reservado a las
+   normas, y las citas de documento van en contorno gris. */
+
+.cita-chip.doc,
+:root[data-theme="dark"] .cita-chip.doc {
+  background: transparent;
+  border: 1px dashed var(--color-gray-medium);
+  color: var(--text-secondary);
+}
+
+.cita-chip.doc:hover,
+:root[data-theme="dark"] .cita-chip.doc:hover {
+  background: var(--color-gray-second);
+  color: var(--text-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cita-chip.doc {
+    background: transparent;
+    border: 1px dashed var(--color-gray-medium);
+    color: var(--on-dark-muted);
+  }
+}
+
+.docs-citados summary {
+  color: var(--text-secondary);
+}
+
+.docs-marca {
+  margin-left: 8px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-gray-medium);
+  color: var(--text-muted);
+}

@@ -26,8 +26,13 @@ class Buscador:
         k: int = 8,
         materias: list[str] | None = None,
         score_minimo: float = 0.0,
+        vector: list[float] | None = None,
     ) -> list[Resultado]:
-        vector = np.array(embed_query(consulta), dtype=np.float32)
+        # El vector se acepta ya calculado porque la búsqueda sobre los
+        # documentos del usuario necesita el mismo, y vectorizar la consulta
+        # dos veces es una llamada de red de más por cada mensaje.
+        crudo = vector if vector is not None else embed_query(consulta)
+        vector = np.array(crudo, dtype=np.float32)
         vector /= np.linalg.norm(vector)
 
         # La matriz ya está normalizada al indexar, así que el producto punto

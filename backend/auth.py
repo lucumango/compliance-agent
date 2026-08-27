@@ -12,8 +12,15 @@ Lo que NO resuelve, y conviene tener claro antes de desplegar:
     de paso —bots, alguien que encuentra la URL— no contra alguien decidido.
   * No hay usuarios ni permisos. Todo el que tiene la clave puede todo.
 
-El siguiente paso, cuando haga falta, son cuentas de verdad con el token
-emitido por el servidor; el punto de enganche es `verificar_clave`.
+Desde que existe Supabase hay además cuentas de verdad. Las dos cosas conviven
+a propósito:
+
+  * la clave compartida sigue protegiendo el chat, para que un despliegue ya
+    montado no deje de funcionar el día que se activan las cuentas;
+  * el historial y los documentos exigen sesión, porque son datos con dueño y
+    sin dueño no hay a quién atribuirlos ni de quién aislarlos.
+
+`usuario_opcional` resuelve la sesión si viene, y `usuario_requerido` la exige.
 
 Se activa solo si `API_KEY` está definida. Sin ella el servidor arranca abierto
 —que es lo que quieres en local— y avisa por consola.
@@ -26,7 +33,11 @@ import os
 import time
 from collections import defaultdict, deque
 
+from dataclasses import dataclass
+
 from fastapi import Header, HTTPException, Request
+
+import nube
 
 API_KEY = os.getenv("API_KEY", "").strip()
 
@@ -102,3 +113,62 @@ def aviso_de_arranque() -> str | None:
         "AVISO: API_KEY no está definida; la API acepta peticiones de "
         "cualquiera. Correcto en local, NO para un despliegue accesible."
     )
+
+
+# ----------------------------------------------------------------- sesiones
+
+
+@dataclass(frozen=True)
+class Usuario:
+    id: str
+    email: str | None
+    # Se guarda para reenviarlo a Supabase: cada escritura viaja con el token
+    # de quien la pide, y así row level security decide en vez del servidor.
+    token: str
+
+
+def _token_de(cabecera: str) -> str:
+    partes = cabecera.split(None, 1)
+    if len(partes) == 2 and partes[0].lower() == "bearer":
+        return partes[1].strip()
+    return ""
+
+
+def usuario_opcional(authorization: str = Header(default="")) -> Usuario | None:
+    """La sesión si el cliente la manda y es válida; None si no."""
+    token = _token_de(authorization)
+    if not token or not nube.configurado():
+        return None
+    try:
+        datos = nube.usuario_de_token(token)
+    except nube.ErrorNube:
+        # Supabase inalcanzable no es lo mismo que credencial inválida. En el
+        # camino opcional se degrada a sesión anónima: el chat sigue.
+        return None
+    if not datos:
+        return None
+    return Usuario(id=datos["id"], email=datos.get("email"), token=token)
+
+
+def usuario_requerido(authorization: str = Header(default="")) -> Usuario:
+    """Igual, pero falla si no hay sesión. Para lo que tiene dueño."""
+    if not nube.configurado():
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                "Este servidor no tiene cuentas configuradas. Falta "
+                "SUPABASE_URL y SUPABASE_ANON_KEY."
+            ),
+        )
+    token = _token_de(authorization)
+    if not token:
+        raise HTTPException(status_code=401, detail="Falta la sesión.")
+    try:
+        datos = nube.usuario_de_token(token)
+    except nube.ErrorNube:
+        raise HTTPException(
+            status_code=503, detail="No se pudo verificar la sesión con Supabase."
+        )
+    if not datos:
+        raise HTTPException(status_code=401, detail="La sesión no es válida o expiró.")
+    return Usuario(id=datos["id"], email=datos.get("email"), token=token)

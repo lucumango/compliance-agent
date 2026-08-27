@@ -6,9 +6,11 @@ import {
   Clock,
   DollarSign,
   FileSearch,
+  FileText,
   Filter,
   Landmark,
   Loader2,
+  LogOut,
   Moon,
   ScanLine,
   Search,
@@ -20,6 +22,19 @@ import {
 import Mermaid from "./Mermaid";
 import CalculadoraMultas from "./CalculadoraMultas";
 import GrafoNormas from "./GrafoNormas";
+import Auth from "./Auth";
+import Documentos from "./Documentos";
+import Historial from "./Historial";
+import { hayCuentas } from "./supabase";
+import { useSesion } from "./sesion";
+import {
+  borrarConversacion,
+  cargarMensajes,
+  crearConversacion,
+  guardarMensaje,
+  listarConversaciones,
+  tituloDe,
+} from "./conversaciones";
 import { consultarStream, normas, pedirDiagrama, salud } from "./api";
 import "./App.css";
 
@@ -110,17 +125,23 @@ function Fuente({ fuente, abierto, alAlternar, id }) {
 // convierten en algo legible: la etiqueta muestra la norma al pasar por
 // encima, y al pulsarla abre esa fuente en el panel. El texto visible sigue
 // siendo corto para no romper la lectura del párrafo.
-const RE_CITA = /\[(F\d+)\]/g;
+// [F1] es una norma; [D1] es un documento que subió el usuario. Se pintan
+// distinto a propósito: la diferencia entre "la ley obliga" y "tu política
+// dice" es justo lo que no puede quedar a interpretación del lector.
+const RE_CITA = /\[([FD]\d+)\]/g;
 
 function ChipCita({ etiqueta, fuente, alPulsar }) {
   if (!fuente) return <span className="cita-chip huerfana">[{etiqueta}]</span>;
+  const esDoc = etiqueta.startsWith("D");
   return (
     <button
       type="button"
-      className="cita-chip"
-      title={fuente.cita}
+      className={esDoc ? "cita-chip doc" : "cita-chip"}
+      title={esDoc ? `Documento tuyo · ${fuente.cita}` : fuente.cita}
       onClick={() => alPulsar(etiqueta)}
-      aria-label={`Fuente ${etiqueta}: ${fuente.cita}. Pulsa para ver el texto.`}
+      aria-label={`${esDoc ? "Documento" : "Norma"} ${etiqueta}: ${
+        fuente.cita
+      }. Pulsa para ver el texto.`}
     >
       {etiqueta}
     </button>
@@ -159,7 +180,10 @@ function Mensaje({ mensaje, indice }) {
   }
 
   const porEtiqueta = new Map(
-    (mensaje.fuentes ?? []).map((f) => [f.etiqueta, f])
+    [...(mensaje.fuentes ?? []), ...(mensaje.documentos ?? [])].map((f) => [
+      f.etiqueta,
+      f,
+    ])
   );
 
   const idFuente = (etiqueta) => `fuente-${indice}-${etiqueta}`;
@@ -263,11 +287,37 @@ function Mensaje({ mensaje, indice }) {
           </ul>
         </details>
       )}
+
+      {mensaje.documentos?.length > 0 && (
+        <details className="fuentes docs-citados" open>
+          <summary>
+            <FileText size={14} aria-hidden="true" />
+            {mensaje.documentos.length} de tus documentos
+            <span className="docs-marca">no es normativa</span>
+          </summary>
+          <ul>
+            {mensaje.documentos.map((d) => (
+              <Fuente
+                key={d.etiqueta}
+                id={idFuente(d.etiqueta)}
+                fuente={d}
+                abierto={abierta === d.etiqueta}
+                alAlternar={() =>
+                  setAbierta((v) => (v === d.etiqueta ? null : d.etiqueta))
+                }
+              />
+            ))}
+          </ul>
+        </details>
+      )}
     </div>
   );
 }
 
 export default function App() {
+  const { usuario, resuelta, salir } = useSesion();
+  const [conversaciones, setConversaciones] = useState([]);
+  const [conversacion, setConversacion] = useState(null);
   const [mensajes, setMensajes] = useState([]);
   const [entrada, setEntrada] = useState("");
   const [cargando, setCargando] = useState(false);
@@ -287,6 +337,46 @@ export default function App() {
       .then(setCorpus)
       .catch(() => setCorpus([]));
   }, []);
+
+  const refrescarConversaciones = () =>
+    listarConversaciones()
+      .then(setConversaciones)
+      .catch(() => setConversaciones([]));
+
+  useEffect(() => {
+    if (!usuario) {
+      setConversaciones([]);
+      setConversacion(null);
+      setMensajes([]);
+      return;
+    }
+    refrescarConversaciones();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usuario?.id]);
+
+  async function abrirConversacion(id) {
+    setConversacion(id);
+    try {
+      setMensajes(await cargarMensajes(id));
+    } catch {
+      setMensajes([]);
+    }
+  }
+
+  function nuevaConversacion() {
+    setConversacion(null);
+    setMensajes([]);
+  }
+
+  async function quitarConversacion(id) {
+    try {
+      await borrarConversacion(id);
+      if (id === conversacion) nuevaConversacion();
+      await refrescarConversaciones();
+    } catch {
+      /* si falla, la lista se queda como estaba */
+    }
+  }
 
   // El streaming reescribe `mensajes` con cada fragmento, varias veces por
   // segundo. Un scroll suave por fragmento no llega a terminar antes de que el
@@ -320,7 +410,12 @@ export default function App() {
     // El hueco del asistente se crea vacío y se va rellenando: primero las
     // fuentes, luego el texto fragmento a fragmento.
     let indice;
+    // `orden` en la base de datos es la posición del mensaje del usuario; el
+    // del asistente va justo detrás. Se calcula aquí, con la longitud previa,
+    // y no al guardar: para entonces el estado ya creció.
+    let ordenUsuario;
     setMensajes((m) => {
+      ordenUsuario = m.length;
       indice = m.length + 1;
       return [
         ...m,
@@ -336,11 +431,21 @@ export default function App() {
 
     let acumulado = "";
     let llevaDiagrama = false;
+    let fuentesFinales = [];
+    let documentosFinales = [];
+    let advertenciasFinales = [];
 
     try {
       await consultarStream(consulta, materias, (evento, datos) => {
         if (evento === "fuentes") {
-          parchear({ fuentes: datos.fuentes, advertencias: datos.advertencias });
+          fuentesFinales = datos.fuentes ?? [];
+          documentosFinales = datos.documentos ?? [];
+          advertenciasFinales = datos.advertencias ?? [];
+          parchear({
+            fuentes: fuentesFinales,
+            documentos: documentosFinales,
+            advertencias: advertenciasFinales,
+          });
         } else if (evento === "delta") {
           acumulado += datos.texto;
           parchear({ respuesta: acumulado });
@@ -355,18 +460,79 @@ export default function App() {
 
       // El diagrama va en una segunda petición: necesita la respuesta
       // completa, y pedirlo aquí evita que retrase el texto.
+      let diagramaFinal = null;
       if (llevaDiagrama && acumulado) {
         try {
           const { diagrama } = await pedirDiagrama(acumulado);
+          diagramaFinal = diagrama;
           parchear({ diagrama, cargandoDiagrama: false });
         } catch {
           parchear({ cargandoDiagrama: false });
         }
       }
+
+      // Se guarda al final y no fragmento a fragmento: escribir en cada delta
+      // serían decenas de escrituras por respuesta, y una respuesta a medias
+      // no es algo que nadie quiera recuperar.
+      await persistir({
+        consulta,
+        ordenUsuario,
+        respuesta: acumulado,
+        fuentes: fuentesFinales,
+        documentos: documentosFinales,
+        advertencias: advertenciasFinales,
+        diagrama: diagramaFinal,
+      });
     } catch (e) {
       parchear({ error: e.message, generando: false, cargandoDiagrama: false });
     } finally {
       setCargando(false);
+    }
+  }
+
+  /**
+   * Escribe la pareja pregunta/respuesta en el historial.
+   *
+   * Nunca tumba la conversación en curso: si Supabase falla, la respuesta ya
+   * está en pantalla y perderla por no poder archivarla sería el peor de los
+   * dos resultados.
+   */
+  async function persistir({
+    consulta,
+    ordenUsuario,
+    respuesta,
+    fuentes,
+    documentos,
+    advertencias,
+    diagrama,
+  }) {
+    if (!usuario || !respuesta) return;
+    try {
+      let id = conversacion;
+      if (!id) {
+        const nueva = await crearConversacion(usuario.id, tituloDe(consulta));
+        id = nueva.id;
+        setConversacion(id);
+      }
+      await guardarMensaje({
+        conversacionId: id,
+        orden: ordenUsuario,
+        rol: "usuario",
+        contenido: consulta,
+      });
+      await guardarMensaje({
+        conversacionId: id,
+        orden: ordenUsuario + 1,
+        rol: "asistente",
+        contenido: respuesta,
+        advertencias,
+        diagrama,
+        fuentes,
+        documentos,
+      });
+      await refrescarConversaciones();
+    } catch (e) {
+      console.warn("No se pudo guardar en el historial:", e.message);
     }
   }
 
@@ -375,6 +541,18 @@ export default function App() {
       ms.includes(materia) ? ms.filter((m) => m !== materia) : [...ms, materia]
     );
   }
+
+  // Con cuentas configuradas hay tres estados, y saltarse el intermedio hacía
+  // parpadear el formulario de login en cada recarga antes de que Supabase
+  // restaurase la sesión guardada.
+  if (hayCuentas && !resuelta) {
+    return (
+      <div className="auth-pantalla">
+        <Loader2 size={22} className="gira" aria-hidden="true" />
+      </div>
+    );
+  }
+  if (hayCuentas && !usuario) return <Auth />;
 
   return (
     <div className="app">
@@ -439,10 +617,34 @@ export default function App() {
           )}
           {oscuro ? "Claro" : "Oscuro"}
         </button>
+
+        {usuario && (
+          <div className="sesion">
+            <span className="sesion-quien" title={usuario.email}>
+              {usuario.email}
+            </span>
+            <button className="tema" onClick={salir} title="Cerrar sesión">
+              <LogOut size={14} aria-hidden="true" />
+              Salir
+            </button>
+          </div>
+        )}
       </header>
 
       <div className="cuerpo">
         <aside className="lateral">
+          {usuario && (
+            <Historial
+              conversaciones={conversaciones}
+              activa={conversacion}
+              alAbrir={abrirConversacion}
+              alNueva={nuevaConversacion}
+              alBorrar={quitarConversacion}
+            />
+          )}
+
+          {usuario && <Documentos />}
+
           <section>
             <p className="rotulo">
               <Filter size={14} aria-hidden="true" />
