@@ -217,11 +217,16 @@ respuesta generada — solo la recuperación que la precede.
   modelo tal cual. Hace falta un NER si eso importa para el caso de uso.
 - **Fechas y URLs sin verificar:** `metadata_verificada: false` en las 11 normas.
   Nadie ha cotejado todavía el corpus contra SPIJ.
-- **La autenticación es una clave compartida, no cuentas.** Va en el bundle del
-  frontend, así que es visible en las herramientas de desarrollo. Y no
-  distingue quién es quién.
+- **La clave compartida va en el bundle del frontend**, así que es visible en
+  las herramientas de desarrollo. Frena bots y a quien dé con la URL, no a
+  alguien decidido. Quien protege los datos es row level security en Supabase.
+- **El registro está abierto a cualquier dominio de correo.** Se restringe en
+  el panel de Supabase, no en el código.
 - **Un solo régimen en la calculadora de multas:** protección de datos
-  (Ley 29733, Art. 39). Los rangos de SST y LA/FT están en normas no cargadas.
+  (Ley 29733, Art. 39). Falta SST. El de LA/FT ya se puede intentar, con la
+  Resolución SBS cargada.
+- **La anonimización no cubre los documentos que sube el usuario.** Solo la
+  consulta. El contenido de un PDF viaja tal cual al vectorizarse.
 - **`titulo` está truncado en buena parte de las 824 unidades.** El parser toma la
   primera línea *visual* del PDF, que corta a media frase. Hoy es latente —el
   frontend no lo muestra— pero está en el contrato de la API y en los

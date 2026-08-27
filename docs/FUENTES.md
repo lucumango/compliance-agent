@@ -4,8 +4,11 @@ Qué hay en el corpus, de dónde salió y por qué está. Este archivo y
 `backend/ingestion/registry.py` deben contar lo mismo: el registry es la
 verdad que ejecuta el código, este documento es la versión legible.
 
-**Última verificación: 2026-08-13** (`ingestion.validate`: 754 unidades,
-0 problemas · `rag.eval`: 11/11).
+**Última verificación: 2026-08-27** (`ingestion.validate`: 824 unidades,
+0 problemas · `rag.eval`: 12/12).
+
+Ninguna norma está cotejada contra SPIJ. `metadata_verificada` es `false` en
+las once.
 
 ## Qué hay cargado hoy
 
@@ -13,14 +16,17 @@ verdad que ejecuta el código, este documento es la versión legible.
 |---|---|---|---|---|
 | **Ley 29783** — Seguridad y Salud en el Trabajo | `sst_laboral` | 252 | Ley (113) + DS aprobatorio (2) + Reglamento DS 005-2012-TR (137) | Consolidado al 28/04/2022 |
 | **ISO 37001:2016** — Antisoborno | `antisoborno` | 204 | Requisitos, cláusulas 1–10 (97) + Anexo A (107) | Traducción oficial. Copyright ISO |
-| **Ley 29733** — Protección de Datos Personales | `proteccion_datos` | 194 | Ley (51) + DS aprobatorio (4) + Reglamento DS 003-2013-JUS (139) | Consolidado (Editora Perú) |
+| **DS 016-2024-JUS** — Reglamento de la Ley de Protección de Datos | `proteccion_datos` | 148 | Decreto (5) + Reglamento (143) | El Peruano, 30/11/2024 |
+| **Ley 29733** — Protección de Datos Personales | `proteccion_datos` | 55 | Ley (51) + DS aprobatorio (4) | Consolidado (Editora Perú) |
+| **Res. SBS 789-2018** — Sujetos obligados ante la UIF | `laft` | 45 | Resolución | Portal SBS, vigente a 04/2026 |
 | **DL 1106** — Lucha contra el lavado de activos | `laft` | 33 | Decreto Legislativo | Consolidado |
-| **Ley 30424** — Responsabilidad admin. de personas jurídicas | `anticorrupcion` | 30 | Ley | ⚠⚠ **Original de 2016** · OCR |
+| **Ley 30424** — Responsabilidad admin. de personas jurídicas | `anticorrupcion` | 33 | Ley | Concordado a 12/2024 (SPIJ) |
 | **DL 1372** — Beneficiario final | `laft` | 19 | Decreto Legislativo | Consolidado |
 | **Ley 27693** — Crea la UIF-Perú | `laft` | 18 | Ley | Consolidado al 01/10/2025 (SPIJ) |
+| **DS 003-2019-EF** — Reglamento del DL 1372 | `laft` | 13 | Decreto (3) + Reglamento (10) | El Peruano, 08/01/2019 |
 | **Ley 29038** — Incorpora la UIF a la SBS | `laft` | 4 | Ley | Consolidado |
 
-**Total: 754 unidades citables** en 8 normas. Una "unidad" es un artículo, una
+**Total: 824 unidades citables** en 11 normas. Una "unidad" es un artículo, una
 disposición complementaria o una cláusula ISO — la granularidad a la que el
 asistente cita.
 
@@ -53,38 +59,34 @@ Se registran como **relaciones en el grafo**, no como texto citable. La
 excepción es la Ley 29038, que sí está cargada porque tiene contenido propio
 —la adscripción de la UIF a la SBS— además de modificar la 27693.
 
-## La fuente que hay que mirar con cuidado
+## Lo que se excluye del corpus a propósito
 
-Esto es lo que más fácil se olvida, y es justo lo que importa en compliance.
+**El reglamento de la Ley 29733 de 2013 (DS 003-2013-JUS).** Viene anexo en el
+mismo PDF de la ley y eran 139 de sus 194 unidades. Lo derogó el DS
+016-2024-JUS. Se excluye con `documentos_excluidos=["reglamento"]` en el
+registry.
 
-### Ley 30424 está desactualizada, no incompleta
+No se marca como "no vigente" y ya: el aviso llega después de que la
+recuperación gastó una plaza en texto derogado. Una cita correcta de una norma
+que no rige es más difícil de detectar que un "no lo sé".
 
-Se parseó completa: 19 artículos y 11 disposiciones, sin huecos. Lo que pasa es
-que el PDF es el **texto original publicado el 21/04/2016**, anterior a sus
-modificatorias (Ley 30835 de 2018, Ley 31740 de 2023).
+**Las modificatorias absorbidas.** Ver la sección de arriba.
 
-Se nota en el propio nombre que lleva en el corpus: *"…por el delito de cohecho
-activo transnacional"*. Ese era el alcance de 2016. La versión vigente cubre
-bastante más que cohecho transnacional, así que **una respuesta sobre el ámbito
-de aplicación de la 30424 puede quedarse corta sin que el sistema lo note**.
+## Lo que hay que mirar con cuidado
 
-El asistente sí avisa: la nota viaja en `advertencias` con cada respuesta que
-cite esta norma. Pero el aviso no corrige el contenido.
+**Nada del corpus está cotejado.** Las once normas tienen
+`metadata_verificada: false`, y `fecha_publicacion` y `url_fuente` están en
+`null` salvo donde se leyeron del propio documento. Nadie ha confirmado que lo
+que citamos sea el derecho vigente.
 
-→ *Acción pendiente:* conseguir el texto consolidado (SPIJ) y reingerir.
+**Ninguna norma viene ya de OCR.** La 27693 y la 30424 se sustituyeron por
+texto concordado del SPIJ con capa nativa. `requiere_cotejo` está en `false` en
+todo el corpus.
 
-### La Ley 30424 viene de escaneo
-
-Es un escaneo de El Peruano sin capa de texto: sus 4 páginas pasaron por OCR
-(Tesseract, español). El OCR va bien —`ingestion.validate` no detecta huecos ni
-duplicados en la numeración— pero puede haber errores de reconocimiento dentro
-del cuerpo del artículo.
-
-`extraccion.requiere_cotejo: true` lo marca, y el frontend lo muestra en el
-panel lateral con el icono de escaneo.
-
-La Ley 27693 **ya no está en este caso**: se sustituyó su escaneo por el texto
-concordado del SPIJ, con capa de texto nativa.
+**Los PDF del SPIJ traen el texto original y detrás cada versión que lo
+sustituyó.** El parser se queda con la última, tanto en artículos como en
+disposiciones. Si al revisar aparece una redacción vieja, es un fallo del
+parser, no del PDF.
 
 ## Cómo se registra una fuente
 
@@ -168,26 +170,24 @@ Añadir una nueva no requiere tocar el frontend: sale de `/api/normas`.
 
 | Materia | Normas |
 |---|---|
-| `laft` | Ley 27693, Ley 29038, DL 1106, DL 1372 |
-| `proteccion_datos` | Ley 29733 |
+| `laft` | Ley 27693, Ley 29038, DL 1106, DL 1372, DS 003-2019-EF, Res. SBS 789-2018 |
+| `proteccion_datos` | Ley 29733, DS 016-2024-JUS |
 | `sst_laboral` | Ley 29783 |
 | `anticorrupcion` | Ley 30424 |
 | `antisoborno` | ISO 37001 |
 
-LA/FT pasó de ser la materia más flaca del corpus a la que más normas agrupa.
-
 ## Cobertura que falta
 
-- **Texto consolidado de la Ley 30424** — el hueco más serio: ver arriba.
-- **Reglamento de la Ley 30424** (DS 002-2019-JUS) — define el modelo de
-  prevención, que es la parte accionable de la ley. El PDF está disponible pero
-  viene mezclado con normas ajenas en la misma página de El Peruano; hay que
-  recortarlo antes de ingerirlo.
-- **Reglamento de la Ley 27693** (DS 020-2017-JUS) — parsea con un hueco en el
-  decreto aprobatorio; pendiente de revisar.
-- **Ley 32209 y Ley 31740** — vienen en páginas de El Peruano con otras normas
-  delante. Mismo tratamiento que el anterior.
-- **Resoluciones SBS** de gestión de riesgos LA/FT — donde vive el detalle
-  operativo del régimen.
+- **Reglamento de la Ley 30424** (DS 002-2019-JUS y DS 002-2025-JUS) — define
+  el modelo de prevención.
+- **ISO 37002** y el **régimen laboral de hostilidad y represalia** — lo mínimo
+  para el agente de línea ética.
+- **Código Penal y Código Procesal Penal**, en secciones acotadas: delitos
+  económicos, delitos contra la administración pública, y la parte de prueba.
+  Para el agente de investigación.
+- **DL 1034** — libre competencia. Materia sin cubrir.
+- **TUO de la Ley 27444** — la potestad sancionadora. La necesita el estimador
+  de multas para graduar dentro del rango.
+- **Normativa sectorial** — se carga por encargo, no de entrada.
 
-Para añadir cualquiera de ellos: [INGESTA.md](INGESTA.md).
+Para añadir cualquiera: [INGESTA.md](INGESTA.md).

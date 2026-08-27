@@ -6,21 +6,25 @@ cuándo no fiarse.
 
 ## Qué es
 
-Un asistente que responde preguntas sobre normativa peruana **citando el
-artículo exacto** del que sale cada afirmación, a partir de un conjunto cerrado
-de normas cargadas. Si la pregunta cae fuera de esas normas, lo declara. Solo sabe lo que se le ha cargado, no es un chatbot general.
+Responde preguntas sobre normativa peruana **citando el artículo exacto** del
+que sale cada afirmación. Solo lee las normas que tiene cargadas. Si la
+pregunta cae fuera, lo dice.
+
+Con cuenta iniciada, además: guarda tus conversaciones, y puedes subir tus
+propios documentos —políticas, contratos, manuales— para que los contraste con
+la norma.
 
 ## Sobre qué puedes preguntarle
 
-| Si tu pregunta va de… | Tiene cargado | Nivel de detalle |
+| Si tu pregunta va de… | Tiene cargado | Detalle |
 |---|---|---|
-| **Protección de datos personales** | Ley 29733 y su reglamento | Alto — 194 artículos: consentimiento, derechos del titular, bancos de datos, multas |
-| **Seguridad y salud en el trabajo** | Ley 29783 y su reglamento | Alto — 252 artículos: comité de SST, accidentes, auditorías, obligaciones del empleador |
-| **Prevención de lavado de activos** | Ley de la UIF, ley de lavado, beneficiario final | Medio — 74 artículos: a quién se reporta, qué es delito, quién declara |
-| **Responsabilidad de la empresa por corrupción** | Ley 30424 | ⚠️ Bajo y desactualizado — leer el aviso de abajo |
-| **Sistemas de gestión antisoborno** | ISO 37001:2016 completa | Alto — 204 cláusulas, incluido el Anexo A |
+| **Protección de datos personales** | Ley 29733 y su reglamento vigente (DS 016-2024-JUS) | 203 unidades: consentimiento, derechos del titular, bancos de datos, notificación de brechas, multas |
+| **Seguridad y salud en el trabajo** | Ley 29783 y su reglamento | 252 unidades: comité de SST, accidentes, auditorías, obligaciones del empleador |
+| **Prevención de lavado de activos** | Ley de la UIF, ley de lavado, beneficiario final y su reglamento, norma SBS de sujetos obligados | 132 unidades: a quién aplica el régimen, qué se reporta, quién declara el beneficiario final |
+| **Responsabilidad de la empresa por corrupción** | Ley 30424 concordada a diciembre de 2024 | 33 unidades: alcance, modelo de prevención, sanciones |
+| **Sistemas de gestión antisoborno** | ISO 37001:2016 completa | 204 cláusulas, incluido el Anexo A |
 
-En total, **754 artículos, disposiciones y cláusulas** de 8 normas.
+En total, **824 artículos, disposiciones y cláusulas** de 11 normas.
 
 ## Cómo leer una respuesta
 
@@ -31,8 +35,15 @@ púlsala para abrir su texto completo abajo.
 Si una afirmación no lleva etiqueta, **no está respaldada por el corpus**. Esa
 es la señal más importante de toda la interfaz.
 
-**Los avisos naranjas importan.** Cuando una respuesta se apoya en un texto
-problemático —escaneado, o desactualizado— aparece un aviso arriba. Esto indica que verifiques esa cita antes de usarla.
+**Las etiquetas grises son tus documentos.** Los `D1`, `D2`… salen de lo que tú
+subiste, no de la ley. La respuesta lo separa: qué exige la norma y qué dice tu
+política. Si las dos hablan de lo mismo y difieren, lo señala.
+
+Una política interna no obliga a nadie más que a tu organización. El sistema
+no la presenta como norma, y tú tampoco deberías.
+
+**Los avisos naranjas importan.** Aparecen cuando una respuesta se apoya en un
+texto que conviene contrastar antes de usarlo.
 
 **"El corpus cargado no contiene una respuesta a esto"** es una respuesta
 correcta, no un fallo. Significa que la norma que resolvería tu duda no está
@@ -41,59 +52,50 @@ tiene, el sistema está diseñado para callarse en vez de copiar el de otro paí
 
 ## Cuándo no fiarte
 
-Tres casos concretos, por orden de importancia.
+### 1. Ninguna norma está cotejada
 
-### 1. Preguntas sobre responsabilidad de la empresa (Ley 30424)
+Las once vienen de PDF oficiales, pero nadie ha comparado todavía el texto
+cargado contra SPIJ ni ha confirmado que sea la versión vigente. El corpus
+valida bien —sin huecos ni duplicados— y eso no es lo mismo que estar
+verificado.
 
-El texto cargado es el **original de 2016**. Desde entonces la ley se modificó
-dos veces y su alcance se amplió bastante.
+Para una cita que vaya a un entregable: ábrela en SPIJ y confírmala.
 
-Si preguntas *"¿por qué delitos responde una persona jurídica?"*, la respuesta
-te dará el alcance de 2016 —solo cohecho transnacional— cuando hoy es mucho más
-amplio. **El sistema avisa de que el texto es el original, pero no puede
-decirte qué falta.**
+### 2. Cuando la respuesta toca algo que no está cargado
 
-Para cualquier consulta sobre esta ley: contrasta con la versión vigente.
+Falta, entre otras cosas, el reglamento de la Ley 30424, las resoluciones de la
+SBS sobre gestión de riesgos, el Código Penal, la libre competencia, y todo lo
+tributario, societario, ambiental y sectorial.
 
-### 2. Cuando el aviso dice "texto escaneado"
+Si tu consulta cruza materias, puede responder bien la parte que conoce y **no
+mencionar que la otra mitad existe**.
 
-Ese texto se leyó de una imagen mediante reconocimiento óptico. La numeración
-se comprueba automáticamente y está bien, pero puede haber errores dentro del
-párrafo — y en una norma, un dígito mal leído cambia un plazo o un monto.
+### 3. El corpus no sabe qué pasó ayer
 
-Hoy afecta solo a la Ley 30424.
-
-### 3. Cuando la respuesta toca algo que no está cargado
-
-Falta, entre otras cosas, el **reglamento de la Ley 30424**, las
-**resoluciones de la SBS** sobre gestión de riesgos, y todo lo tributario,
-societario, ambiental o sectorial.
-
-El sistema no puede saber lo que no tiene. Si tu consulta cruza materias, es
-posible que responda bien la parte que conoce y **no mencione que la otra mitad
-existe**.
+Se actualiza a mano, cuando alguien carga la norma nueva. Una modificatoria
+publicada esta semana no está.
 
 ## Lo que no hace
 
-- **No es asesoría legal.** Ninguna respuesta sustituye el criterio de un
-  abogado. El valor está en llegar al artículo correcto en segundos, no en
-  decidir por ti.
-- **No conoce tu caso.** No sabe qué tipo de empresa eres, qué contratos tienes
-  ni qué te ha pasado antes. Responde sobre la norma, no sobre tu situación.
-- **No busca en internet.** Solo lee las normas cargadas.
-- **No sabe si algo se derogó ayer.** El corpus se actualiza a mano, cuando
-  alguien carga la norma nueva.
+- **No es asesoría legal.** El valor está en llegar al artículo correcto en
+  segundos, no en decidir por ti.
+- **No busca en internet.** Solo lee lo que tiene cargado.
+- **No hace OCR.** Un escaneo sin capa de texto se rechaza al subirlo.
+- **No lee hojas de cálculo.** Solo PDF y DOCX. Una tabla de miles de filas
+  vectorizada devuelve filas parecidas a la pregunta, que no sirve para contar.
 
-## Un detalle sobre datos personales
+## Datos personales en lo que escribes
 
-Puedes escribir consultas con datos reales del caso. Antes de enviar la
-consulta al modelo, el sistema **enmascara automáticamente** los DNI, RUC,
-correos, teléfonos, montos y tarjetas que detecte, y los restituye en la
-respuesta.
+Puedes escribir consultas con datos reales del caso. Antes de enviarlas al
+modelo, el sistema enmascara **DNI, RUC, correos, teléfonos, montos y
+tarjetas**, y los devuelve a su sitio en la respuesta.
 
-**Pero no reconoce nombres de personas.** Si escribes "el trabajador Juan
-Pérez", ese nombre sí sale del entorno. Cuando el nombre no aporte nada a la
-pregunta normativa, mejor no ponerlo.
+Dos límites:
+
+- **No reconoce nombres de personas.** Si escribes "Juan Pérez", ese nombre
+  sale del entorno. Cuando el nombre no aporte a la pregunta, no lo pongas.
+- **No cubre lo que subes.** El contenido de un PDF o un DOCX viaja tal cual al
+  vectorizarse. Un documento con datos personales los manda enteros.
 
 ## El estimador de multas
 
@@ -101,9 +103,8 @@ El panel lateral calcula rangos de multa por gravedad, en soles, usando la UIT
 del año en curso.
 
 Es una **estimación de impacto, no una sanción**. Devuelve el rango que fija la
-ley; el monto concreto lo gradúa la autoridad según criterios propios
-(reincidencia, beneficio obtenido, intencionalidad). Hoy solo cubre protección
-de datos.
+ley; el monto concreto lo gradúa la autoridad según reincidencia, beneficio
+obtenido e intencionalidad. Hoy solo cubre protección de datos.
 
 ## El mapa de normas
 
