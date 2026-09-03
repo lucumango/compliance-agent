@@ -73,6 +73,8 @@ export async function guardarMensaje({
   diagrama = null,
   fuentes = [],
   documentos = [],
+  modelo = null,
+  promptVersion = null,
 }) {
   if (!supabase || !conversacionId) return null;
 
@@ -85,6 +87,12 @@ export async function guardarMensaje({
       contenido,
       advertencias,
       diagrama,
+      // Qué produjo esta respuesta. El modelo no es el configurado sino el que
+      // contestó: la cadena de respaldo degrada sola al agotarse una cuota.
+      // Sin estas dos columnas, una respuesta del historial no se puede
+      // explicar seis meses después. Ver docs/GOBERNANZA.md.
+      modelo,
+      prompt_version: promptVersion,
     })
     .select("id")
     .single();
@@ -131,7 +139,7 @@ export async function cargarMensajes(conversacionId) {
   const { data, error } = await supabase
     .from("mensajes")
     .select(
-      "id, orden, rol, contenido, advertencias, diagrama, " +
+      "id, orden, rol, contenido, advertencias, diagrama, modelo, prompt_version, " +
         "mensaje_fuentes (clase, etiqueta, cita, norma_id, texto, score, pagina, unidad_id)"
     )
     .eq("conversacion_id", conversacionId)
@@ -146,6 +154,8 @@ export async function cargarMensajes(conversacionId) {
       respuesta: m.contenido,
       advertencias: m.advertencias ?? [],
       diagrama: m.diagrama,
+      modelo: m.modelo,
+      promptVersion: m.prompt_version,
       fuentes: citas
         .filter((c) => c.clase === "norma")
         .map((c) => ({

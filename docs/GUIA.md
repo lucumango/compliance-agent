@@ -64,8 +64,11 @@ Para una cita que vaya a un entregable: ábrela en SPIJ y confírmala.
 ### 2. Cuando la respuesta toca algo que no está cargado
 
 Falta, entre otras cosas, el reglamento de la Ley 30424, las resoluciones de la
-SBS sobre gestión de riesgos, el Código Penal, la libre competencia, y todo lo
-tributario, societario, ambiental y sectorial.
+SBS sobre gestión de riesgos, la libre competencia, y todo lo tributario,
+societario, ambiental y sectorial.
+
+El Código Penal no falta: está fuera de alcance a propósito. CARLOS no tipifica
+delitos.
 
 Si tu consulta cruza materias, puede responder bien la parte que conoce y **no
 mencionar que la otra mitad existe**.

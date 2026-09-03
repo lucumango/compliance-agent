@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Todo lo que importa api.py, y nada más. Si se añade un módulo nuevo al
 # backend, va aquí: el error se ve solo al arrancar el contenedor, no al
 # construirlo, así que un build verde no significa que la imagen esté completa.
-COPY api.py auth.py nube.py ./
+COPY api.py auth.py nube.py auditoria.py ./
 COPY rag/ rag/
 COPY documentos/ documentos/
 # El índice (9 MB) y el corpus parseado se copian ya construidos.

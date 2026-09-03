@@ -20,6 +20,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
+import auditoria
 import documentos as docs
 import nube
 from auth import (
@@ -30,7 +31,7 @@ from auth import (
     usuario_requerido,
     verificar_clave,
 )
-from rag.answer import preparar, responder, responder_stream
+from rag.answer import PROMPT_VERSION, preparar, responder, responder_stream
 from rag.diagrama import generar_diagrama
 from rag.gemini import GeminiError
 from rag.multas import REGIMENES, estimar, uit_vigente
@@ -131,6 +132,11 @@ class ConsultaOut(BaseModel):
     advertencias: List[str]
     diagrama: Optional[str]
     descargo: str
+    # Qué produjo la respuesta. El frontend los guarda con el mensaje: sin
+    # ellos, una respuesta del historial no se puede reproducir ni explicar.
+    # `modelo` es el que respondió de verdad, no el configurado.
+    modelo: Optional[str] = None
+    prompt_version: str = PROMPT_VERSION
 
 
 @app.get("/api/salud")
@@ -145,6 +151,10 @@ def salud() -> dict:
         # arranca en modo suelto, en vez de llevarlo en su propia variable de
         # entorno y arriesgarse a que discrepen.
         "cuentas": nube.configurado(),
+        # Inventario de versiones: qué prompt está sirviendo este despliegue.
+        # Sin esto no hay forma de saber, desde fuera, si lo desplegado es lo
+        # que se evaluó. Ver docs/GOBERNANZA.md.
+        "prompt_version": PROMPT_VERSION,
     }
 
 
@@ -252,6 +262,17 @@ def consultar(
         # 502: el fallo es del proveedor del modelo, no de la petición.
         raise HTTPException(status_code=502, detail=f"Error del modelo: {e}") from e
 
+    auditoria.registrar(
+        usuario.token if usuario else None,
+        usuario.id if usuario else None,
+        "consulta",
+        modelo=resp.modelo,
+        prompt_version=resp.prompt_version,
+        corpus_unidades=len(_estado["buscador"].unidades),
+        normas_citadas=[r.unidad.norma_id for r in resp.fuentes],
+        documentos_citados=len(resp.documentos or []),
+    )
+
     return ConsultaOut(
         respuesta=resp.texto,
         fuentes=[
@@ -271,6 +292,8 @@ def consultar(
         advertencias=resp.advertencias,
         diagrama=resp.diagrama,
         descargo=DESCARGO,
+        modelo=resp.modelo,
+        prompt_version=resp.prompt_version,
     )
 
 
@@ -342,7 +365,28 @@ def consultar_stream(
             yield _sse("error", {"mensaje": str(e)})
             return
 
-        yield _sse("fin", {"lleva_diagrama": prep.lleva_diagrama, "descargo": DESCARGO})
+        modelo = prep.modelo[0] if prep.modelo else None
+        yield _sse(
+            "fin",
+            {
+                "lleva_diagrama": prep.lleva_diagrama,
+                "descargo": DESCARGO,
+                "modelo": modelo,
+                "prompt_version": prep.prompt_version,
+            },
+        )
+        # Al final y no al principio: hasta aquí no se sabe qué modelo de la
+        # cadena respondió, y un evento sin esa columna no sirve para auditar.
+        auditoria.registrar(
+            usuario.token if usuario else None,
+            usuario.id if usuario else None,
+            "consulta",
+            modelo=modelo,
+            prompt_version=prep.prompt_version,
+            corpus_unidades=len(_estado["buscador"].unidades),
+            normas_citadas=[r.unidad.norma_id for r in prep.fuentes],
+            documentos_citados=len(prep.documentos or []),
+        )
 
     return StreamingResponse(
         eventos(),
@@ -456,6 +500,7 @@ def subir_documento(
                 status_code=409, detail="Ese archivo ya está subido."
             ) from e
         raise HTTPException(status_code=502, detail=mensaje) from e
+    auditoria.registrar(usuario.token, usuario.id, "documento_subido")
     return fila
 
 
@@ -467,3 +512,4 @@ def borrar_documento(
         docs.eliminar(usuario.token, documento_id)
     except nube.ErrorNube as e:
         raise HTTPException(status_code=502, detail=str(e)) from e
+    auditoria.registrar(usuario.token, usuario.id, "documento_borrado")

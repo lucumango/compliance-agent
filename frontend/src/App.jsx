@@ -434,6 +434,10 @@ export default function App() {
     let fuentesFinales = [];
     let documentosFinales = [];
     let advertenciasFinales = [];
+    // Llegan en el evento `fin` porque hasta entonces no se sabe qué modelo de
+    // la cadena aceptó la conexión.
+    let modeloFinal = null;
+    let promptVersionFinal = null;
 
     try {
       await consultarStream(consulta, materias, (evento, datos) => {
@@ -453,6 +457,8 @@ export default function App() {
           parchear({ error: datos.mensaje, generando: false });
         } else if (evento === "fin") {
           llevaDiagrama = datos.lleva_diagrama;
+          modeloFinal = datos.modelo ?? null;
+          promptVersionFinal = datos.prompt_version ?? null;
         }
       });
 
@@ -482,6 +488,8 @@ export default function App() {
         documentos: documentosFinales,
         advertencias: advertenciasFinales,
         diagrama: diagramaFinal,
+        modelo: modeloFinal,
+        promptVersion: promptVersionFinal,
       });
     } catch (e) {
       parchear({ error: e.message, generando: false, cargandoDiagrama: false });
@@ -505,6 +513,8 @@ export default function App() {
     documentos,
     advertencias,
     diagrama,
+    modelo,
+    promptVersion,
   }) {
     if (!usuario || !respuesta) return;
     try {
@@ -529,6 +539,8 @@ export default function App() {
         diagrama,
         fuentes,
         documentos,
+        modelo,
+        promptVersion,
       });
       await refrescarConversaciones();
     } catch (e) {

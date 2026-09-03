@@ -29,6 +29,9 @@ Fuentes:
 | Tocar la interfaz | [Sistema de diseño](DESIGN.md) |
 | Desplegar | [Desplegar](DEPLOY.md) |
 | Ver qué observaciones se atendieron, con la respuesta antes y después | [Correcciones](CORRECCIONES.md) |
+| Saber **qué estándares** cumple y cuáles faltan | [Estándares](ESTANDARES.md) |
+| Responder **quién responde por esto**: alcance, impacto, roles, incidentes | [Gobernanza de IA](GOBERNANZA.md) |
+| **Heredar el código** y no romperlo | [Mantenimiento](MANTENIMIENTO.md) |
 | Saber qué falta por hacer | [Pendiente](PENDIENTE.md) |
 
 ## El corpus, de un vistazo

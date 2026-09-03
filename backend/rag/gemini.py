@@ -13,7 +13,7 @@ import random
 import time
 import urllib.error
 import urllib.request
-from typing import Iterator
+from typing import Callable, Iterator
 
 from .config import (
     API_BASE,
@@ -135,9 +135,20 @@ def _cadena_modelos(modelo: str | None) -> list[str]:
     return disponibles or MODELOS_GENERACION
 
 
-def generar(prompt: str, temperatura: float = 0.2, modelo: str | None = None) -> str:
+def generar(
+    prompt: str,
+    temperatura: float = 0.2,
+    modelo: str | None = None,
+    al_elegir_modelo: Callable[[str], None] | None = None,
+) -> str:
     """Genera una respuesta. Temperatura baja por defecto: en compliance
-    interesa la fidelidad al texto recuperado, no la variedad."""
+    interesa la fidelidad al texto recuperado, no la variedad.
+
+    `al_elegir_modelo` recibe el modelo que acabó respondiendo. Hace falta
+    porque la cadena de respaldo puede degradar a otro sin que quien llama se
+    entere, y una respuesta guardada tiene que decir qué la produjo. Va como
+    callback y no como valor de retorno para no romper a quien ya llama a esto.
+    """
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": temperatura},
@@ -163,6 +174,8 @@ def generar(prompt: str, temperatura: float = 0.2, modelo: str | None = None) ->
         partes = candidatos[0].get("content", {}).get("parts") or []
         texto = "".join(p.get("text", "") for p in partes).strip()
         if texto:
+            if al_elegir_modelo:
+                al_elegir_modelo(candidato_modelo)
             return texto
         ultimo_error = GeminiError(
             f"Respuesta vacía (finishReason={candidatos[0].get('finishReason', 'desconocido')})"
@@ -172,7 +185,10 @@ def generar(prompt: str, temperatura: float = 0.2, modelo: str | None = None) ->
 
 
 def generar_stream(
-    prompt: str, temperatura: float = 0.2, modelo: str | None = None
+    prompt: str,
+    temperatura: float = 0.2,
+    modelo: str | None = None,
+    al_elegir_modelo: Callable[[str], None] | None = None,
 ) -> Iterator[str]:
     """Emite el texto por fragmentos según el modelo lo produce.
 
@@ -232,6 +248,8 @@ def generar_stream(
                     continue
                 break
         if respuesta is not None:
+            if al_elegir_modelo:
+                al_elegir_modelo(candidato_modelo)
             break
 
     if respuesta is None:

@@ -182,12 +182,27 @@ Añadir una nueva no requiere tocar el frontend: sale de `/api/normas`.
   el modelo de prevención.
 - **ISO 37002** y el **régimen laboral de hostilidad y represalia** — lo mínimo
   para el agente de línea ética.
-- **Código Penal y Código Procesal Penal**, en secciones acotadas: delitos
-  económicos, delitos contra la administración pública, y la parte de prueba.
-  Para el agente de investigación.
 - **DL 1034** — libre competencia. Materia sin cubrir.
 - **TUO de la Ley 27444** — la potestad sancionadora. La necesita el estimador
   de multas para graduar dentro del rango.
 - **Normativa sectorial** — se carga por encargo, no de entrada.
 
 Para añadir cualquiera: [INGESTA.md](INGESTA.md).
+
+## Fuera de alcance: el Código Penal
+
+Decidido el 03/09/2026. El **Código Penal** y el **Código Procesal Penal** no
+entran al corpus.
+
+CARLOS responde sobre obligaciones administrativas: qué tiene que hacer una
+organización y qué le pasa si no lo hace. Tipificar un delito es otra cosa, la
+hace un abogado penalista, y un asistente que cita tipos penales invita a que
+alguien los use como calificación.
+
+Los delitos que importan aquí ya están nombrados donde tienen que estarlo: el
+artículo 1 de la Ley 30424 lista los tipos penales que activan la
+responsabilidad administrativa de la persona jurídica, y ese artículo está
+cargado.
+
+Si algún día hace falta, es un proyecto de ingesta propio y el recorte hay que
+declararlo.

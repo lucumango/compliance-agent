@@ -95,11 +95,13 @@ Tres cosas:
 
 ## 5. Sin pruebas unitarias
 
-No hay ninguna. `ingestion.validate` cubre la calidad del corpus y `rag.eval`
-la recuperación, pero queda fuera:
+No hay ninguna. `ingestion.validate` cubre la calidad del corpus, `rag.eval` la
+recuperación y `rag.eval_prompt` seis de las ocho reglas del prompt. Queda
+fuera:
 
-- los **prompts** — nada comprueba que el modelo siga negándose a responder
-  fuera del corpus, ni que distinga norma de documento del usuario;
+- las **reglas 2 y 6 del prompt** — no confundir norma con política interna, y
+  no dar asesoría. Son de matiz: una comprobación que dependa de otro modelo
+  para juzgar convierte un fallo en una discusión, así que se leen a mano;
 - la **anonimización** — la pieza con más casos borde y cero cobertura;
 - las **multas** — aritmética pura, trivial de probar;
 - el **parser** — donde más regresiones caben, y donde más se ha tocado.
@@ -114,13 +116,15 @@ ningún modelo.
 - **Reglamento de la Ley 30424** (DS 002-2019-JUS y DS 002-2025-JUS).
 - **ISO 37002** y el **régimen laboral de hostilidad** — lo mínimo para el
   agente de línea ética.
-- **Código Penal y Procesal Penal** en secciones acotadas — para el agente de
-  investigación. Es un proyecto de ingesta propio, no dos PDF, y el recorte hay
-  que declararlo.
 - **DL 1034** — libre competencia.
 - **TUO de la Ley 27444** — lo necesita el estimador de multas.
 - **Normativa sectorial** — la rama `05_Sectorial/` existe y está vacía. Se
   carga por encargo.
+
+**El Código Penal y el Procesal Penal quedan fuera** (03/09/2026). CARLOS
+responde sobre obligaciones administrativas, no tipifica delitos. Los tipos que
+importan ya están en el artículo 1 de la Ley 30424, que sí está cargado. Ver
+[FUENTES.md](FUENTES.md).
 
 ---
 

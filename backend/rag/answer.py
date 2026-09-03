@@ -9,7 +9,8 @@ vuelve peligroso.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+import hashlib
+from dataclasses import dataclass, field
 
 from typing import Iterator
 
@@ -49,12 +50,25 @@ profesional valide.
 7. Si citas un plazo, un monto o un porcentaje, transcríbelo tal como aparece \
 en la fuente. Nunca lo estimes ni lo redondees.
 8. Responde en español, de forma concreta y estructurada. Si la consulta implica \
-pasos, enuméralos. No repitas la pregunta antes de contestarla.
+pasos, enuméralos. Entra directamente en la respuesta: nada de abrir con una \
+frase que reformule la consulta ni con preámbulos del tipo "De acuerdo con la \
+normativa peruana..." o "Respecto a tu consulta sobre...". La primera frase ya \
+tiene que aportar contenido y su cita.
 
 FUENTES:
 {fuentes}
 
 CONSULTA: {consulta}"""
+
+# Identificador de esta versión del prompt. La etiqueta se sube a mano cuando
+# se cambia una regla; el hash se calcula solo. Los dos juntos porque la
+# etiqueta es legible pero se olvida, y el hash no se olvida pero no dice nada.
+# Si alguien edita _SISTEMA sin tocar la etiqueta, el hash cambia igual y las
+# dos versiones siguen siendo distinguibles en el historial.
+_ETIQUETA_PROMPT = "2026-09-03"
+PROMPT_VERSION = (
+    f"{_ETIQUETA_PROMPT}+{hashlib.sha256(_SISTEMA.encode()).hexdigest()[:8]}"
+)
 
 
 @dataclass
@@ -64,6 +78,11 @@ class Respuesta:
     advertencias: list[str]
     diagrama: str | None = None
     documentos: list[ResultadoDoc] | None = None
+    # Qué produjo esta respuesta. Sin estos dos campos una respuesta guardada
+    # no se puede reproducir: la cadena de respaldo cambia de modelo sola
+    # cuando se agota una cuota, y el prompt se edita. Ver docs/GOBERNANZA.md.
+    modelo: str | None = None
+    prompt_version: str = PROMPT_VERSION
 
 
 def _formatear_fuentes(
@@ -157,7 +176,8 @@ def responder(
     prompt = _SISTEMA.format(
         fuentes=_formatear_fuentes(resultados, docs), consulta=anon.texto
     )
-    texto = anon.restaurar(generar(prompt))
+    usado: list[str] = []
+    texto = anon.restaurar(generar(prompt, al_elegir_modelo=usado.append))
 
     diagrama = None
     if con_diagrama and amerita_diagrama(consulta):
@@ -169,6 +189,7 @@ def responder(
         advertencias=_advertencias(resultados) + _aviso_documentos(docs),
         diagrama=diagrama,
         documentos=docs,
+        modelo=usado[0] if usado else None,
     )
 
 
@@ -184,6 +205,11 @@ class Preparacion:
     anonimizacion: object
     lleva_diagrama: bool
     documentos: list[ResultadoDoc]
+    prompt_version: str = PROMPT_VERSION
+    # El modelo no se sabe hasta que uno de la cadena acepta la conexión, y eso
+    # pasa dentro de `responder_stream`. Se rellena ahí y se lee en el evento
+    # `fin`, que es el único que sale después.
+    modelo: list[str] = field(default_factory=list)
 
 
 def preparar(
@@ -224,5 +250,5 @@ def responder_stream(prep: Preparacion) -> Iterator[str]:
         yield "El corpus cargado no contiene información sobre esta consulta."
         return
 
-    for fragmento in generar_stream(prep.prompt):
+    for fragmento in generar_stream(prep.prompt, al_elegir_modelo=prep.modelo.append):
         yield prep.anonimizacion.restaurar(fragmento)
