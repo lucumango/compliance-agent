@@ -23,6 +23,16 @@ COPY documentos/ documentos/
 COPY data/index/ data/index/
 COPY data/uit.json data/
 
+# Nada de aquí dentro necesita root. Un fallo en la lectura de un PDF subido
+# —PyMuPDF procesa ficheros de origen desconocido— se queda con los permisos de
+# un usuario que no puede escribir en /app ni instalar nada.
+#
+# Va DESPUÉS de los COPY: los ficheros se copian como root y quedan de solo
+# lectura para `carlos`, que es exactamente lo que se quiere. La aplicación no
+# escribe en disco.
+RUN useradd --create-home --uid 10001 carlos
+USER carlos
+
 EXPOSE 8000
 
 # El host debe ser 0.0.0.0 para aceptar tráfico fuera del contenedor, y el

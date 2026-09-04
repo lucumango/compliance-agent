@@ -122,7 +122,7 @@ def _unit_from_articulo(meta: NormaMeta, doc_tipo: str, art) -> dict:
         if art.seccion:
             ubicacion.append(f"Sección {art.seccion}")
 
-    encabezado = " · ".join([norma_label] + ubicacion + [etiqueta])
+    encabezado = " · ".join([norma_label, *ubicacion, etiqueta])
 
     return {
         "id": unit_id,

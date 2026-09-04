@@ -106,6 +106,16 @@ dimensión **en los dos lados a la vez**, no solo aquí.
 - **El original no se guarda.** Se conserva el texto troceado, no el archivo.
   Volver a necesitarlo significa volver a subirlo.
 - **Tope de 1000 fragmentos por documento**, y 20 MB por archivo.
-- **La anonimización no cubre lo que se sube.** `anonimizar.py` enmascara la
-  consulta antes de llamar al modelo; el contenido del documento va tal cual.
-  Un documento con datos personales los manda a Gemini al ser vectorizado.
+- **La anonimización cubre el prompt, no el indexado.** `anonimizar.py`
+  enmascara la consulta **y** los fragmentos del documento que se citan en una
+  respuesta, con la misma tabla de marcadores: un mismo DNI que aparece en la
+  pregunta y en el contrato recibe el mismo marcador.
+
+    Lo que sigue saliendo sin enmascarar es el texto que se envía a Google al
+    **vectorizar** el fichero, en el momento de subirlo. Enmascararlo ahí haría
+    que lo guardado no coincidiera con el original —la cita dejaría de ser
+    literal— y degradaría la recuperación, así que la decisión es avisar en vez
+    de romper: la interfaz lo dice junto al botón de subir.
+
+    Y sigue sin cubrir **nombres**: reconoce patrones estructurados, no
+    personas.

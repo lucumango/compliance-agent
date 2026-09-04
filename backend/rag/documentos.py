@@ -15,6 +15,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import nube
+
 from .gemini import embed_query
 
 

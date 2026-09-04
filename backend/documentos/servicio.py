@@ -75,7 +75,7 @@ def procesar(
                     "texto": f.texto,
                     "embedding": _a_literal(v),
                 }
-                for f, v in zip(lote, vectores)
+                for f, v in zip(lote, vectores, strict=True)
             )
             # Se escribe lote a lote y no todo al final: un documento largo
             # produce megabytes de vectores, y un solo POST con todo agota la
@@ -115,4 +115,4 @@ def eliminar(token: str, documento_id: str) -> None:
     nube.borrar("documentos", token, id=f"eq.{documento_id}")
 
 
-__all__ = ["procesar", "listar", "eliminar", "MAX_FRAGMENTOS"]
+__all__ = ["MAX_FRAGMENTOS", "eliminar", "listar", "procesar"]

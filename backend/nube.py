@@ -96,10 +96,10 @@ def usuario_de_token(token: str) -> dict | None:
     try:
         with httpx.Client(timeout=TIMEOUT) as cliente:
             resp = cliente.get(f"{URL}/auth/v1/user", headers=_cabeceras(token))
-    except httpx.HTTPError:
+    except httpx.HTTPError as e:
         # Supabase caído no debe convertirse en "credencial inválida": quien
         # llama distingue el None de una excepción para responder 401 o 503.
-        raise ErrorNube("No se pudo contactar con Supabase")
+        raise ErrorNube("No se pudo contactar con Supabase") from e
 
     if resp.status_code in (401, 403):
         return None

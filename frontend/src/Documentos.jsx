@@ -119,6 +119,16 @@ export default function Documentos({ onCambio }) {
         </p>
       )}
 
+      {/* El contenido del documento sale del entorno para poder indexarlo, y
+          eso hay que decirlo donde se decide subirlo, no en la documentación.
+          La consulta y los fragmentos citados sí van enmascarados; el texto
+          que viaja al vectorizarse, no. */}
+      <p className="pista docs-aviso">
+        <AlertTriangle size={12} aria-hidden="true" /> El contenido se envía a
+        Google para indexarlo. No subas documentos con datos personales que no
+        deban salir.
+      </p>
+
       {lista.length === 0 && !subiendo && (
         <p className="pista">
           Sube tus políticas para que el asistente pueda contrastarlas con la

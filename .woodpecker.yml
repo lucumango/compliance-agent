@@ -1,0 +1,42 @@
+# Woodpecker CI, para cuando el repositorio viva en Codeberg.
+#
+# Es la traducción de .github/workflows/controles.yml. Los mismos controles,
+# los mismos motivos: lint, vulnerabilidades de dependencias, calidad del
+# corpus, y que el frontend y la documentación construyan. Fuera quedan
+# `rag.eval` y `rag.eval_prompt`, que llaman al modelo.
+#
+# SIN PROBAR: se escribió antes de la migración y nadie lo ha visto correr.
+# La primera vez, revisar que Woodpecker esté habilitado para el repositorio en
+# Codeberg (Settings -> Woodpecker CI) antes de dar por bueno un pipeline que
+# no aparece: un repositorio sin CI habilitada no falla, simplemente no corre.
+
+when:
+  - event: [push, pull_request]
+
+steps:
+  backend:
+    image: python:3.12
+    commands:
+      - cd backend
+      - pip install --no-cache-dir -r requirements-dev.txt
+      - ruff check .
+      - pip-audit -r requirements.txt --progress-spinner off
+      - python -m ingestion.validate
+
+  frontend:
+    image: node:20
+    commands:
+      - cd frontend
+      - npm ci
+      - npm run lint
+      - npm audit --omit=dev --audit-level=high
+      - npm run build
+
+  documentacion:
+    image: python:3.12
+    commands:
+      # python:3.12 no trae git, y los plugins de fecha y autoría lo necesitan
+      # para leer la historia. Igual que en GitLab.
+      - apt-get update -qq && apt-get install -y -qq --no-install-recommends git
+      - pip install --no-cache-dir -r docs/requirements.txt
+      - mkdocs build --strict

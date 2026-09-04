@@ -1,0 +1,11 @@
+# Herramientas de control. No entran en la imagen de producción: el Dockerfile
+# instala solo requirements.txt.
+-r requirements.txt
+
+# Lint. La configuración está en ruff.toml, con el porqué de cada excepción.
+ruff==0.16.6
+
+# Vulnerabilidades conocidas de las dependencias de runtime. Se ejecuta contra
+# requirements.txt, no contra este fichero: lo que importa es lo que se
+# despliega, no lo que usamos para revisarlo.
+pip-audit==2.9.0

@@ -10,7 +10,7 @@ mistakes (e.g. "°" read as "*", roman numeral "I" read as "|" or "l").
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 # --- text cleanup ------------------------------------------------------
 
@@ -82,7 +82,7 @@ def strip_page_furniture(text: str) -> str:
             i += 1
             continue
         if _BARE_PAGE_NUM_RE.match(line):
-            nxt = next((l for l in lines[i + 1 :] if l.strip()), "")
+            nxt = next((ln for ln in lines[i + 1 :] if ln.strip()), "")
             if _FURNITURE_LINE_RE.match(nxt):
                 i += 1
                 continue

@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 from contextlib import asynccontextmanager
+
 # Pydantic evalúa las anotaciones en runtime, y el Python 3.9 del sistema no
 # entiende `list[str] | None`. Los modelos usan typing explícito por eso.
 from typing import List, Optional

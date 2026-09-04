@@ -1,0 +1,44 @@
+# Configuración de ruff. Se ejecuta en el CI y en local con:
+#
+#     ruff check .
+#
+# La selección es deliberadamente corta. El objetivo es cazar lo que rompe
+# —imports muertos, nombres sin definir, mutables en argumentos por defecto— no
+# imponer un estilo: el código ya sigue PEP 8 y PEP 257 de forma consistente y
+# un formateador automático solo generaría ruido en las revisiones.
+
+target-version = "py312"
+exclude = [".venv", "data"]
+
+[lint]
+select = [
+  "E",   # pycodestyle
+  "F",   # pyflakes: lo que de verdad está mal
+  "W",   # avisos de espacios
+  "I",   # orden de imports
+  "B",   # bugbear: trampas reales
+  "RUF", # reglas propias de ruff
+]
+
+ignore = [
+  # FastAPI define las dependencias así por diseño: `x = Depends(algo)` y
+  # `archivo: UploadFile = File(...)`. No es el bug que B008 persigue.
+  "B008",
+  # Líneas largas: el código va a 88 y las que se pasan son URLs y mensajes de
+  # error que partir empeora.
+  "E501",
+  # Caracteres "ambiguos". El código está en español y el parser trabaja sobre
+  # el texto literal de PDF peruanos, donde la raya (–), el espacio duro y las
+  # comillas tipográficas SON los caracteres del original. Sustituirlos por su
+  # equivalente ASCII rompería las expresiones regulares que los buscan.
+  "RUF001", "RUF002", "RUF003",
+]
+
+[lint.per-file-ignores]
+# api.py usa typing.Optional y typing.List a propósito, no por costumbre:
+# Pydantic evalúa las anotaciones en tiempo de ejecución y el Python 3.9 del
+# macOS local no entiende `list[str] | None`. Está explicado en el fichero.
+"api.py" = ["UP006", "UP007", "UP045", "UP035"]
+
+[lint.isort]
+known-first-party = ["rag", "ingestion", "documentos", "nube", "auth", "auditoria"]

@@ -196,6 +196,37 @@ licencia del PDF es de usuario único. Opciones antes de exponerlo:
 
 Sería irónico que una herramienta de compliance infringiera una licencia.
 
+## Mudarse a Codeberg
+
+El repositorio vive hoy en dos sitios a la vez: GitLab (`origin`) y GitHub
+(`github`). Hay que empujar a los dos, y el que se olvida se queda atrás sin
+avisar. La mudanza a Codeberg es la ocasión de dejar uno solo.
+
+**Qué se lleva tal cual.** Todo el código, la documentación en `docs/`, y los
+controles: `.woodpecker.yml` es la traducción literal de
+`.github/workflows/controles.yml`. Hay que habilitar Woodpecker para el
+repositorio en Codeberg (Settings → Woodpecker CI); si no, el pipeline no falla
+—simplemente no existe, que es peor porque no se nota.
+
+**Qué hay que rehacer.**
+
+| Qué | Hoy | En Codeberg |
+|---|---|---|
+| Sitio de documentación | GitLab Pages, `artifacts: public/` | Codeberg Pages sirve una rama `pages`. El job tiene que **empujar** `public/` a esa rama, no dejarlo como artefacto |
+| Despliegue del frontend | Vercel conectado a GitHub | Vercel no se integra con Codeberg. O se deja el espejo en GitHub solo para eso, o se despliega desde CI con la CLI de Vercel y un token |
+| Despliegue del backend | Render con blueprint desde el repo | Igual: Render no lista Codeberg. Deploy hook desde el CI, o espejo |
+
+**El orden que evita quedarse sin nada.** Crear el repositorio en Codeberg y
+empujar. Habilitar Woodpecker y ver un pipeline verde. Montar Pages y
+comprobar que la documentación se ve. Solo entonces cambiar los despliegues, y
+dejar GitHub como espejo hasta que Vercel y Render tengan otro camino.
+
+**Lo que no se lleva solo.** Las variables de entorno de Render y de Vercel
+—están en sus paneles, no en el repositorio—, y los secretos del CI. La lista
+está en [MANTENIMIENTO.md](MANTENIMIENTO.md#claves).
+
+---
+
 ## Streaming (ya implementado)
 
 30 s sin feedback era mucho, y lo que lo arregló fue el **streaming**:

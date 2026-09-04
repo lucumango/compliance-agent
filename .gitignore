@@ -3,8 +3,9 @@
 .env.*
 !.env.example
 
-# Python (backend)
+# Python (backend), y el venv aparte para construir la documentacion.
 .venv/
+.venv-docs/
 __pycache__/
 *.pyc
 

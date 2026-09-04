@@ -13,14 +13,14 @@ Tres estados: **sí** (está implementado y verificado en el código), **parcial
 
 | Marco | Estado | Dónde |
 |---|---|---|
-| OWASP Top 10 (2021) | Parcial — 8 de 10 cubiertos | `auth.py`, `nube.py`, SQL |
-| OWASP API Security Top 10 (2023) | Parcial — falta inventario y registro | `api.py` |
-| **OWASP Top 10 para LLM (2025)** | Parcial — falta cerrar la inyección de prompt | `answer.py`, `002_documentos.sql` |
+| OWASP Top 10 (2021) | Sí, salvo la clave compartida en el bundle | `auth.py`, `nube.py`, SQL |
+| OWASP API Security Top 10 (2023) | Sí | `api.py`, `auditoria.py` |
+| **OWASP Top 10 para LLM (2025)** | Sí, salvo el indexado sin enmascarar | `answer.py`, `002_documentos.sql` |
 | ISO/IEC 27001:2022 (Anexo A) | Parcial — controles técnicos sí, gestión no | todo el backend |
 | ISO/IEC 27701 (datos personales) | Parcial | `anonimizar.py`, `purgar_historial` |
 | **ISO/IEC 42001:2023 (gestión de IA)** | Sí, salvo asignar los roles | [GOBERNANZA.md](GOBERNANZA.md) |
 | NIST AI RMF 1.0 | Sí, las cuatro funciones | [GOBERNANZA.md](GOBERNANZA.md) |
-| PEP 8 / PEP 257 | Sí, sin herramienta que lo verifique | — |
+| PEP 8 / PEP 257 | Sí, verificado con `ruff` en el CI | `backend/ruff.toml` |
 | OpenAPI 3.1 | Sí, generado y sin usar | `/openapi.json` |
 | SemVer | No | — |
 
@@ -50,15 +50,21 @@ Tres estados: **sí** (está implementado y verificado en el código), **parcial
 
 | Hueco | Por qué importa | Estándar |
 |---|---|---|
-| ~~Cero registro de auditoría~~ | **Resuelto.** `eventos_auditoria`: quién, cuándo, qué modelo, qué versión del prompt, qué normas. Sin el texto de la consulta, y sin política de borrado ni de modificación | OWASP A09, API9, ISO 27001 A.8.15/A.8.16 |
-| **Cero análisis de dependencias** | Ni `pip-audit` ni `npm audit` en CI. Las versiones son mínimas (`>=`), así que un despliegue nuevo trae lo que haya ese día | OWASP A06, ISO 27001 A.8.8 |
-| **El contenedor corre como root** | El `Dockerfile` no crea usuario | CIS Docker Benchmark 4.1 |
-| **Sin cabeceras de seguridad** | No hay CSP, `X-Content-Type-Options` ni `Referrer-Policy` en el frontend | OWASP A05 |
-| **Clave de API en la query string** | `?key=...` en `gemini.py`. Google admite la cabecera `x-goog-api-key`, que no acaba en los registros de ningún proxy | ISO 27001 A.8.24 |
-| **Registro abierto en Supabase** | Cualquiera con la URL se crea cuenta | OWASP A07 |
-| **La clave compartida viaja en el bundle** | Documentado en `auth.py`, no resuelto. Es visible en las herramientas de desarrollo | OWASP A07 |
+| **La clave compartida viaja en el bundle** | Documentado en `auth.py`, sin resolver. Es visible en las herramientas de desarrollo. Frena el abuso de paso, no a alguien decidido | OWASP A07 |
+| **Registro abierto en Supabase** | Cualquiera con la URL se crea cuenta. Además, una consulta sin sesión no deja evento de auditoría | OWASP A07 |
+| **CSP en modo aviso, no en modo bloqueo** | Va como `Content-Security-Policy-Report-Only`: informa de las violaciones sin romper nada. Promoverla a `Content-Security-Policy` exige mirar la consola del navegador una vez en el despliegue real | OWASP A05 |
+| **El texto del documento se indexa sin enmascarar** | Al subirlo viaja íntegro a Google para vectorizarlo. Enmascararlo antes haría que lo guardado no coincidiera con el original y degradaría la recuperación. Está avisado en la interfaz | ISO 27701 |
 
----
+### Lo que se cerró en esta ronda
+
+| Hueco | Qué se hizo |
+|---|---|
+| Sin registro de auditoría | `eventos_auditoria`, sin política de borrado ni de modificación |
+| Sin análisis de dependencias | `pip-audit` y `npm audit` en el CI, con `ruff` |
+| El contenedor corría como root | `USER carlos` (uid 10001) después de los `COPY`, así que los ficheros le quedan de solo lectura |
+| Sin cabeceras de seguridad | `nosniff`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy` y la CSP en modo aviso, en `vercel.json` |
+| Clave de API en la query string | A la cabecera `x-goog-api-key`. Una URL con `?key=` acaba en los registros de cualquier proxy |
+| **Las funciones de purga estaban abiertas** | `purgar_historial` y `purgar_auditoria` son `security definer` y Postgres les concede `EXECUTE` a `PUBLIC` por defecto. PostgREST las exponía en `/rest/v1/rpc/` y la clave `anon` es pública: cualquiera podía borrar las conversaciones de todos. `004_permisos_purga.sql` revoca el permiso y deja las siguientes funciones cerradas por defecto |
 
 ## OWASP Top 10 para LLM
 
@@ -66,9 +72,9 @@ El marco más específico para lo que es esto. La versión de 2025.
 
 | Riesgo | Estado |
 |---|---|
-| LLM01 Inyección de prompt | **No.** Nada impide que un documento subido contenga "ignora las instrucciones anteriores". Los fragmentos `[D]` entran al prompt sin delimitador estructural |
-| LLM02 Fuga de información sensible | **Parcial.** `anonimizar.py` cubre la consulta, no los documentos subidos, que van íntegros a Google |
-| LLM03 Cadena de suministro | **Parcial.** Sin SBOM ni versiones fijadas |
+| LLM01 Inyección de prompt | **Sí.** Cada fuente va en su bloque `<fuente id="F1">…</fuente>`, el delimitador se escapa dentro del texto del usuario para que no pueda forjarse, y la regla 9 dice que lo de dentro son datos y nunca órdenes. Con un caso en `rag.eval_prompt` |
+| LLM02 Fuga de información sensible | **Parcial.** `anonimizar.py` cubre ya la consulta **y** los fragmentos de documento que entran al prompt, con la misma tabla de marcadores. Lo que sigue saliendo sin enmascarar es el texto que se vectoriza al subir el fichero; está avisado en la interfaz |
+| LLM03 Cadena de suministro | **Parcial.** `pip-audit` y `npm audit` en el CI. Sigue sin SBOM y con versiones por rango |
 | LLM04 Envenenamiento de datos | **Sí.** El corpus normativo se construye en local desde PDF oficiales y viaja ya indexado |
 | LLM05 Manejo inseguro de la salida | **Sí.** El Markdown se renderiza sin HTML; el Mermaid, en modo estricto |
 | LLM06 Agencia excesiva | **Sí.** El modelo no tiene herramientas. Solo redacta |
@@ -77,7 +83,7 @@ El marco más específico para lo que es esto. La versión de 2025.
 | LLM09 Desinformación | **Sí, medido.** Ocho reglas, descargo y citas obligatorias, y `rag.eval_prompt` verifica seis de las ocho. Las reglas 2 y 6 son de matiz y se leen a mano |
 | LLM10 Consumo ilimitado | **Parcial.** Límite por IP, sí; por cuenta, no; presupuesto de tokens, no |
 
-LLM01 y LLM09 son los dos que quedan abiertos y son los dos que importan.
+Queda LLM02 a medias —el indexado— y LLM10, que a esta escala no aprieta.
 
 ---
 
@@ -126,12 +132,18 @@ El prompt de sistema vive en `rag/answer.py`, en `_SISTEMA`. Ocho reglas.
 Esa regla 2 —norma que obliga frente a documento interno que no— no está en
 ninguna guía y es la mejor decisión de prompt del proyecto.
 
+### Lo que las guías dicen y aquí ya se hace
+
+**Delimitadores estructurados.** Antes las fuentes iban separadas por `---` y
+encabezadas por `[F1]`, y un documento que contuviera `---` o `[F3]` se
+confundía con la estructura. Ahora cada una va en su bloque
+`<fuente id="F1" clase="norma" cita="…">…</fuente>`, que es lo que recomiendan
+las guías para contexto largo. Dentro del texto, la secuencia `<fuente` se
+neutraliza —el `<` pasa a `‹`— para que un PDF no pueda cerrar el bloque antes
+de tiempo y colarse a la altura de las reglas.
+
 ### Lo que las guías dicen y aquí no se hace
 
-- **Delimitadores estructurados.** Anthropic recomienda etiquetas tipo
-  `<documento>` para separar fuentes; aquí se usan `---` y `[F1]`. Funciona,
-  pero un documento del usuario que contenga `---` o `[F3]` se confunde con la
-  estructura. Es la puerta de LLM01.
 - **Citar antes de responder.** La práctica de pedir al modelo que extraiga
   primero las frases relevantes y responda después reduce la invención en
   contexto largo. No se hace.
@@ -181,22 +193,23 @@ desapareció. Eso es para lo que sirve el banco.
 
 ## Qué queda, en orden
 
-Hecho desde esta auditoría: los casos de evaluación del prompt, la
-`prompt_version`, el registro de auditoría y el documento de gobernanza.
+Cerrado en las dos últimas rondas: evaluación del prompt, `prompt_version`,
+registro de auditoría, gobernanza, delimitadores estructurados, anonimización
+de los documentos en el prompt, CI con auditoría de dependencias y lint,
+contenedor sin root, cabeceras de seguridad y la clave fuera de la query
+string.
 
-1. **Delimitadores estructurados en el prompt**, y escapar los del usuario.
-   Cierra LLM01, el último riesgo alto que depende solo de código.
-2. **`pip-audit` y `npm audit` en el CI**, y `ruff` con ellos. Un job, quince
-   líneas.
-3. **Usuario sin privilegios en el `Dockerfile`.** Dos líneas.
-4. **Cerrar el alta abierta en Supabase.** Mientras siga abierta, cualquiera
-   con la URL se hace cuenta, y una consulta anónima no deja evento de
-   auditoría.
-5. **La clave de Gemini a la cabecera `x-goog-api-key`**, fuera de la query
-   string.
-6. **Anonimizar también los documentos subidos**, o decir en la interfaz que no
-   se anonimizan. Hoy no se hace ninguna de las dos.
-7. **Cotejar el corpus contra SPIJ.** No es código, y es el riesgo alto que más
+1. **Cerrar el alta abierta en Supabase.** Panel → Authentication → Providers →
+   Email. Es de tres clics y es el último hueco de OWASP A07 que se puede
+   cerrar.
+2. **Promover la CSP a modo bloqueo.** Está desplegada en modo aviso; hace
+   falta abrir la consola del navegador una vez en producción, ver que no
+   reporta violaciones, y quitarle el `-Report-Only`.
+3. **`systemInstruction` y ejemplos en el prompt.** Las dos recomendaciones de
+   Google y Anthropic que siguen sin aplicarse.
+4. **`safetySettings` explícitos.** Un asistente que habla de soborno y lavado
+   es el caso donde un filtro por defecto bloquea contenido legítimo.
+5. **Presupuesto por cuenta**, no solo por IP. Cierra LLM10.
+6. **Cotejar el corpus contra SPIJ.** No es código, y es el riesgo alto que más
    pesa.
-
-Los tres primeros son de esta semana.
+7. **Poner nombres en los cuatro roles** de [GOBERNANZA.md](GOBERNANZA.md).

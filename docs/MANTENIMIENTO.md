@@ -61,6 +61,7 @@ segundos en vez de minutos y no gasta cuota.
 ## Antes de cada push
 
 ```bash
+ruff check backend/             # lint del backend, config en backend/ruff.toml
 python -m ingestion.validate    # si tocaste parser, registry o los PDFs
 python -m rag.eval              # si tocaste recuperación, índice o embeddings
 python -m rag.eval_prompt       # si tocaste el prompt o el modelo
@@ -69,11 +70,18 @@ npm --prefix frontend run build # el build falla por cosas que dev no ve
 mkdocs build --strict           # un enlace roto tumba el pipeline
 ```
 
-No hay pruebas unitarias. `validate` y `eval` son lo único que hay, y solo
-cubren el corpus y la recuperación.
+El CI corre solo lo determinista y gratis —lint, auditoría de dependencias,
+calidad del corpus, y que el frontend y la documentación construyan—. Las dos
+evaluaciones que llaman al modelo se quedan fuera a propósito: necesitarían la
+`GOOGLE_API_KEY` como secreto del repositorio y gastarían cuota en cada push.
+**Esas dos las corres tú antes de desplegar.**
+
+No hay pruebas unitarias. `validate`, `eval` y `eval_prompt` son lo único que
+hay.
 
 **Empujar a los dos remotos.** El repositorio tiene dos y los despliegues
-cuelgan de distintos:
+cuelgan de distintos —hasta la mudanza a Codeberg, que está planteada en
+[DEPLOY.md](DEPLOY.md):
 
 ```bash
 git push origin main && git push github main
@@ -157,11 +165,9 @@ aparte**. Siempre la última versión, una sola vez.
 `backend/supabase/*.sql`, numeradas, y se ejecutan en orden en el editor SQL de
 Supabase. **Nunca se editan las ya aplicadas**: se añade una nueva.
 
-Hoy van tres: `001_historial.sql`, `002_documentos.sql` y `003_gobernanza.sql`.
-La tercera añade `mensajes.prompt_version` y la tabla `eventos_auditoria`, y
-hay que ejecutarla para que el registro de auditoría funcione: sin ella la API
-avisa por consola y sigue, que es lo correcto, pero no queda constancia de
-nada.
+Hoy van tres: `001_historial.sql`, `002_documentos.sql` y `003_gobernanza.sql`,
+las tres aplicadas. La tercera añadió `mensajes.prompt_version` y la tabla
+`eventos_auditoria`.
 
 Toda tabla nueva lleva `enable row level security` y su política en la misma
 migración. Una tabla con RLS y sin política no se puede leer, lo que es un
@@ -229,9 +235,40 @@ respondiendo, peor.
 Y conviene saberlo antes de confiar en el sistema:
 
 - Cero pruebas unitarias. `validate`, `eval` y `eval_prompt` son todo lo que hay.
-- Cero análisis de dependencias en el CI.
 - Las reglas 2 y 6 del prompt no tienen control automático: se leen a mano.
 - Ninguna de las 11 normas está cotejada contra SPIJ.
+- El texto de un documento se envía a Google sin enmascarar al indexarlo. La
+  consulta y los fragmentos citados sí van enmascarados.
 
 El detalle está en [ESTANDARES.md](ESTANDARES.md), [GOBERNANZA.md](GOBERNANZA.md)
 y [PENDIENTE.md](PENDIENTE.md).
+
+---
+
+## Al escribir una función en Postgres
+
+Postgres concede `EXECUTE` a `PUBLIC` en toda función nueva, y PostgREST expone
+lo que haya en `public` bajo `/rest/v1/rpc/`. La clave `anon` viaja en el bundle
+del frontend, así que es pública. Las tres cosas juntas significan que **una
+función nueva es, por defecto, un endpoint abierto a internet**.
+
+Con eso en la cabeza, dos preguntas antes de escribir `create function`:
+
+**¿`security invoker` o `security definer`?** `invoker` corre con los permisos
+de quien llama, así que row level security se aplica y no hace falta nada más.
+`definer` corre con los del dueño y se salta RLS por diseño: es lo que se
+necesita para una purga o un trigger, y es exactamente lo que no debe poder
+invocar un desconocido.
+
+**Si es `definer`, ¿quién debe poder llamarla?** Si la respuesta es "pg_cron o
+una persona en el editor SQL", hay que quitarle el permiso:
+
+```sql
+revoke execute on function public.mi_funcion(int)
+  from public, anon, authenticated;
+```
+
+`004_permisos_purga.sql` hace esto con las dos funciones de purga y deja puesto
+un `alter default privileges` para que las siguientes nazcan cerradas. Se
+descubrió tarde: `purgar_historial` llevaba desde la primera migración
+respondiendo 200 a cualquiera con la clave anon.

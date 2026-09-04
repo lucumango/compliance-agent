@@ -43,13 +43,15 @@ Quién puede salir perjudicado y cómo.
 | **Inventa un artículo o un plazo** | El analista, que lo copia | Alta | Respuesta anclada a fuentes recuperadas; regla 7 del prompt; `rag.eval_prompt` verifica que las cifras salgan de una fuente | Medio-bajo |
 | **Presenta una política interna como obligación legal** | El cliente | Alta — le exige lo que no le exige la ley | Regla 2 del prompt; `[F]` y `[D]` separados en la interfaz; aviso automático al citar documentos | Medio. Es la regla que ningún control automático verifica |
 | **Responde solo la mitad y no dice que falta la otra** | El analista | Media | Regla 3 y regla 5 del prompt; el grafo de trazabilidad marca las normas que no están cargadas | Medio |
-| **Datos personales del caso salen a Google** | El titular de los datos | Alta | `anonimizar.py` enmascara DNI, RUC, correo, teléfono, tarjeta, cuenta y monto antes de la llamada | **Alto.** No cubre nombres, y no cubre los documentos subidos, que van íntegros |
+| **Datos personales del caso salen a Google** | El titular de los datos | Alta | `anonimizar.py` enmascara DNI, RUC, correo, teléfono, tarjeta, cuenta y monto de la consulta **y** de los fragmentos de documento que entran al prompt, con la misma tabla | **Medio.** No cubre nombres, y el texto del documento sí viaja íntegro al vectorizarse. Avisado en la interfaz |
 | **Un usuario ve documentos de otro** | Dos clientes a la vez | Crítica | Row level security en las cinco tablas; el servidor no tiene credencial que la salte; verificado con 0 filas sin sesión | Bajo |
-| **Un documento subido inyecta instrucciones en el prompt** | Quien lee la respuesta | Media | Ninguno hoy | **Alto.** Sin resolver |
+| **Alguien borra el historial o el registro de auditoría de todos** | Todos los usuarios a la vez | Crítica | Las funciones de purga ya no son invocables desde el API (`004_permisos_purga.sql`), y las nuevas nacen cerradas | Bajo, desde el 04/09/2026 |
+| **Un documento subido inyecta instrucciones en el prompt** | Quien lee la respuesta | Media | Bloques `<fuente>` delimitados, el delimitador escapado dentro del texto del usuario, y la regla 9 del prompt. Con caso en `rag.eval_prompt` | Bajo |
 
-**Las tres altas que quedan.** El cotejo contra SPIJ, la anonimización de
-nombres y de documentos, y la inyección de prompt. Las tres están en
-[PENDIENTE.md](PENDIENTE.md) y ninguna es de una tarde.
+**El alto que queda es uno: el cotejo contra SPIJ.** La inyección de prompt y
+la anonimización de documentos bajaron al cerrarlas; lo que sigue sin cubrir de
+la segunda es el indexado, que va avisado en la interfaz. El cotejo no es
+trabajo de código y está en [PENDIENTE.md](PENDIENTE.md).
 
 **Decisión.** El sistema se usa con esos riesgos porque es una herramienta de
 borrador con obligación de cotejo, no una fuente de verdad. Esa obligación es
@@ -133,8 +135,9 @@ Gemini 3.5 Flash" es una suposición.
 | `python -m ingestion.validate` | Calidad del corpus parseado | Al tocar el parser, el registro o los PDF |
 | `python -m rag.eval` | Recuperación: que el artículo correcto salga | Al tocar recuperación, índice o embeddings |
 | `python -m rag.eval_prompt` | Que el modelo cumpla sus propias reglas | Al tocar `_SISTEMA` o cambiar de modelo |
+| `ruff check backend/` + `pip-audit` + `npm audit` | Lint y vulnerabilidades de dependencias | En cada push, automático |
 
-`rag.eval_prompt` verifica las reglas 1, 3, 4, 5, 7 y 8. Las reglas **2 y 6 no
+`rag.eval_prompt` verifica las reglas 1, 3, 4, 5, 7, 8 y 9. Las reglas **2 y 6 no
 tienen control automático** —no confundir norma con política interna, y no dar
 asesoría— porque son de matiz y una comprobación que dependa de otro modelo
 para juzgar convierte un fallo en una discusión. Se leen a mano.
@@ -160,6 +163,10 @@ no hay a quién atribuirla. Es una razón más para cerrar el alta abierta.
 ## 7. Incidentes
 
 Qué cuenta como incidente aquí:
+
+- una función de Postgres alcanzable desde internet que no debía serlo —pasó el
+  04/09/2026 con las dos funciones de purga, ver
+  [ESTANDARES.md](ESTANDARES.md);
 
 - una cita que resultó ser de una norma derogada, o que no dice lo que la
   respuesta afirmó;

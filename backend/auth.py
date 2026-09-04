@@ -32,7 +32,6 @@ import hmac
 import os
 import time
 from collections import defaultdict, deque
-
 from dataclasses import dataclass
 
 from fastapi import Header, HTTPException, Request
@@ -165,10 +164,10 @@ def usuario_requerido(authorization: str = Header(default="")) -> Usuario:
         raise HTTPException(status_code=401, detail="Falta la sesión.")
     try:
         datos = nube.usuario_de_token(token)
-    except nube.ErrorNube:
+    except nube.ErrorNube as e:
         raise HTTPException(
             status_code=503, detail="No se pudo verificar la sesión con Supabase."
-        )
+        ) from e
     if not datos:
         raise HTTPException(status_code=401, detail="La sesión no es válida o expiró.")
     return Usuario(id=datos["id"], email=datos.get("email"), token=token)

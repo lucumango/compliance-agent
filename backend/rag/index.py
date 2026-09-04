@@ -12,7 +12,6 @@ import hashlib
 import json
 import time
 from dataclasses import dataclass, field
-from pathlib import Path
 
 import numpy as np
 
@@ -122,7 +121,7 @@ def construir(verbose: bool = True, forzar: bool = False) -> None:
     estaban.
     """
     unidades, textos = cargar_unidades()
-    for u, t in zip(unidades, textos):
+    for u, t in zip(unidades, textos, strict=True):
         u.hash_texto = _huella(t)
 
     cache = {} if forzar else _vectores_reutilizables()
@@ -142,7 +141,9 @@ def construir(verbose: bool = True, forzar: bool = False) -> None:
     for i in range(0, len(pendientes), BATCH_MAX):
         idx = pendientes[i : i + BATCH_MAX]
         lote = [textos[j] for j in idx]
-        for j, v in zip(idx, embed_batch(lote, task_type="RETRIEVAL_DOCUMENT")):
+        for j, v in zip(
+            idx, embed_batch(lote, task_type="RETRIEVAL_DOCUMENT"), strict=True
+        ):
             nuevos[j] = v
         if verbose:
             print(f"  {len(nuevos)}/{len(pendientes)}", flush=True)
@@ -179,7 +180,7 @@ def actualizar_metadatos(verbose: bool = True) -> None:
     mismo orden. Si has añadido o quitado alguna, hace falta `construir()`.
     """
     unidades, textos = cargar_unidades()
-    for u, t in zip(unidades, textos):
+    for u, t in zip(unidades, textos, strict=True):
         u.hash_texto = _huella(t)
 
     if not VECTORS_PATH.exists():

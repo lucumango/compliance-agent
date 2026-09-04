@@ -18,7 +18,6 @@ from typing import Callable, Iterator
 from .config import (
     API_BASE,
     MODEL_EMBEDDING,
-    MODEL_GENERACION,
     MODELOS_GENERACION,
     get_api_key,
 )
@@ -42,14 +41,22 @@ class GeminiError(RuntimeError):
     pass
 
 
+# La clave va en cabecera y no en la query string. Google admite las dos, pero
+# una URL con `?key=...` acaba entera en los registros de acceso de cualquier
+# proxy, en el historial de trazas y en los mensajes de error. Una cabecera no.
+def _cabeceras() -> dict[str, str]:
+    return {
+        "Content-Type": "application/json",
+        "x-goog-api-key": get_api_key(),
+    }
+
+
 def _post(path: str, payload: dict, timeout: int = 180) -> dict:
-    url = f"{API_BASE}/{path}?key={get_api_key()}"
+    url = f"{API_BASE}/{path}"
     data = json.dumps(payload).encode()
 
     for intento in range(_MAX_REINTENTOS):
-        req = urllib.request.Request(
-            url, data=data, headers={"Content-Type": "application/json"}
-        )
+        req = urllib.request.Request(url, data=data, headers=_cabeceras())
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 return json.load(resp)
@@ -215,14 +222,11 @@ def generar_stream(
 
     for candidato_modelo in _cadena_modelos(modelo):
         url = (
-            f"{API_BASE}/models/{candidato_modelo}:streamGenerateContent"
-            f"?alt=sse&key={get_api_key()}"
+            f"{API_BASE}/models/{candidato_modelo}:streamGenerateContent?alt=sse"
         )
         for intento in range(_STREAM_MAX_REINTENTOS):
             ultimo = intento == _STREAM_MAX_REINTENTOS - 1
-            req = urllib.request.Request(
-                url, data=payload, headers={"Content-Type": "application/json"}
-            )
+            req = urllib.request.Request(url, data=payload, headers=_cabeceras())
             try:
                 respuesta = urllib.request.urlopen(req, timeout=_STREAM_TIMEOUT)
                 break

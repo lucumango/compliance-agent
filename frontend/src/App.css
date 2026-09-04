@@ -1386,3 +1386,22 @@ a:hover {
   border: 1px solid var(--color-gray-medium);
   color: var(--text-muted);
 }
+
+/* Aviso de que el documento sale del entorno. Reutiliza el tratamiento de
+   .aviso-corpus —tinte amarillo y filo EY— porque es la misma clase de
+   mensaje: una condición del servicio, no algo que falló. */
+.docs-aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 4px 6px;
+  background: var(--tint-yellow);
+  border-left: 3px solid var(--color-ey-yellow);
+  line-height: 16px;
+}
+
+.docs-aviso svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
