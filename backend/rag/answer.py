@@ -14,6 +14,8 @@ import re
 from dataclasses import dataclass, field
 from typing import Iterator
 
+from agentes import POR_DEFECTO, Agente
+
 from .anonimizar import anonimizar
 from .diagrama import amerita_diagrama, generar_diagrama
 from .documentos import ResultadoDoc
@@ -23,6 +25,8 @@ from .retrieval import Buscador, Resultado
 
 _SISTEMA = """Eres un asistente de normativa y compliance del Perú. Respondes \
 únicamente a partir de las FUENTES entregadas.
+
+{agente}
 
 Reglas estrictas:
 1. Cada fuente llega dentro de un bloque <fuente id="..."> ... </fuente>. Cada \
@@ -75,9 +79,22 @@ CONSULTA: {consulta}"""
 # Si alguien edita _SISTEMA sin tocar la etiqueta, el hash cambia igual y las
 # dos versiones siguen siendo distinguibles en el historial.
 _ETIQUETA_PROMPT = "2026-09-04"
-PROMPT_VERSION = (
-    f"{_ETIQUETA_PROMPT}+{hashlib.sha256(_SISTEMA.encode()).hexdigest()[:8]}"
-)
+
+
+def version_prompt(agente: Agente = POR_DEFECTO) -> str:
+    """Identificador del prompt EFECTIVO, que incluye el bloque del agente.
+
+    Dos agentes sobre el mismo `_SISTEMA` no comparten prompt: uno lleva reglas
+    que el otro no. Guardar la misma versión para los dos haría que el campo
+    dijera menos de lo que promete, así que el hash cubre las dos partes.
+    """
+    material = _SISTEMA + agente.bloque_prompt()
+    return f"{_ETIQUETA_PROMPT}+{hashlib.sha256(material.encode()).hexdigest()[:8]}"
+
+
+# La de CARLOS, que es el agente por defecto. `api.py` la publica en /api/salud
+# como la del despliegue.
+PROMPT_VERSION = version_prompt()
 
 
 @dataclass
@@ -180,6 +197,23 @@ def _aviso_documentos(documentos: list[ResultadoDoc]) -> list[str]:
     ]
 
 
+def _materias(agente: Agente, pedidas: list[str] | None) -> list[str] | None:
+    """El corpus del agente, y dentro de él lo que pida la interfaz.
+
+    Se intersecan en vez de que una sustituya a la otra: si el filtro de la
+    interfaz pudiera ampliar el corpus del agente, el alcance declarado dejaría
+    de ser una frontera y pasaría a ser una sugerencia. Una intersección vacía
+    devuelve una lista imposible —y por tanto cero fuentes y una negativa—, que
+    es la respuesta correcta a "responde de esto que no es lo tuyo".
+    """
+    if agente.materias is None:
+        return pedidas
+    if not pedidas:
+        return list(agente.materias)
+    dentro = [m for m in pedidas if m in agente.materias]
+    return dentro or ["__ninguna__"]
+
+
 def _recuperar(
     texto: str,
     buscador: Buscador,
@@ -206,12 +240,15 @@ def responder(
     con_diagrama: bool = True,
     token: str | None = None,
     k_docs: int = 4,
+    agente: Agente = POR_DEFECTO,
 ) -> Respuesta:
     # La consulta puede traer datos reales del caso; se enmascaran antes de
     # salir del entorno y se restauran al devolver la respuesta.
     anon = anonimizar(consulta)
 
-    resultados, docs = _recuperar(anon.texto, buscador, k, materias, token, k_docs)
+    resultados, docs = _recuperar(
+        anon.texto, buscador, k, _materias(agente, materias), token, k_docs
+    )
     if not resultados and not docs:
         return Respuesta(
             texto="El corpus cargado no contiene información sobre esta consulta.",
@@ -221,7 +258,9 @@ def responder(
         )
 
     prompt = _SISTEMA.format(
-        fuentes=_formatear_fuentes(resultados, docs, anon), consulta=anon.texto
+        agente=agente.bloque_prompt(),
+        fuentes=_formatear_fuentes(resultados, docs, anon),
+        consulta=anon.texto,
     )
     usado: list[str] = []
     texto = anon.restaurar(generar(prompt, al_elegir_modelo=usado.append))
@@ -237,6 +276,7 @@ def responder(
         diagrama=diagrama,
         documentos=docs,
         modelo=usado[0] if usado else None,
+        prompt_version=version_prompt(agente),
     )
 
 
@@ -267,13 +307,18 @@ def preparar(
     con_diagrama: bool = True,
     token: str | None = None,
     k_docs: int = 4,
+    agente: Agente = POR_DEFECTO,
 ) -> Preparacion:
     anon = anonimizar(consulta)
-    resultados, docs = _recuperar(anon.texto, buscador, k, materias, token, k_docs)
+    resultados, docs = _recuperar(
+        anon.texto, buscador, k, _materias(agente, materias), token, k_docs
+    )
 
     return Preparacion(
         prompt=_SISTEMA.format(
-            fuentes=_formatear_fuentes(resultados, docs, anon), consulta=anon.texto
+            agente=agente.bloque_prompt(),
+            fuentes=_formatear_fuentes(resultados, docs, anon),
+            consulta=anon.texto,
         )
         if (resultados or docs)
         else "",
@@ -282,6 +327,7 @@ def preparar(
         anonimizacion=anon,
         lleva_diagrama=con_diagrama and amerita_diagrama(consulta),
         documentos=docs,
+        prompt_version=version_prompt(agente),
     )
 
 

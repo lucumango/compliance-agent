@@ -18,6 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # construirlo, así que un build verde no significa que la imagen esté completa.
 COPY api.py auth.py nube.py auditoria.py ./
 COPY rag/ rag/
+COPY agentes/ agentes/
 COPY documentos/ documentos/
 # El índice (9 MB) y el corpus parseado se copian ya construidos.
 COPY data/index/ data/index/

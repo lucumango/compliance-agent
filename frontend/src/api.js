@@ -44,18 +44,33 @@ async function pedir(ruta, opciones = {}) {
 }
 
 export const salud = () => pedir("/api/salud");
+export const agentes = () => pedir("/api/agentes");
+export const detonadores = () => pedir("/api/diego/detonadores");
 export const normas = () => pedir("/api/normas");
 export const regimenes = () => pedir("/api/regimenes");
 export const grafo = () => pedir("/api/grafo");
 
-export const consultar = (consulta, materias) =>
+export const consultar = (consulta, materias, agente) =>
   pedir("/api/consultar", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       consulta,
       materias: materias?.length ? materias : null,
+      agente: agente ?? null,
     }),
+  });
+
+/**
+ * El cuestionario de debida diligencia. No pasa por el modelo: es una tabla
+ * de decisión sobre el artículo 16 de la Resolución SBS, así que la misma
+ * entrada da siempre la misma salida y cada requisito trae su inciso.
+ */
+export const generarCuestionario = (tipo, detonadoresMarcados) =>
+  pedir("/api/diego/cuestionario", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ tipo, detonadores: detonadoresMarcados }),
   });
 
 export const calcularMulta = (regimen, gravedad) =>
@@ -79,13 +94,14 @@ export const pedirDiagrama = (respuesta) =>
  * hace GET y no admite cabeceras propias, lo que impediría enviar la consulta
  * en el cuerpo y, más adelante, añadir autenticación.
  */
-export async function consultarStream(consulta, materias, alEvento, señal) {
+export async function consultarStream(consulta, materias, alEvento, señal, agente) {
   const resp = await fetch(`${BASE}/api/consultar/stream`, {
     method: "POST",
     headers: cabeceras({ "Content-Type": "application/json" }),
     body: JSON.stringify({
       consulta,
       materias: materias?.length ? materias : null,
+      agente: agente ?? null,
     }),
     signal: señal,
   });

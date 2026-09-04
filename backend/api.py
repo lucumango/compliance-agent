@@ -21,9 +21,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
+import agentes
 import auditoria
 import documentos as docs
 import nube
+from agentes import cuestionario
 from auth import (
     Usuario,
     aviso_de_arranque,
@@ -32,7 +34,13 @@ from auth import (
     usuario_requerido,
     verificar_clave,
 )
-from rag.answer import PROMPT_VERSION, preparar, responder, responder_stream
+from rag.answer import (
+    PROMPT_VERSION,
+    preparar,
+    responder,
+    responder_stream,
+    version_prompt,
+)
 from rag.diagrama import generar_diagrama
 from rag.gemini import GeminiError
 from rag.multas import REGIMENES, estimar, uit_vigente
@@ -96,6 +104,9 @@ class ConsultaIn(BaseModel):
     # Cuota separada, no parte de k: los documentos del usuario no compiten con
     # el corpus por las mismas plazas. Ver rag/documentos.py.
     k_documentos: int = Field(default=4, ge=0, le=8)
+    # Qué agente responde. Un id desconocido cae en CARLOS en vez de dar 400:
+    # una interfaz vieja tras un despliegue no debe dejar de funcionar.
+    agente: Optional[str] = None
 
 
 class FuenteOut(BaseModel):
@@ -138,6 +149,9 @@ class ConsultaOut(BaseModel):
     # `modelo` es el que respondió de verdad, no el configurado.
     modelo: Optional[str] = None
     prompt_version: str = PROMPT_VERSION
+    # Qué agente respondió de verdad. Si se pidió uno que no existe, aquí se
+    # ve cuál contestó en su lugar.
+    agente: str = agentes.POR_DEFECTO.id
 
 
 @app.get("/api/salud")
@@ -157,6 +171,29 @@ def salud() -> dict:
         # que se evaluó. Ver docs/GOBERNANZA.md.
         "prompt_version": PROMPT_VERSION,
     }
+
+
+@app.get("/api/agentes", dependencies=PROTEGIDO)
+def catalogo_agentes() -> list[dict]:
+    """Los agentes disponibles, con su alcance declarado.
+
+    La interfaz lo usa para pintar el selector; el alcance viaja con él para
+    que el usuario lea lo mismo que lee el modelo, y no una versión de
+    marketing escrita aparte que acabe diciendo otra cosa.
+    """
+    return [
+        {
+            "id": a.id,
+            "nombre": a.nombre,
+            "acronimo": a.acronimo,
+            "area": a.area,
+            "alcance": a.alcance,
+            "fuera_de_alcance": a.fuera_de_alcance,
+            "materias": list(a.materias) if a.materias else None,
+            "prompt_version": version_prompt(a),
+        }
+        for a in agentes.AGENTES.values()
+    ]
 
 
 @app.get("/api/normas", dependencies=PROTEGIDO)
@@ -249,6 +286,7 @@ def _documentos_out(resultados) -> list[dict]:
 def consultar(
     payload: ConsultaIn, usuario: Optional[Usuario] = Depends(usuario_opcional)
 ) -> ConsultaOut:
+    agente = agentes.obtener(payload.agente)
     try:
         resp = responder(
             payload.consulta,
@@ -258,6 +296,7 @@ def consultar(
             con_diagrama=payload.con_diagrama,
             token=usuario.token if usuario else None,
             k_docs=payload.k_documentos,
+            agente=agente,
         )
     except GeminiError as e:
         # 502: el fallo es del proveedor del modelo, no de la petición.
@@ -295,6 +334,7 @@ def consultar(
         descargo=DESCARGO,
         modelo=resp.modelo,
         prompt_version=resp.prompt_version,
+        agente=agente.id,
     )
 
 
@@ -323,6 +363,7 @@ def consultar_stream(
     # modelo (para vectorizar la consulta). Sin este try, agotar la cuota de
     # embeddings salía como un 500 con traza en vez del 502 que devuelve
     # /api/consultar, y el frontend solo podía enseñar "Error 500".
+    agente = agentes.obtener(payload.agente)
     try:
         prep = preparar(
             payload.consulta,
@@ -332,6 +373,7 @@ def consultar_stream(
             con_diagrama=payload.con_diagrama,
             token=usuario.token if usuario else None,
             k_docs=payload.k_documentos,
+            agente=agente,
         )
     except GeminiError as e:
         raise HTTPException(status_code=502, detail=f"Error del modelo: {e}") from e
@@ -374,6 +416,7 @@ def consultar_stream(
                 "descargo": DESCARGO,
                 "modelo": modelo,
                 "prompt_version": prep.prompt_version,
+                "agente": agente.id,
             },
         )
         # Al final y no al principio: hasta aquí no se sabe qué modelo de la
@@ -440,6 +483,51 @@ def multa(payload: MultaIn) -> dict:
     except FileNotFoundError as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
     return e.__dict__ | {"descargo": DESCARGO}
+
+
+# ---------------------------------------------------------- debida diligencia
+# El cuestionario NO pasa por el modelo. Es una tabla de decisión sobre el
+# artículo 16 de la Resolución SBS 789-2018, igual que el estimador de multas
+# lo es sobre los rangos de sanción: la respuesta es la misma cada vez y cada
+# requisito trae el inciso del que sale. Preguntárselo a un modelo sería
+# introducir variación en algo que la norma ya dejó cerrado.
+
+
+class CuestionarioIn(BaseModel):
+    tipo: str
+    detonadores: Optional[List[str]] = None
+
+
+@app.get("/api/diego/detonadores", dependencies=PROTEGIDO)
+def detonadores() -> dict:
+    """Los hechos que escalan el régimen, separados por origen.
+
+    Los de la norma llevan su inciso; los de la firma no llevan cita, porque no
+    la tienen. La interfaz los pinta en dos grupos por la misma razón por la
+    que las fuentes [F] y [D] se pintan distinto.
+    """
+    return {
+        "tipos": list(cuestionario.TIPOS),
+        "detonadores": [
+            {
+                "id": d.id,
+                "etiqueta": d.etiqueta,
+                "origen": d.origen,
+                "cita": d.cita,
+                "nota": d.nota,
+            }
+            for d in cuestionario.DETONADORES.values()
+        ],
+    }
+
+
+@app.post("/api/diego/cuestionario", dependencies=PROTEGIDO)
+def generar_cuestionario(payload: CuestionarioIn) -> dict:
+    try:
+        ev = cuestionario.evaluar(payload.tipo, payload.detonadores)
+    except KeyError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return ev.como_dict() | {"descargo": DESCARGO}
 
 
 # ------------------------------------------------------------- documentos

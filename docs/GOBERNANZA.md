@@ -19,8 +19,12 @@ unidades en 11 normas, más los documentos que cada usuario sube.
 **Qué decide.** Nada. Redacta y cita. No clasifica personas, no puntúa
 riesgos, no aprueba ni deniega. Toda decisión la toma quien lee la respuesta.
 
-**Quién lo usa.** Analistas de compliance de EY. No es un producto de cara al
-cliente ni al público.
+**Quién lo usa.** Analistas de compliance y de debida diligencia de EY. No es un
+producto de cara al cliente ni al público.
+
+**Cuántos agentes.** Dos: CARLOS y DIEGO, cada uno con su corpus y su alcance
+declarado en [AGENTES.md](AGENTES.md). El alcance no es documentación: entra
+literal al prompt y hay casos que comprueban que se respeta.
 
 **Qué alimenta.** Borradores de trabajo interno: memorandos, matrices de
 requisitos, preparación de entrevistas. **No entra en un entregable sin que un
@@ -111,7 +115,8 @@ Qué produjo cada respuesta, y dónde consta.
 
 | Componente | Identificador | Dónde queda grabado |
 |---|---|---|
-| Prompt | `PROMPT_VERSION`, etiqueta + hash de `_SISTEMA` | `mensajes.prompt_version`, `eventos_auditoria.prompt_version`, y `/api/salud` |
+| Prompt | Etiqueta + hash de `_SISTEMA` **y del bloque del agente**: dos agentes no comparten prompt | `mensajes.prompt_version`, `eventos_auditoria.prompt_version`, `/api/agentes` |
+| Agente | Cuál respondió, y su alcance declarado | Respuesta de la API y `/api/agentes` |
 | Modelo | El que respondió de verdad, no el configurado | `mensajes.modelo`, `eventos_auditoria.modelo` |
 | Cadena de respaldo | Modelos fijados, nunca un alias `-latest` | `rag/config.py`, verificable con `rag.modelos` |
 | Corpus | Número de unidades indexadas | `eventos_auditoria.corpus_unidades` y `/api/salud` |
@@ -138,6 +143,7 @@ Gemini 3.5 Flash" es una suposición.
 | `python -m rag.eval_prompt` | Que el modelo cumpla sus propias reglas | Al tocar `_SISTEMA` o cambiar de modelo |
 | `ruff check backend/` + `pip-audit` + `npm audit` | Lint y vulnerabilidades de dependencias | En cada push, automático |
 | `python -m rag.modelos` | Que los modelos declarados sigan existiendo | Cada mes |
+| `python -m agentes.evaluar` | Que cada agente encuentre lo suyo, cite artículos que existen y rechace lo ajeno | Al tocar un agente. La parte gratis, en cada push |
 
 `rag.eval_prompt` verifica las reglas 1, 3, 4, 5, 7, 8 y 9. Las reglas **2 y 6 no
 tienen control automático** —no confundir norma con política interna, y no dar

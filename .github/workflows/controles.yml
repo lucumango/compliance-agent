@@ -46,6 +46,15 @@ jobs:
         working-directory: backend
         run: python -m ingestion.validate
 
+      # Recuperación por agente y, sobre todo, que cada artículo citado por el
+      # cuestionario de DIEGO exista en el índice. Sin --alcance: esa parte
+      # llama al modelo.
+      - name: Agentes
+        working-directory: backend
+        run: python -m agentes.evaluar
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+
   frontend:
     runs-on: ubuntu-latest
     steps:

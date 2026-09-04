@@ -23,6 +23,7 @@ Fuentes:
 |---|---|
 | **Usarlo** sin entrar en el código | [Guía de uso](GUIA.md) |
 | Entender cómo funciona, o **encontrar el prompt** | [Cómo funciona](SISTEMA.md) |
+| Saber **qué agentes hay** y qué responde cada uno | [Los agentes](AGENTES.md) |
 | Saber qué normas hay cargadas y en qué estado | [Fuentes del corpus](FUENTES.md) |
 | **Cargar PDFs nuevos** al corpus | [Cargar documentos](INGESTA.md) |
 | Ver qué norma modifica a cuál | [Grafo de trazabilidad](GRAFO.md) |

@@ -35,7 +35,7 @@ Sin interfaz: `python -m rag.cli "tu consulta"`.
 
 ---
 
-## Los seis comandos
+## Los siete comandos
 
 ```bash
 python -m ingestion.ingest      # PDFs -> data/parsed/*.json
@@ -44,6 +44,7 @@ python -m rag.index             # parsed -> vectores  (~6 min, gasta cuota)
 python -m rag.eval              # recuperación -> 12/12
 python -m rag.eval_prompt       # las reglas del prompt -> 7/7
 python -m rag.modelos           # que los modelos configurados sigan existiendo
+python -m agentes.evaluar       # corpus, citas y frontera de cada agente
 ```
 
 `rag.eval_prompt` va aparte porque cada caso llama al modelo: gasta cuota y
@@ -66,6 +67,7 @@ ruff check backend/             # lint del backend, config en backend/ruff.toml
 python -m ingestion.validate    # si tocaste parser, registry o los PDFs
 python -m rag.eval              # si tocaste recuperación, índice o embeddings
 python -m rag.eval_prompt       # si tocaste el prompt o el modelo
+python -m agentes.evaluar       # si tocaste un agente o el cuestionario
 npm --prefix frontend run lint
 npm --prefix frontend run build # el build falla por cosas que dev no ve
 mkdocs build --strict           # un enlace roto tumba el pipeline

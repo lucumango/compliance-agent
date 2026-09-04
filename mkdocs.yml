@@ -84,6 +84,7 @@ plugins:
 nav:
   - Inicio: index.md
   - Guía de uso: GUIA.md
+  - Los agentes: AGENTES.md
   - Cómo funciona: SISTEMA.md
   - Fuentes del corpus: FUENTES.md
   - Cargar documentos: INGESTA.md

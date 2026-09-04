@@ -1405,3 +1405,148 @@ a:hover {
   flex-shrink: 0;
   margin-top: 2px;
 }
+
+/* --------------------------------------------------------------- agentes */
+/* El selector va arriba del lateral: es lo que decide qué significa todo lo
+   que hay debajo, así que no puede estar por debajo de ello. */
+
+.agentes-fila {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.agente {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 7px 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  text-align: left;
+  border-radius: 2px;
+  color: var(--text-secondary);
+}
+
+.agente:hover { border-color: var(--text-muted); }
+
+/* El filo amarillo es el mismo recurso que marca una fuente citada: aquí
+   señala cuál de los dos está gobernando la respuesta. */
+.agente.activo {
+  border-color: var(--color-ey-yellow);
+  box-shadow: inset 3px 0 0 var(--color-ey-yellow);
+  color: var(--text-primary);
+}
+
+.agente-nombre { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; }
+.agente-area { font-size: 10px; color: var(--text-muted); }
+
+.agente-alcance { margin-top: 7px; line-height: 15px; }
+.agente-alcance strong { color: var(--text-secondary); font-weight: 600; }
+
+/* ---------------------------------------------------------- cuestionario */
+
+.cuest-tipo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 8px 0 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.cuest-tipo select {
+  font: inherit;
+  font-size: 12px;
+  color: var(--text-primary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 5px 6px;
+}
+
+.cuest-grupo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 12px 0 5px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cuest-grupo .meta { text-transform: none; letter-spacing: 0; font-weight: 400; }
+
+.cuest-lista { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+
+.cuest-lista label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 7px;
+  align-items: start;
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.cuest-lista .meta { display: block; font-size: 10px; color: var(--text-muted); }
+
+.cuest-salida {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.cuest-regimen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Reutiliza los colores semánticos de riesgo del sistema, los mismos que la
+   calculadora de multas. El régimen reforzado no es "malo": es más exigente,
+   y el rojo del sistema ya significa eso ahí. */
+.cuest-sello {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.cuest-sello.bajo { background: var(--tint-green); color: var(--color-risk-low); }
+.cuest-sello.alto { background: var(--tint-red); color: var(--color-risk-high); }
+
+.cuest-porque {
+  margin: 8px 0 0;
+  padding-left: 16px;
+  font-size: 11px;
+  line-height: 15px;
+  color: var(--text-secondary);
+}
+
+.cuest-req, .cuest-practica {
+  margin: 0;
+  padding-left: 17px;
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-secondary);
+}
+
+.cuest-req .meta { display: block; font-size: 10px; color: var(--text-muted); }
+
+/* Sin cita, y sin viñeta numerada: no son puntos de una norma. */
+.cuest-practica { list-style: square; }
+
+.cuest-salida .aviso-corpus { margin-top: 8px; }

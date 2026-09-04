@@ -34,17 +34,22 @@ cambia ningún texto vectorizado.
 
 ---
 
-## 2. Cada agente como entidad propia
+## 2. El orquestador
 
-Hoy la única diferencia entre materias es una casilla de filtro sobre un índice
-común. Un agente necesita cuatro cosas: su corpus, su prompt, su alcance
-declarado, y sus casos de evaluación — qué debe acertar y qué debe rechazar.
+**Hecho el 04/09/2026: cada agente es ya una entidad propia.** CARLOS y DIEGO
+tienen corpus, alcance declarado, reglas y casos de evaluación en
+`backend/agentes/`, y `python -m agentes.evaluar --alcance` comprueba que cada
+uno responde lo suyo y rechaza lo ajeno. Ver [AGENTES.md](AGENTES.md).
 
-El corpus de debida diligencia ya está cargado (DL 1372, DS 003-2019-EF, Res.
-SBS 789-2018, DL 1106). El agente no existe.
+Lo que falta es el paso siguiente: que el usuario mande un caso sin elegir
+agente y el motor decida a quién va —a uno, a los dos, o a ninguno— y sepa
+componer una respuesta de varios diciendo qué parte vino de quién.
 
-Va antes que el orquestador: enrutar entre cosas que no están definidas es
+Ahora sí se puede: hay dos alcances declarados contra los que enrutar, y casos
+que dicen qué debe rechazar cada uno. Enrutar entre cosas definidas ya no es
 enrutar al azar.
+
+IVÁN y ELENA siguen sin corpus, y sin corpus no hay agente.
 
 ---
 

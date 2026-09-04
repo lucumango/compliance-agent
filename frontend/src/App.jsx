@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import Mermaid from "./Mermaid";
 import CalculadoraMultas from "./CalculadoraMultas";
+import Cuestionario from "./Cuestionario";
+import SelectorAgente from "./SelectorAgente";
 import GrafoNormas from "./GrafoNormas";
 import Auth from "./Auth";
 import Documentos from "./Documentos";
@@ -35,7 +37,13 @@ import {
   listarConversaciones,
   tituloDe,
 } from "./conversaciones";
-import { consultarStream, normas, pedirDiagrama, salud } from "./api";
+import {
+  agentes as pedirAgentes,
+  consultarStream,
+  normas,
+  pedirDiagrama,
+  salud,
+} from "./api";
 import "./App.css";
 
 const CLAVE_TEMA = "compliance:tema";
@@ -323,6 +331,10 @@ export default function App() {
   const [cargando, setCargando] = useState(false);
   const [corpus, setCorpus] = useState([]);
   const [materias, setMaterias] = useState([]);
+  // Con qué agente se habla. El backend cae en CARLOS si el id no existe, así
+  // que una interfaz vieja tras un despliegue sigue respondiendo.
+  const [listaAgentes, setListaAgentes] = useState([]);
+  const [agente, setAgente] = useState("carlos");
   const [estado, setEstado] = useState(null);
   const finRef = useRef(null);
   // Si el usuario sube a releer, deja de estar "pegado" y el autoscroll calla.
@@ -336,7 +348,27 @@ export default function App() {
     normas()
       .then(setCorpus)
       .catch(() => setCorpus([]));
+    pedirAgentes()
+      .then(setListaAgentes)
+      .catch(() => setListaAgentes([]));
   }, []);
+
+  // El agente activo, con su corpus. `materias` de un agente es la lista de
+  // materias del índice que puede ver; null significa todas.
+  const agenteActivo = listaAgentes.find((a) => a.id === agente) ?? null;
+
+  // El filtro por materia solo ofrece lo que el agente puede ver. Marcar una
+  // materia fuera de su corpus no ampliaría nada —el backend interseca— así
+  // que enseñarla sería ofrecer un control que no hace nada.
+  const corpusVisible = agenteActivo?.materias
+    ? corpus.filter((n) => agenteActivo.materias.includes(n.materia))
+    : corpus;
+
+  function cambiarAgente(id) {
+    setAgente(id);
+    // Las materias marcadas pueden no existir en el corpus del agente nuevo.
+    setMaterias([]);
+  }
 
   const refrescarConversaciones = () =>
     listarConversaciones()
@@ -460,7 +492,7 @@ export default function App() {
           modeloFinal = datos.modelo ?? null;
           promptVersionFinal = datos.prompt_version ?? null;
         }
-      });
+      }, undefined, agente);
 
       parchear({ generando: false, cargandoDiagrama: llevaDiagrama });
 
@@ -645,6 +677,12 @@ export default function App() {
 
       <div className="cuerpo">
         <aside className="lateral">
+          <SelectorAgente
+            agentes={listaAgentes}
+            activo={agente}
+            alCambiar={cambiarAgente}
+          />
+
           {usuario && (
             <Historial
               conversaciones={conversaciones}
@@ -663,7 +701,7 @@ export default function App() {
               Filtrar por materia
             </p>
             <ul className="corpus">
-              {corpus.map((n) => (
+              {corpusVisible.map((n) => (
                 <li key={n.norma_id}>
                   <label>
                     <input
@@ -695,8 +733,17 @@ export default function App() {
             )}
           </section>
 
-          <GrafoNormas />
-          <CalculadoraMultas />
+          {/* Cada agente trae su herramienta. La calculadora de multas es de
+              CARLOS; el cuestionario, de DIEGO. Enseñar las dos siempre haría
+              que el selector de arriba no cambiara nada visible. */}
+          {agente === "diego" ? (
+            <Cuestionario />
+          ) : (
+            <>
+              <GrafoNormas />
+              <CalculadoraMultas />
+            </>
+          )}
         </aside>
 
         <main className="chat">
