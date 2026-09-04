@@ -35,14 +35,15 @@ Sin interfaz: `python -m rag.cli "tu consulta"`.
 
 ---
 
-## Los cinco comandos
+## Los seis comandos
 
 ```bash
 python -m ingestion.ingest      # PDFs -> data/parsed/*.json
 python -m ingestion.validate    # controles de calidad -> 0 problemas
 python -m rag.index             # parsed -> vectores  (~6 min, gasta cuota)
 python -m rag.eval              # recuperación -> 12/12
-python -m rag.eval_prompt       # las reglas del prompt -> 6/6
+python -m rag.eval_prompt       # las reglas del prompt -> 7/7
+python -m rag.modelos           # que los modelos configurados sigan existiendo
 ```
 
 `rag.eval_prompt` va aparte porque cada caso llama al modelo: gasta cuota y
@@ -79,16 +80,15 @@ evaluaciones que llaman al modelo se quedan fuera a propósito: necesitarían la
 No hay pruebas unitarias. `validate`, `eval` y `eval_prompt` son lo único que
 hay.
 
-**Empujar a los dos remotos.** El repositorio tiene dos y los despliegues
-cuelgan de distintos —hasta la mudanza a Codeberg, que está planteada en
-[DEPLOY.md](DEPLOY.md):
+**GitHub es el origen de todo.** Vercel escucha a GitHub, el CI corre en
+GitHub Actions y la documentación se publica en GitHub Pages:
 
 ```bash
-git push origin main && git push github main
+git push github main
 ```
 
-Vercel escucha a GitHub. Si solo se empuja a GitLab, el frontend se queda atrás
-sin avisar de nada.
+Queda un remoto `origin` apuntando a GitLab, ya sin CI. La mudanza a Codeberg
+está planteada en [DEPLOY.md](DEPLOY.md).
 
 ---
 
@@ -201,9 +201,15 @@ rota, no se reutiliza.
 
 **En cada cambio del parser o del corpus:** `validate` y `eval`.
 
-**Cada mes:** `npm audit` y `pip-audit` a mano, hasta que estén en el CI.
-Comprobar que la UIT del año sigue siendo la de `data/uit.json` —cambia cada
-enero por decreto supremo—.
+**Cada mes:** `python -m rag.modelos`. Comprobar que la UIT del año sigue siendo
+la de `data/uit.json` —cambia cada enero por decreto supremo—. Las auditorías de
+dependencias ya las hace el CI en cada push.
+
+`rag.modelos` tarda un segundo y no llama a ningún modelo, solo pide el
+catálogo. Existe porque la cadena de respaldo esconde sus propios fallos: el
+último de la lista casi nunca se usa, así que se pudre sin que nadie lo note.
+`gemini-2.0-flash` estuvo ahí hasta que Google lo retiró, y salió a la cara del
+usuario como un 404 el primer día que los dos primeros agotaron cuota.
 
 **Cada trimestre:** revisar si alguna norma cargada tiene modificatoria nueva.
 El corpus no se entera solo. Y actualizar el estado de cotejo contra SPIJ en
@@ -224,6 +230,7 @@ respondiendo, peor.
 | CORS bloqueado en el navegador | `ALLOWED_ORIGINS` no incluye el dominio de Vercel |
 | 401 en todo | `VITE_API_KEY` no coincide con la `API_KEY` del backend |
 | 502 "Error del modelo" | Cuota de Gemini agotada. Degrada solo, y si no quedan modelos, falla |
+| `404 ... is no longer available` | Google retiró un modelo de la cadena. `python -m rag.modelos` dice cuál, y se cambia en `rag/config.py`. Si es el ÚLTIMO de la lista, no hace falta repetir `rag.eval_prompt`; si es el primero, sí |
 | Respuestas que citan bien pero contestan mal | Sube `k`. Con 11 normas, ocho plazas se llenan antes de llegar al artículo que enumera |
 | El login parpadea al recargar | `resuelta` en `sesion.js` no está esperando a `getSession` |
 | Todo se responde desde ISO 37001 | Falta corpus de esa materia, no falla el recuperador. Ver [CORRECCIONES.md](CORRECCIONES.md) |

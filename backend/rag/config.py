@@ -24,9 +24,24 @@ MODEL_RAPIDO = os.getenv("MODEL_RAPIDO", "gemini-3.5-flash-lite")
 # 429 durante todo un día, el asistente queda inservible aunque otros modelos
 # sigan disponibles, así que se degrada al siguiente de la lista en vez de
 # fallar. El orden va de más capaz a más disponible.
+#
+# El último de la lista es el que casi nunca se usa, y por eso es el que se
+# pudre sin que nadie lo note: `gemini-2.0-flash` estuvo aquí hasta que Google
+# lo retiró, y el fallo salió a la cara del usuario como un 404 crudo el primer
+# día que los dos primeros agotaron cuota. Cambiar el último de la lista NO
+# exige repetir `rag.eval_prompt` —el prompt no cambia— pero cambiar el primero
+# SÍ, porque es el que responde de verdad.
+#
+# Para ver qué sigue vivo:
+#     curl -H "x-goog-api-key: $GOOGLE_API_KEY" \
+#          https://generativelanguage.googleapis.com/v1beta/models
+#
+# Van fijados y no como `gemini-flash-latest`: un alias que cambia solo por
+# debajo hace que el `modelo` guardado en el historial no diga qué respondió,
+# que es justo lo que ese campo existe para decir.
 MODELOS_GENERACION = [
     m
-    for m in [MODEL_GENERACION, MODEL_RAPIDO, "gemini-2.0-flash"]
+    for m in [MODEL_GENERACION, MODEL_RAPIDO, "gemini-3.6-flash"]
     # dict.fromkeys no sirve aquí porque hay que preservar el orden y quitar
     # duplicados si alguien configura el mismo modelo en ambas variables.
     if m

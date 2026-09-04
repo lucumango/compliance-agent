@@ -113,6 +113,7 @@ Qué produjo cada respuesta, y dónde consta.
 |---|---|---|
 | Prompt | `PROMPT_VERSION`, etiqueta + hash de `_SISTEMA` | `mensajes.prompt_version`, `eventos_auditoria.prompt_version`, y `/api/salud` |
 | Modelo | El que respondió de verdad, no el configurado | `mensajes.modelo`, `eventos_auditoria.modelo` |
+| Cadena de respaldo | Modelos fijados, nunca un alias `-latest` | `rag/config.py`, verificable con `rag.modelos` |
 | Corpus | Número de unidades indexadas | `eventos_auditoria.corpus_unidades` y `/api/salud` |
 | Fuentes citadas | Cita y texto, copiados enteros | `mensaje_fuentes` |
 
@@ -136,6 +137,7 @@ Gemini 3.5 Flash" es una suposición.
 | `python -m rag.eval` | Recuperación: que el artículo correcto salga | Al tocar recuperación, índice o embeddings |
 | `python -m rag.eval_prompt` | Que el modelo cumpla sus propias reglas | Al tocar `_SISTEMA` o cambiar de modelo |
 | `ruff check backend/` + `pip-audit` + `npm audit` | Lint y vulnerabilidades de dependencias | En cada push, automático |
+| `python -m rag.modelos` | Que los modelos declarados sigan existiendo | Cada mes |
 
 `rag.eval_prompt` verifica las reglas 1, 3, 4, 5, 7, 8 y 9. Las reglas **2 y 6 no
 tienen control automático** —no confundir norma con política interna, y no dar

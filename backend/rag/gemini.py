@@ -64,6 +64,11 @@ def _post(path: str, payload: dict, timeout: int = 180) -> dict:
             cuerpo = e.read().decode(errors="replace")[:400]
             # 429 = cuota; 5xx = fallo transitorio. Ambos se reintentan con
             # espera exponencial y jitter para no sincronizar los reintentos.
+            if e.code == 404 and "models/" in path:
+                # Modelo retirado: ni reintentar ni esperar. Quien llama
+                # recorre la cadena y este ya no volverá a salir en ella.
+                _marcar_retirado(path.split("models/")[-1].split(":")[0], cuerpo[:160])
+                raise GeminiError(f"HTTP 404 en {path}: {cuerpo}") from e
             if e.code in (429, 500, 503) and intento < _MAX_REINTENTOS - 1:
                 espera = _BASE_ESPERA * (2**intento) + random.uniform(0, 1)
                 time.sleep(espera)
@@ -117,12 +122,31 @@ def embed_query(texto: str) -> list[float]:
 _ENFRIAMIENTO_SEG = 15 * 60
 _modelos_en_espera: dict[str, float] = {}
 
+# Un 404 no es lo mismo que un 429. La cuota vuelve; un modelo retirado por
+# Google no vuelve nunca, y reintentarlo es tiempo tirado en cada petición.
+# Se aparta para lo que queda de proceso y se avisa por consola una vez: si el
+# que se ha retirado es el principal, alguien tiene que enterarse.
+_modelos_retirados: set[str] = set()
+
 
 def _marcar_agotado(modelo: str) -> None:
     _modelos_en_espera[modelo] = time.time() + _ENFRIAMIENTO_SEG
 
 
+def _marcar_retirado(modelo: str, detalle: str) -> None:
+    if modelo in _modelos_retirados:
+        return
+    _modelos_retirados.add(modelo)
+    print(
+        f"AVISO: el modelo {modelo} ya no existe y se retira de la cadena. "
+        f"Actualiza MODELOS_GENERACION en rag/config.py. Google dijo: {detalle}",
+        flush=True,
+    )
+
+
 def _disponible(modelo: str) -> bool:
+    if modelo in _modelos_retirados:
+        return False
     hasta = _modelos_en_espera.get(modelo)
     if hasta is None:
         return True
@@ -138,8 +162,13 @@ def _cadena_modelos(modelo: str | None) -> list[str]:
     if modelo:
         return [modelo]
     disponibles = [m for m in MODELOS_GENERACION if _disponible(m)]
-    # Si todos están en enfriamiento, más vale reintentar que no responder.
-    return disponibles or MODELOS_GENERACION
+    if disponibles:
+        return disponibles
+    # Si todos están en enfriamiento, más vale reintentar que no responder. Los
+    # retirados sí se excluyen: reintentar un 404 no lo va a resucitar, y si no
+    # queda ninguno el error que llega arriba debe ser el de verdad.
+    vivos = [m for m in MODELOS_GENERACION if m not in _modelos_retirados]
+    return vivos or MODELOS_GENERACION
 
 
 def generar(
@@ -238,6 +267,10 @@ def generar_stream(
                 if e.code == 429:
                     # Cuota agotada: degradar ya, sin gastar más reintentos.
                     _marcar_agotado(candidato_modelo)
+                    break
+                if e.code == 404:
+                    # El modelo ya no existe. Degradar y no volver a pedirlo.
+                    _marcar_retirado(candidato_modelo, cuerpo[:160])
                     break
                 if e.code in (500, 503) and not ultimo:
                     time.sleep(_BASE_ESPERA * (2**intento) + random.uniform(0, 1))

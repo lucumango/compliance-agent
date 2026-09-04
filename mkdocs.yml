@@ -1,5 +1,10 @@
 site_name: CARLOS
 site_description: Compliance Audit Regulatory Logic Operational System — documentación
+# GitHub Pages sirve el proyecto bajo /compliance-agent/, no en la raíz del
+# dominio. Sin site_url, el sitemap y las URL canónicas apuntarían a la raíz.
+# Los enlaces entre páginas son relativos y funcionan igual, pero el buscador
+# y las metaetiquetas no.
+site_url: https://lucumango.github.io/compliance-agent/
 docs_dir: docs
 site_dir: public # GitLab Pages publica lo que haya en public/
 

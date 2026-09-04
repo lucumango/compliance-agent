@@ -1,0 +1,74 @@
+# Publica la documentación en GitHub Pages.
+#
+# Va en su propio workflow y no como un job más de controles.yml porque
+# necesita permisos que el resto no debe tener: `pages: write` e `id-token`.
+# Un fichero de controles que además puede publicar es un fichero que cualquier
+# pull request querría tocar.
+#
+# controles.yml sigue construyendo la documentación con --strict en cada PR.
+# Aquí solo se publica lo que ya pasó por ahí.
+#
+# OJO CON LA VISIBILIDAD: el repositorio es privado, pero un sitio de GitHub
+# Pages es PÚBLICO. Restringirlo a los miembros de la organización requiere
+# GitHub Enterprise Cloud, no basta con Pro. Es la misma exposición que tenía
+# en GitLab Pages, donde también estaba abierto, pero conviene saberlo antes de
+# escribir algo aquí que no deba leer un desconocido.
+
+name: Documentación
+
+on:
+  push:
+    branches: [main]
+  # Para poder republicar sin tener que inventarse un commit.
+  workflow_dispatch:
+
+# El token por defecto es de solo lectura; se sube solo lo justo.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si llegan dos pushes seguidos, se publica el último. `cancel-in-progress` en
+# false para no abortar una publicación a medias, que deja el sitio raro.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Los plugins de fecha y autoría leen la historia de git. Con el clon
+          # superficial por defecto todas las páginas saldrían con la fecha del
+          # build.
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar
+        run: pip install -r docs/requirements.txt
+
+      - name: Construir
+        run: mkdocs build --strict
+
+      - uses: actions/configure-pages@v5
+
+      # site_dir en mkdocs.yml es public/, no site/.
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - id: despliegue
+        uses: actions/deploy-pages@v4

@@ -196,11 +196,34 @@ licencia del PDF es de usuario único. Opciones antes de exponerlo:
 
 Sería irónico que una herramienta de compliance infringiera una licencia.
 
+## La documentación: GitHub Pages
+
+El sitio que estás leyendo lo construye y publica
+`.github/workflows/paginas.yml` en cada push a `main`, en
+**https://lucumango.github.io/compliance-agent/**.
+
+Para habilitarlo la primera vez: Settings → Pages → Source → **GitHub Actions**.
+Sin eso el workflow falla al desplegar, no al construir.
+
+**El repositorio es privado y el sitio es público.** Restringir un sitio de
+Pages a los miembros de la organización requiere GitHub Enterprise Cloud; con
+Pro no se puede. Es la misma exposición que tenía en GitLab Pages, que también
+estaba abierto, pero conviene saberlo antes de escribir aquí algo que no deba
+leer un desconocido. Nada del corpus ni de las conversaciones sale en el sitio:
+es documentación de cómo funciona.
+
+`.gitlab-ci.yml` se eliminó al hacer el cambio. Publicaba lo mismo desde
+GitLab, y `main` está protegida allí contra force push, así que después de
+reescribir la historia el pipeline ya no podía ni recibir los commits.
+
+---
+
 ## Mudarse a Codeberg
 
-El repositorio vive hoy en dos sitios a la vez: GitLab (`origin`) y GitHub
-(`github`). Hay que empujar a los dos, y el que se olvida se queda atrás sin
-avisar. La mudanza a Codeberg es la ocasión de dejar uno solo.
+GitHub es hoy el origen de todo: el CI, la documentación y el despliegue del
+frontend cuelgan de ahí. Queda un remoto `origin` en GitLab sin CI y con `main`
+protegida contra force push, o sea inutilizable desde que se reescribió la
+historia.
 
 **Qué se lleva tal cual.** Todo el código, la documentación en `docs/`, y los
 controles: `.woodpecker.yml` es la traducción literal de
@@ -212,7 +235,7 @@ repositorio en Codeberg (Settings → Woodpecker CI); si no, el pipeline no fall
 
 | Qué | Hoy | En Codeberg |
 |---|---|---|
-| Sitio de documentación | GitLab Pages, `artifacts: public/` | Codeberg Pages sirve una rama `pages`. El job tiene que **empujar** `public/` a esa rama, no dejarlo como artefacto |
+| Sitio de documentación | GitHub Pages, workflow `paginas.yml` | Codeberg Pages sirve una rama `pages`. El job tiene que **empujar** `public/` a esa rama, no dejarlo como artefacto |
 | Despliegue del frontend | Vercel conectado a GitHub | Vercel no se integra con Codeberg. O se deja el espejo en GitHub solo para eso, o se despliega desde CI con la CLI de Vercel y un token |
 | Despliegue del backend | Render con blueprint desde el repo | Igual: Render no lista Codeberg. Deploy hook desde el CI, o espejo |
 
