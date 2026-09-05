@@ -23,6 +23,7 @@ from pydantic import BaseModel, Field
 
 import agentes
 import auditoria
+import cobertura
 import documentos as docs
 import nube
 from agentes import cuestionario
@@ -36,6 +37,7 @@ from auth import (
 )
 from rag.answer import (
     PROMPT_VERSION,
+    es_negativa,
     preparar,
     responder,
     responder_stream,
@@ -196,6 +198,17 @@ def catalogo_agentes() -> list[dict]:
     ]
 
 
+@app.get("/api/cobertura", dependencies=PROTEGIDO)
+def huecos() -> dict:
+    """Lo que se sabe que NO está cargado.
+
+    Se publica aparte para que la interfaz pueda enseñarlo sin esperar a que
+    una consulta falle: saber de antemano que falta la libre competencia vale
+    más que enterarse después de preguntar.
+    """
+    return {"huecos": cobertura.como_lista()}
+
+
 @app.get("/api/normas", dependencies=PROTEGIDO)
 def normas() -> list[dict]:
     """Corpus disponible, para que el frontend ofrezca filtros por materia."""
@@ -338,6 +351,9 @@ def consultar(
     )
 
 
+_AVISO_COBERTURA = cobertura.aviso()
+
+
 def _sse(evento: str, dato: dict) -> str:
     """Un mensaje SSE: nombre de evento y una línea `data:` con el JSON.
     El doble salto de línea es lo que marca el fin del mensaje."""
@@ -399,8 +415,10 @@ def consultar_stream(
                 "advertencias": prep.advertencias,
             },
         )
+        completo = ""
         try:
             for fragmento in responder_stream(prep):
+                completo += fragmento
                 yield _sse("delta", {"texto": fragmento})
         except GeminiError as e:
             # El stream ya está abierto, así que el error no puede devolverse
@@ -409,6 +427,10 @@ def consultar_stream(
             return
 
         modelo = prep.modelo[0] if prep.modelo else None
+        # La negativa solo se conoce cuando el texto está entero, y para
+        # entonces el evento `fuentes` ya salió. Por eso el aviso de cobertura
+        # viaja en `fin` y no con los demás.
+        extra = _AVISO_COBERTURA if es_negativa(completo) else None
         yield _sse(
             "fin",
             {
@@ -417,6 +439,7 @@ def consultar_stream(
                 "modelo": modelo,
                 "prompt_version": prep.prompt_version,
                 "agente": agente.id,
+                "aviso_cobertura": extra,
             },
         )
         # Al final y no al principio: hasta aquí no se sabe qué modelo de la

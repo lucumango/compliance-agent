@@ -14,6 +14,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Iterator
 
+import cobertura
 from agentes import POR_DEFECTO, Agente
 
 from .anonimizar import anonimizar
@@ -186,6 +187,41 @@ def _advertencias(resultados: list[Resultado]) -> list[str]:
     return avisos
 
 
+# La regla 3 obliga a abrir con esta frase cuando ninguna fuente aporta, así
+# que la apertura es la señal fiable. La primera versión de esto miraba si
+# había citas —"sin citas, luego negativa"— y se equivocaba en los dos
+# sentidos: el modelo agrupa las etiquetas como "[F1, F2, F3]", que no casaba
+# con el patrón, y una negativa puede citar fuentes para decir de qué van.
+_APERTURA_NEGATIVA = (
+    "el corpus cargado no contiene",
+    "no contiene una respuesta",
+    "no contiene información",
+    "no dispongo de información",
+)
+
+
+def es_negativa(texto: str) -> bool:
+    """La respuesta abre admitiendo que el corpus no cubre la consulta.
+
+    No se mira el score de lo recuperado: para "un trabajador encuentra una
+    huaca" los ocho artículos de seguridad y salud en el trabajo puntúan 0.63,
+    MÁS que los 0.55 de una consulta bien formulada sobre patrimonio. El ruido
+    puntúa alto cuando la consulta comparte vocabulario con otra materia, así
+    que un umbral no distingue nada.
+    """
+    return any(n in texto[:250].lower() for n in _APERTURA_NEGATIVA)
+
+
+def _aviso_cobertura(texto: str) -> list[str]:
+    """Si la respuesta fue una negativa, decir qué se sabe que falta.
+
+    Viene de una lista escrita a mano, no del modelo. Pedirle al modelo que
+    nombre la norma que regula lo que no tiene sería pedirle que afirme derecho
+    de memoria, que es lo que este sistema existe para no hacer.
+    """
+    return [cobertura.aviso()] if es_negativa(texto) else []
+
+
 def _aviso_documentos(documentos: list[ResultadoDoc]) -> list[str]:
     if not documentos:
         return []
@@ -253,7 +289,7 @@ def responder(
         return Respuesta(
             texto="El corpus cargado no contiene información sobre esta consulta.",
             fuentes=[],
-            advertencias=[],
+            advertencias=[cobertura.aviso()],
             documentos=[],
         )
 
@@ -272,7 +308,11 @@ def responder(
     return Respuesta(
         texto=texto,
         fuentes=resultados,
-        advertencias=_advertencias(resultados) + _aviso_documentos(docs),
+        advertencias=(
+            _advertencias(resultados)
+            + _aviso_documentos(docs)
+            + _aviso_cobertura(texto)
+        ),
         diagrama=diagrama,
         documentos=docs,
         modelo=usado[0] if usado else None,

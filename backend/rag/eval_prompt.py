@@ -43,6 +43,9 @@ from .retrieval import Buscador
 # Un fallo devuelve el motivo; un acierto, None.
 Comprobacion = Callable[[Respuesta], str | None]
 
+# Una cita puede venir suelta —"[F1]"— o agrupada —"[F1, F2, F3]".
+_GRUPO_CITA_RE = re.compile(r"\[[FD]\d+(?:\s*,\s*[FD]\d+)*\]")
+
 
 # ------------------------------------------------------------ comprobaciones
 
@@ -51,7 +54,11 @@ def etiquetas_validas(r: Respuesta) -> str | None:
     """Regla 1. Toda etiqueta citada existe entre las fuentes entregadas."""
     disponibles = {f"F{i}" for i in range(1, len(r.fuentes) + 1)}
     disponibles |= {f"D{i}" for i in range(1, len(r.documentos or []) + 1)}
-    citadas = set(re.findall(r"\[([FD]\d+)\]", r.texto))
+    # El modelo agrupa: escribe "[F1, F2, F3]" tan a menudo como "[F1]". La
+    # primera versión solo casaba la forma suelta y daba por "no cita ninguna
+    # fuente" respuestas que citaban ocho. Un banco de pruebas que falla en
+    # verde es peor que no tenerlo.
+    citadas = set(re.findall(r"[FD]\d+", " ".join(_GRUPO_CITA_RE.findall(r.texto))))
     if not citadas:
         return "no cita ninguna fuente"
     inventadas = citadas - disponibles
@@ -70,7 +77,7 @@ _NEGATIVAS = (
 def no_abre_negando(r: Respuesta) -> str | None:
     """Regla 3. Si va a citar fuentes, no puede empezar diciendo que no sabe."""
     apertura = r.texto[:200].lower()
-    if any(n in apertura for n in _NEGATIVAS) and re.search(r"\[[FD]\d+\]", r.texto):
+    if any(n in apertura for n in _NEGATIVAS) and _GRUPO_CITA_RE.search(r.texto):
         return "abre negando y después cita fuentes"
     return None
 
@@ -85,6 +92,11 @@ def se_abstiene(r: Respuesta) -> str | None:
     """
     if not any(n in r.texto[:250].lower() for n in _NEGATIVAS):
         return f"no admite de entrada que no lo sabe: {r.texto[:150]!r}"
+    # Admitirlo no basta: una negativa a secas no le dice al usuario si
+    # preguntó mal o si la materia no está cargada. El aviso de cobertura lo
+    # pone el sistema, no el modelo.
+    if not any("NO están cargadas" in a for a in r.advertencias):
+        return "se abstiene sin decir qué materias se sabe que faltan"
     return None
 
 
@@ -120,7 +132,7 @@ def cifras_literales(r: Respuesta) -> str | None:
     """
     fuentes = " ".join(f.unidad.texto for f in r.fuentes)
     fuentes += " ".join(d.fragmento.texto for d in (r.documentos or []))
-    limpio = re.sub(r"\[[FD]\d+\]", " ", r.texto)
+    limpio = _GRUPO_CITA_RE.sub(" ", r.texto)
     limpio = re.sub(r"(?i)art[íi]culos?\s+[\d\-º°A-Z]+", " ", limpio)
 
     inventadas = [

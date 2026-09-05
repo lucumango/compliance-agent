@@ -89,9 +89,14 @@ DIEGO = Agente(
         "reforzada— no es el de la norma. La Resolución SBS 789-2018 nombra "
         "tres regímenes: general, reforzado y simplificado. Usa los de la norma "
         "y, si el usuario emplea los otros, di a cuál corresponde.",
-        "Si te preguntan por un tercero concreto, responde qué hay que "
-        "verificar y dónde, no si ese tercero está limpio. No tienes acceso a "
-        "ningún registro y no debes aparentarlo.",
+        "Si te preguntan por un tercero concreto —si está sancionado, si "
+        "aparece en una lista, si es de fiar— EMPIEZA diciendo que no tienes "
+        "acceso a ningún registro y que no puedes comprobarlo. Esa frase va "
+        "primero, antes de cualquier otra cosa. Después, y solo después, "
+        "explica qué habría que consultar y dónde. Nunca abras explicando la "
+        "norma: una respuesta que empieza citando artículos parece una "
+        "respuesta, y quien la lea deprisa se llevará la impresión de que "
+        "comprobaste algo.",
     ),
     casos_recuperacion=(
         CasoRecuperacion(

@@ -84,6 +84,39 @@ de 2016.
 La consulta del huaco sigue sin respuesta directa: la Ley 28296, del Patrimonio
 Cultural de la Nación, no está en el corpus.
 
+**Revisado el 05/09/2026.** Vuelto a probar, y sigue sin cubrirse — lo que era
+de esperar, porque la norma sigue sin cargarse. Lo que sí se corrigió es que la
+negativa era inútil:
+
+**Antes**
+
+> El corpus cargado no contiene una respuesta a esto.
+
+Y nada más. El usuario no sabía si había preguntado mal, si la materia no
+estaba cargada, o si no hay norma.
+
+**Después**, con un aviso que ahora acompaña a toda negativa:
+
+> Materias que se sabe que NO están cargadas, por si tu consulta cae en alguna:
+> **Ley 28296** (patrimonio cultural: hallazgos arqueológicos y bienes
+> culturales); **DL 1034** (libre competencia)…
+
+La lista está escrita a mano en `backend/cobertura.py`, no la produce el
+modelo. Pedirle que nombre la norma que no tiene sería pedirle que afirme
+derecho de memoria.
+
+**Por qué el recuperador no ayuda aquí.** Medido:
+
+| Consulta | Mejor resultado | Score |
+|---|---|---|
+| «un trabajador encuentra una huaca» | Ley 29783, art. 92 (SST) | **0.629** |
+| «hallazgo de restos arqueológicos patrimonio cultural» | DL 1106, art. 13 | 0.551 |
+
+La palabra «trabajador» arrastra la consulta hacia seguridad y salud en el
+trabajo, y el ruido puntúa **más alto** que el mejor resultado de una consulta
+bien formulada. Un umbral de similitud no distingue nada: por eso la negativa
+se detecta por cómo abre la respuesta, no por los scores.
+
 ---
 
 ## 3. Debida diligencia reforzada
@@ -239,7 +272,7 @@ Está descrito en [DOCUMENTOS.md](DOCUMENTOS.md).
 | Artículo inexistente en la consulta | Resuelto — regla en el prompt |
 | Libre competencia | **Pendiente — falta el DL 1034** |
 | Buscar en documentos internos | Resuelto — subida de PDF y DOCX |
-| Hallazgo de bienes culturales | **Pendiente — falta la Ley 28296** |
+| Hallazgo de bienes culturales | **Pendiente — falta la Ley 28296.** La negativa sí dice ya qué falta |
 
 Ninguna de las once normas del corpus está cotejada contra SPIJ. Las
 respuestas de «después» son mejores que las de «antes»; no están verificadas.

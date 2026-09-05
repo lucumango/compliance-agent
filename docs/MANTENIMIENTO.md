@@ -235,6 +235,8 @@ respondiendo, peor.
 | `404 ... is no longer available` | Google retiró un modelo de la cadena. `python -m rag.modelos` dice cuál, y se cambia en `rag/config.py`. Si es el ÚLTIMO de la lista, no hace falta repetir `rag.eval_prompt`; si es el primero, sí |
 | Respuestas que citan bien pero contestan mal | Sube `k`. Con 11 normas, ocho plazas se llenan antes de llegar al artículo que enumera |
 | El login parpadea al recargar | `resuelta` en `sesion.js` no está esperando a `getSession` |
+| Una negativa sin decir qué falta | `cobertura.py` no tiene la materia listada, o la respuesta no abrió con la frase de la regla 3 |
+| El puerto 8000 sigue ocupado tras `pkill` | `lsof -ti tcp:8000 \| xargs kill -9`. Un uvicorn colgado sirve **código viejo**, y eso se confunde con un fallo del modelo: pasó una vez y costó una hora |
 | Todo se responde desde ISO 37001 | Falta corpus de esa materia, no falla el recuperador. Ver [CORRECCIONES.md](CORRECCIONES.md) |
 
 ---

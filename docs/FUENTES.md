@@ -178,6 +178,13 @@ Añadir una nueva no requiere tocar el frontend: sale de `/api/normas`.
 
 ## Cobertura que falta
 
+Esta lista tiene copia en código, en `backend/cobertura.py`, y viaja como aviso
+con toda respuesta que admita no cubrir la consulta. **Las dos van juntas:** si
+se carga una de estas normas hay que quitarla de los dos sitios, porque una
+lista de huecos que menciona algo ya cargado es peor que no tenerla.
+
+- **Ley 28296** — patrimonio cultural. La pidió un revisor; ver
+  [CORRECCIONES.md](CORRECCIONES.md).
 - **Reglamento de la Ley 30424** (DS 002-2019-JUS y DS 002-2025-JUS) — define
   el modelo de prevención.
 - **ISO 37002** y el **régimen laboral de hostilidad y represalia** — lo mínimo

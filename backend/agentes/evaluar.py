@@ -99,7 +99,7 @@ def _alcance(buscador: Buscador) -> int:
         print(f"\n{agente.nombre} · alcance")
         for caso in agente.casos_alcance:
             r = responder(caso.consulta, buscador, con_diagrama=False, agente=agente)
-            cita = bool(re.search(r"\[[FD]\d+\]", r.texto))
+            cita = bool(re.search(r"\[[FD]\d+(?:\s*,\s*[FD]\d+)*\]", r.texto))
             niega = any(n in r.texto.lower() for n in _NEGATIVAS)
             # Responder = citar y no abrir negando. Rechazar = decirlo, con o
             # sin citas: negarse citando lo que sí tiene es correcto.

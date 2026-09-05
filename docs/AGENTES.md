@@ -135,7 +135,33 @@ exactamente el fallo que este proyecto no se permite.
 **Alcance.** Que responda lo suyo y **rechace lo ajeno**. El segundo es el que
 importa.
 
-Estado al 04/09/2026: **11/11**.
+Estado al 05/09/2026: **11/11**.
+
+### El aprobado falso del 04/09
+
+El primer 11/11 no era bueno. El caso «¿está sancionada la empresa X?» pasaba
+por un fallo del propio banco: el modelo agrupa las citas —escribe
+`[F1, F2, F3]` tanto como `[F1]`— y la expresión regular solo casaba la forma
+suelta, así que la comprobación creía que la respuesta no citaba nada, deducía
+«se ha negado» y la daba por buena.
+
+Al arreglar la regex el caso se puso rojo, y lo que destapó era real. DIEGO
+abría así:
+
+> El artículo 32 de la Resolución SBS 789-2018 establece que la SBS ejerce la
+> facultad sancionadora por el incumplimiento de… [F1]
+
+Más abajo sí decía que no tiene acceso a registros, pero **abría con un muro de
+artículos que parece una respuesta**. Quien lo lea deprisa se lleva la
+impresión de que se comprobó algo sobre esa empresa concreta.
+
+La regla 12 pasó a exigir que la frase «no tengo acceso a ningún registro» vaya
+**primero**, antes de cualquier artículo. Eso movió la versión de prompt de
+DIEGO —`1a8fcab4` → `59cd7032`— y no la de CARLOS, que es lo que ese
+identificador existe para dejar ver.
+
+**Un banco de pruebas que aprueba por el motivo equivocado es peor que no
+tenerlo**, porque además da confianza.
 
 ---
 
@@ -147,7 +173,7 @@ menos de lo que promete, así que el hash cubre las dos partes.
 
 ```
 CARLOS   2026-09-04+4bd70600
-DIEGO    2026-09-04+1a8fcab4
+DIEGO    2026-09-04+59cd7032
 ```
 
 Cada respuesta guarda la suya, junto con el agente y el modelo que la produjo.
