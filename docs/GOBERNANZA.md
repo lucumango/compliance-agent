@@ -143,6 +143,7 @@ Gemini 3.5 Flash" es una suposición.
 | `python -m rag.eval_prompt` | Que el modelo cumpla sus propias reglas | Al tocar `_SISTEMA` o cambiar de modelo |
 | `ruff check backend/` + `pip-audit` + `npm audit` | Lint y vulnerabilidades de dependencias | En cada push, automático |
 | `python -m rag.modelos` | Que los modelos declarados sigan existiendo | Cada mes |
+| `python -m rag.eval_correcciones` | Que las ocho observaciones reportadas sigan corregidas | Antes de un despliegue que importe |
 | `python -m agentes.evaluar` | Que cada agente encuentre lo suyo, cite artículos que existen y rechace lo ajeno | Al tocar un agente. La parte gratis, en cada push |
 
 `rag.eval_prompt` verifica las reglas 1, 3, 4, 5, 7, 8 y 9. Las reglas **2 y 6 no
@@ -187,7 +188,10 @@ mensaje, se anota en [CORRECCIONES.md](CORRECCIONES.md) con la respuesta antes
 y después, y si el arreglo toca el prompt se añade un caso a `rag.eval_prompt`
 que lo fije. Un incidente sin caso de evaluación vuelve.
 
-CORRECCIONES.md es el registro de incidentes. Ya tiene ocho.
+CORRECCIONES.md es el registro de incidentes. Ya tiene ocho, y
+`python -m rag.eval_correcciones` las vuelve a ejecutar: un incidente cerrado
+que nadie reejecuta es un incidente que puede reabrirse sin que nadie se
+entere. Pasó con la libre competencia, que se desajustó semanas después.
 
 ---
 

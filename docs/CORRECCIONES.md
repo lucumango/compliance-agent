@@ -8,6 +8,27 @@ unidades. Las de «después» se corrieron ese mismo día contra el corpus de 82
 
 ---
 
+
+## Cómo se vuelve a comprobar
+
+```bash
+python -m rag.eval_correcciones
+```
+
+Las ocho observaciones, re-ejecutadas contra el corpus de hoy. Existe porque
+una corrección escrita en un documento no es una corrección: hasta que no se
+ejecuta, nadie sabe si sigue en pie tres semanas después.
+
+Comprueba **la sustancia, no el formato**. La observación era «enlistar los
+sujetos obligados», no «usar viñetas»: que el modelo los nombre en prosa o en
+lista es variación a temperatura 0.2. Una comprobación que mide el formato se
+pone roja sola y acaba ignorándose.
+
+La observación 7 —buscar en documentos internos— no está en el banco: exige
+una sesión y un documento subido. Se prueba a mano.
+
+**Última ejecución: 09/09/2026, 7/7.**
+
 ## 1. Sujetos obligados de PLAFT
 
 **Consulta:** *un casino es un sujeto obligado de plaft?*
@@ -234,6 +255,41 @@ conductas anticompetitivas contempla la ley de Indecopi*
 
 **Antes y después: igual.** Se abstiene y remite al Decreto Legislativo 1034.
 
+**Revisado el 09/09/2026: esto ya no es lo que pasa.** El modelo dejó de
+abstenerse y responde tres párrafos sobre conflicto de intereses y
+confidencialidad de datos personales, sin decir que la libre competencia no
+está cargada.
+
+No es un capricho del modelo. La cláusula A.8.3 de la ISO 37001 usa
+**literalmente la palabra «competidor»** en su ejemplo de conflicto de
+intereses —«cuando el gerente de línea tiene un interés financiero personal en
+el negocio de un competidor»— y el recuperador la saca con 0.63. Desde dentro
+del corpus, eso parece una respuesta.
+
+Se intentó primero por prompt: se endureció la regla 3 para que «parte de la
+consulta» signifique lo que responde a lo que se preguntó y no lo que comparte
+tema general. **No funcionó**: el modelo pasó de admitir el hueco al final a no
+admitirlo en absoluto.
+
+**Lo que sí funciona es no preguntárselo al modelo.** `backend/cobertura.py`
+declara, por cada norma que falta, las palabras que delatan que la consulta va
+de eso. Si la consulta las lleva, el aviso sale, diga lo que diga el modelo:
+
+> Tu consulta toca una materia que NO está en el corpus: **DL 1034** — libre
+> competencia y conductas anticompetitivas. Lo que responda arriba sale de
+> otras normas y puede parecer una respuesta sin serlo.
+
+Los términos se eligen por **discriminantes**, no por frecuentes: «competidor»
+y «colusión» solo aparecen hablando de libre competencia, mientras que
+«competencia» a secas sale en «competencia de la autoridad». Hay un caso en
+`agentes.evaluar` que comprueba justo eso, y corre en el CI porque no llama a
+ningún modelo.
+
+**El contrato de este caso cambió**, y conviene decirlo en voz alta: ya no se
+exige silencio, se exige que se avise. Relajar una prueba para que pase es
+hacer trampa; cambiar lo que se exige, dejándolo escrito y con el porqué, es
+otra cosa.
+
 **Qué falta:** el **DL 1034**, Ley de Represión de Conductas Anticompetitivas.
 No está cargado y no hay forma de responder esto sin él. Es materia sin cubrir,
 no un fallo de redacción.
@@ -270,7 +326,7 @@ Está descrito en [DOCUMENTOS.md](DOCUMENTOS.md).
 | Ejemplos concretos en vez de abstracciones | Resuelto — regla en el prompt |
 | Sesgo hacia soborno | Resuelto — era falta de corpus, no de recuperador |
 | Artículo inexistente en la consulta | Resuelto — regla en el prompt |
-| Libre competencia | **Pendiente — falta el DL 1034** |
+| Libre competencia | **Pendiente — falta el DL 1034.** El aviso sí lo dice |
 | Buscar en documentos internos | Resuelto — subida de PDF y DOCX |
 | Hallazgo de bienes culturales | **Pendiente — falta la Ley 28296.** La negativa sí dice ya qué falta |
 

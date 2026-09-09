@@ -43,7 +43,12 @@ señala qué exige la norma y qué dice el documento.
 consulta. Si responden parte, empieza por esa parte y solo al final di qué \
 falta y en qué norma estaría. Reserva "El corpus cargado no contiene una \
 respuesta a esto" para cuando NINGUNA fuente aporte nada; nunca abras con esa \
-frase si después vas a citar fuentes. No completes con conocimiento propio.
+frase si después vas a citar fuentes. No completes con conocimiento propio. \
+"Parte de la consulta" es lo que responde a lo que se preguntó, no lo que \
+comparte tema general: si preguntan por libre competencia y solo tienes \
+normas de conflicto de intereses y de datos personales, eso NO es media \
+respuesta, es otra materia. Dilo en la primera frase y no antes de tres \
+párrafos.
 4. Si la fuente enumera supuestos, casos, señales, requisitos o sujetos, \
 reprodúcelos como lista con lo que dice cada uno. No los resumas en abstracto: \
 "debe hacerse una evaluación de riesgo" no sirve; sirve la lista de los \
@@ -192,16 +197,31 @@ def _advertencias(resultados: list[Resultado]) -> list[str]:
 # había citas —"sin citas, luego negativa"— y se equivocaba en los dos
 # sentidos: el modelo agrupa las etiquetas como "[F1, F2, F3]", que no casaba
 # con el patrón, y una negativa puede citar fuentes para decir de qué van.
-_APERTURA_NEGATIVA = (
+# Frases con las que el modelo admite que el corpus no cubre la consulta.
+# Deliberadamente estrechas: tienen que hablar del CORPUS, no de un artículo
+# suelto. "El artículo 512 no está en las fuentes" es la regla 5 funcionando y
+# no debe disparar el aviso de cobertura; "el corpus no contiene una respuesta
+# a esto" sí.
+_ADMISION = (
     "el corpus cargado no contiene",
     "no contiene una respuesta",
-    "no contiene información",
+    "no contiene información sobre",
     "no dispongo de información",
+    "no se encuentran en las fuentes entregadas",
+    "no se encuentra en las fuentes entregadas",
 )
 
 
 def es_negativa(texto: str) -> bool:
-    """La respuesta abre admitiendo que el corpus no cubre la consulta.
+    """La respuesta admite, en algún punto, que el corpus no cubre la consulta.
+
+    Se mira el texto ENTERO y no solo la apertura. La regla 3 obliga a abrir
+    negando únicamente cuando ninguna fuente aporta; cuando algo se responde a
+    medias, la admisión va al final — y ese es justo el caso donde el usuario
+    más necesita saber qué falta. La primera versión miraba los primeros 250
+    caracteres y se perdía «puedo asistir a un almuerzo con un competidor»,
+    que responde tres párrafos sobre conflicto de intereses y solo al final
+    reconoce que la libre competencia no está cargada.
 
     No se mira el score de lo recuperado: para "un trabajador encuentra una
     huaca" los ocho artículos de seguridad y salud en el trabajo puntúan 0.63,
@@ -209,7 +229,20 @@ def es_negativa(texto: str) -> bool:
     puntúa alto cuando la consulta comparte vocabulario con otra materia, así
     que un umbral no distingue nada.
     """
-    return any(n in texto[:250].lower() for n in _APERTURA_NEGATIVA)
+    return any(n in texto.lower() for n in _ADMISION)
+
+
+def _aviso_materia(consulta: str) -> list[str]:
+    """Si la consulta cae en un hueco declarado, decirlo pase lo que pase.
+
+    Va por separado de `_aviso_cobertura` a propósito: aquél reacciona a que
+    el modelo admita no saber, y este no espera a que lo admita. El caso que
+    lo obligó —«un almuerzo con un competidor»— es justo aquel en el que el
+    modelo NO admite nada: responde tres párrafos sobre conflicto de intereses
+    y se queda tan ancho.
+    """
+    aviso = cobertura.aviso_dirigido(consulta)
+    return [aviso] if aviso else []
 
 
 def _aviso_cobertura(texto: str) -> list[str]:
@@ -309,7 +342,8 @@ def responder(
         texto=texto,
         fuentes=resultados,
         advertencias=(
-            _advertencias(resultados)
+            _aviso_materia(consulta)
+            + _advertencias(resultados)
             + _aviso_documentos(docs)
             + _aviso_cobertura(texto)
         ),
@@ -363,7 +397,11 @@ def preparar(
         if (resultados or docs)
         else "",
         fuentes=resultados,
-        advertencias=_advertencias(resultados) + _aviso_documentos(docs),
+        advertencias=(
+            _aviso_materia(consulta)
+            + _advertencias(resultados)
+            + _aviso_documentos(docs)
+        ),
         anonimizacion=anon,
         lleva_diagrama=con_diagrama and amerita_diagrama(consulta),
         documentos=docs,

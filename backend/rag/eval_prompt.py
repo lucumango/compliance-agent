@@ -182,6 +182,19 @@ def no_repite_la_pregunta(consulta: str) -> Comprobacion:
 
     def comprobar(r: Respuesta) -> str | None:
         primera = re.split(r"(?<=[.:])\s", r.texto.strip(), maxsplit=1)[0]
+
+        # El discriminante es la CITA, y sale de la propia regla 8: "la primera
+        # frase ya tiene que aportar contenido y su cita". Un preámbulo no cita
+        # nada porque no afirma nada —"De acuerdo con la normativa peruana, el
+        # titular puede ejercer los siguientes derechos:"—, mientras que una
+        # apertura que dice algo lo cita. Sin esto, la comprobación daba por
+        # bisagra "El titular puede ejercer sus derechos por sí mismo o mediante
+        # representación [F1], sin que el ejercicio de uno excluya a los demás
+        # [F5]", que es una respuesta con todas las letras y que además repite
+        # las palabras de la consulta porque no hay otra forma de decirlo.
+        if _GRUPO_CITA_RE.search(primera):
+            return None
+
         resto = r.texto.strip()[len(primera) :].lstrip()
         # Pie de enumeración: acaba en dos puntos y lo siguiente es la lista.
         if primera.rstrip().endswith(":") and re.match(
@@ -193,7 +206,7 @@ def no_repite_la_pregunta(consulta: str) -> Comprobacion:
         palabras = re.findall(r"\w{5,}", consulta.lower())
         eco = sum(1 for p in palabras if p in primera.lower())
         if len(palabras) >= 4 and eco >= len(palabras) - 1:
-            return f"abre reformulando la consulta: {primera[:120]!r}"
+            return f"abre reformulando la consulta sin citar nada: {primera[:120]!r}"
         return None
 
     return comprobar

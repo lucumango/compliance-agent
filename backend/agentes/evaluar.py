@@ -26,17 +26,26 @@ import os
 import re
 import sys
 
+import cobertura
 from rag.answer import responder
 from rag.retrieval import Buscador
 
 from .catalogo import AGENTES
 from .cuestionario import unidades_citadas
 
+# Formas en que un agente reconoce que algo no le toca. La lista ha crecido a
+# base de falsos rojos: el modelo dice "fuera del alcance de mi competencia",
+# no "fuera de mi alcance", y una comprobación que exige la frase exacta acaba
+# midiendo la redacción en vez del comportamiento. Se busca el NÚCLEO de cada
+# giro —"fuera del alcance", no la frase entera— por eso mismo.
 _NEGATIVAS = (
     "no contiene",
     "no está en el corpus",
     "no dispongo",
+    "fuera del alcance",
     "fuera de mi alcance",
+    "fuera de mi competencia",
+    "no corresponde a mi",
     "no forma parte",
     "no tengo acceso",
     "no puedo",
@@ -91,6 +100,42 @@ def _citas(buscador: Buscador) -> int:
     return 0
 
 
+# Consultas reales de docs/CORRECCIONES.md que deben disparar el aviso de
+# materia, y una que NO debe: "competente" no es "competidor".
+_COBERTURA = (
+    ("puedo asistir a un almuerzo con un competidor?", "DL 1034"),
+    ("qué pasa si un trabajador encuentra un huaco", "Ley 28296"),
+    ("cuál es la multa máxima en protección de datos", None),
+    ("quién es competente para sancionar", None),
+)
+
+
+def _cobertura() -> int:
+    """Que las consultas que caen en un hueco declarado lo digan.
+
+    Determinista y sin modelo, así que corre en el CI. Existe porque el prompt
+    no bastó: ante «un almuerzo con un competidor» el modelo responde sobre
+    conflicto de intereses y no admite nada.
+    """
+    fallos = 0
+    print("\nCobertura · avisos de materia que falta")
+    for consulta, esperado in _COBERTURA:
+        tocados = cobertura.huecos_para(consulta)
+        normas = [h.norma for h in tocados]
+        if esperado is None:
+            if tocados:
+                fallos += 1
+                print(f"  FALLA no debía avisar: {consulta[:44]} -> {normas}")
+            else:
+                print(f"  ok    calla:  {consulta[:50]}")
+        elif esperado in normas:
+            print(f"  ok    avisa {esperado}: {consulta[:40]}")
+        else:
+            fallos += 1
+            print(f"  FALLA esperaba {esperado}: {consulta[:40]} -> {normas or 'nada'}")
+    return fallos
+
+
 def _alcance(buscador: Buscador) -> int:
     fallos = 0
     for agente in AGENTES.values():
@@ -132,7 +177,7 @@ def main() -> int:
         fallos = 0
         print("\n(recuperación omitida: no hay GOOGLE_API_KEY)")
 
-    fallos += _citas(buscador)
+    fallos += _citas(buscador) + _cobertura()
 
     if con_alcance and not con_clave:
         print("(alcance omitido: no hay GOOGLE_API_KEY)")

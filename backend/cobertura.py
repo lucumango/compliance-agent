@@ -25,20 +25,69 @@ from dataclasses import dataclass
 class Hueco:
     norma: str
     materia: str
+    # Palabras que delatan que la consulta va de esto. Se eligen por lo
+    # DISCRIMINANTES que son, no por lo frecuentes: "competencia" sola aparece
+    # en "competencia de la autoridad" y no serviría; "competidor" y "colusión"
+    # solo salen cuando se habla de libre competencia.
+    terminos: tuple[str, ...] = ()
 
 
 # Ordenados por lo que más veces se ha echado en falta. Los dos primeros
 # vienen de observaciones reales de los revisores; ver docs/CORRECCIONES.md.
 HUECOS: tuple[Hueco, ...] = (
-    Hueco("Ley 28296", "patrimonio cultural: hallazgos arqueológicos y bienes culturales"),
-    Hueco("DL 1034", "libre competencia y conductas anticompetitivas"),
+    Hueco("Ley 28296", "patrimonio cultural: hallazgos arqueológicos y bienes culturales",
+          ("huaca", "huaco", "arqueológ", "arqueolog", "patrimonio cultural",
+           "restos históricos", "bien cultural", "bienes culturales", "yacimiento")),
+    Hueco("DL 1034", "libre competencia y conductas anticompetitivas",
+          ("competidor", "competidores", "libre competencia", "colusión",
+           "colusion", "cártel", "cartel de precios", "reparto de mercado",
+           "fijación de precios", "anticompetitiv", "abuso de posición")),
     Hueco("Reglamento de la Ley 30424 (DS 002-2019-JUS, DS 002-2025-JUS)",
-          "el modelo de prevención"),
+          "el modelo de prevención",
+          ("modelo de prevención", "modelo de prevencion")),
     Hueco("ISO 37002 y el régimen laboral de hostilidad y represalia",
-          "canal de denuncias y línea ética"),
-    Hueco("TUO de la Ley 27444", "potestad sancionadora y graduación de multas"),
-    Hueco("Código Penal", "tipificación de delitos — fuera de alcance a propósito"),
+          "canal de denuncias y línea ética",
+          ("línea ética", "linea etica", "canal de denuncias", "represalia",
+           "denunciante", "hostilidad laboral", "whistleblow")),
+    Hueco("TUO de la Ley 27444", "potestad sancionadora y graduación de multas",
+          ("graduación de la multa", "graduar la sanción", "27444",
+           "procedimiento administrativo sancionador")),
+    Hueco("Código Penal", "tipificación de delitos — fuera de alcance a propósito",
+          ("código penal", "codigo penal", "tipifica", "pena privativa",
+           "años de cárcel", "anos de carcel")),
 )
+
+
+def huecos_para(consulta: str) -> list[Hueco]:
+    """Los huecos declarados que la consulta parece tocar.
+
+    Determinista y por palabras, no por el modelo. Existe porque el prompt no
+    basta: ante «¿puedo asistir a un almuerzo con un competidor?» el
+    recuperador saca las cláusulas de conflicto de intereses de la ISO 37001
+    —que hablan literalmente de «competidor»— con 0.63, y el modelo las da por
+    respuesta. Son otra materia. Sin la libre competencia cargada, lo único
+    honesto es decir en voz alta que falta.
+
+    Falsos positivos los habrá; el coste de uno es una línea de aviso de más.
+    El coste de un falso negativo es que alguien se lleve una respuesta sobre
+    conflicto de intereses creyendo que le contestaron sobre libre competencia.
+    """
+    texto = consulta.lower()
+    return [h for h in HUECOS if any(t in texto for t in h.terminos)]
+
+
+def aviso_dirigido(consulta: str) -> str | None:
+    """Aviso para una consulta que toca una materia que se sabe que falta."""
+    tocados = huecos_para(consulta)
+    if not tocados:
+        return None
+    partes = [f"{h.norma} — {h.materia}" for h in tocados]
+    return (
+        "Tu consulta toca una materia que NO está en el corpus: "
+        + "; ".join(partes)
+        + ". Lo que responda arriba sale de otras normas y puede parecer una "
+        "respuesta sin serlo. Contrasta con la fuente oficial."
+    )
 
 
 def aviso() -> str:

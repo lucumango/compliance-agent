@@ -68,9 +68,30 @@ class Agente:
             f"ALCANCE: {self.alcance}",
             f"FUERA DE TU ALCANCE: {self.fuera_de_alcance}",
         ]
-        if self.reglas:
+        reglas = list(self.reglas)
+        if self.materias is not None:
+            # Va automática para todo agente con corpus acotado, y no escrita a
+            # mano en cada uno, porque el fallo es estructural y no de materia.
+            #
+            # Con el filtro puesto, el recuperador SIEMPRE devuelve algo: sus
+            # ocho mejores dentro de su corpus, aunque la consulta sea de otra
+            # cosa. Preguntado por auditorías de seguridad y salud en el
+            # trabajo, DIEGO sacaba el artículo 34 de la Resolución SBS —que
+            # habla de auditorías, pero del SPLAFT— y abría contestando con él.
+            # Quien lo lea deprisa cree que le respondieron lo que preguntó.
+            reglas.append(
+                "Si la consulta es de una materia fuera de tu alcance, DILO EN "
+                "LA PRIMERA FRASE, aunque en tus fuentes haya algo que se le "
+                "parezca. Tu corpus está filtrado: el recuperador siempre te "
+                "devuelve tus mejores ocho artículos, incluso cuando ninguno "
+                "viene a cuento. Que un artículo comparta palabras con la "
+                "consulta no significa que la cubra. Después de decirlo, puedes "
+                "añadir qué sí regula lo que encontraste, dejando claro que es "
+                "otra cosa."
+            )
+        if reglas:
             lineas.append("Reglas propias de tu materia:")
             # Empiezan en 10 para no chocar con las nueve del prompt común: si
             # el modelo ve dos reglas 3, una de las dos deja de existir.
-            lineas += [f"{i}. {r}" for i, r in enumerate(self.reglas, 10)]
+            lineas += [f"{i}. {r}" for i, r in enumerate(reglas, 10)]
         return "\n".join(lineas)

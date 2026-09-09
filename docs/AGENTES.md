@@ -163,6 +163,26 @@ identificador existe para dejar ver.
 **Un banco de pruebas que aprueba por el motivo equivocado es peor que no
 tenerlo**, porque además da confianza.
 
+### El filtro no basta: hay que decir que no
+
+Revisando el 09/09 salió el mismo patrón en DIEGO. Preguntado por auditorías de
+seguridad y salud en el trabajo, abría con el artículo 34 de la Resolución SBS
+—que habla de auditorías, pero del SPLAFT—. La respuesta era correcta en lo que
+decía y engañosa en lo que parecía.
+
+La causa es estructural, no de materia: **con el filtro puesto el recuperador
+siempre devuelve algo.** Sus ocho mejores dentro de su corpus, aunque la
+consulta sea de otra cosa. Un agente acotado nunca ve un resultado vacío, así
+que nunca tiene la señal obvia de que no le toca.
+
+Por eso la regla la genera `Agente.bloque_prompt()` automáticamente para todo
+agente con `materias` acotadas, en vez de escribirla a mano en cada uno: si la
+causa es el filtro, la regla va donde está el filtro. Todo agente futuro con
+corpus propio la hereda sin que nadie se acuerde.
+
+CARLOS no la lleva, y es correcto: su corpus es el índice entero, así que
+quedarse sin fuentes sí significa algo para él.
+
 ---
 
 ## Cada agente tiene su versión de prompt
@@ -171,10 +191,8 @@ Dos agentes sobre el mismo `_SISTEMA` no comparten prompt: uno lleva reglas que
 el otro no. Guardar la misma versión para los dos haría que el campo dijera
 menos de lo que promete, así que el hash cubre las dos partes.
 
-```
-CARLOS   2026-09-04+4bd70600
-DIEGO    2026-09-04+59cd7032
-```
+Los identificadores vivos están en `/api/agentes`; escribirlos aquí a mano
+garantiza que queden viejos a la primera edición del prompt.
 
 Cada respuesta guarda la suya, junto con el agente y el modelo que la produjo.
 Ver [GOBERNANZA.md](GOBERNANZA.md).
