@@ -1,7 +1,31 @@
 # Los agentes
 
-Dos hoy: **CARLOS** para compliance y **DIEGO** para debida diligencia. Sobre el
-mismo motor, el mismo índice y la misma disciplina de citación.
+Cuatro definidos, dos encendidos: **CARLOS** para compliance y **DIEGO** para
+debida diligencia responden; **IVÁN** para investigación y **ELENA** para línea
+ética están declarados y esperan su corpus. Sobre el mismo motor, el mismo
+índice y la misma disciplina de citación.
+
+## Un agente se enciende solo
+
+Cada agente declara las normas sin las que no existe. **Está activo si y solo si
+todas están en el índice**, y eso se calcula en cada petición, no se escribe a
+mano:
+
+| Agente | Requiere | Estado al 16/09/2026 |
+|---|---|---|
+| CARLOS | — (usa el índice entero) | Activo |
+| DIEGO | Resolución SBS 789-2018, DL 1372 | Activo |
+| IVÁN | TUO del DL 728, Ley 27942, DS 014-2019-MIMP | **Apagado** |
+| ELENA | Reglamento de la Ley 30424, DL 1327, Ley 27942 | **Apagado** |
+
+Cuando se cargan los PDFs que faltan, el agente se enciende sin tocar código. Si
+alguien retira una norma, se apaga en vez de seguir respondiendo sobre un corpus
+que ya no tiene.
+
+**Pedir un agente apagado responde CARLOS**, y la respuesta dice que respondió
+CARLOS. La interfaz los enseña deshabilitados y con lo que les falta: ocultarlos
+haría creer que no existen, y dejarlos elegir haría que CARLOS respondiera en su
+nombre sin que se notara.
 
 Hasta ahora la única diferencia entre materias era una casilla de filtro. Eso no
 es un agente: es una consulta con menos corpus. Un agente son cuatro cosas, y
@@ -199,25 +223,70 @@ Ver [GOBERNANZA.md](GOBERNANZA.md).
 
 ---
 
-## Los que faltan
+## IVÁN
 
-**IVÁN** (investigación) y **ELENA** (línea ética) no están porque su corpus no
-lo está. Un agente sin corpus responde de memoria, que es justo lo que este
-sistema existe para no hacer.
+**Investigation, Verification & Audit Network**
 
-ELENA además no es un agente más: es el único que recibiría datos de un
-denunciante, con expectativa de confidencialidad y a menudo de anonimato. Eso
-impone requisitos que no se añaden después. Conviene que sea el último en
-construirse y el primero en diseñarse.
+**Responde:** el marco normativo de una investigación **interna**: con qué base
+legal se tratan los datos de los trabajadores investigados, qué valor tiene un
+documento o una firma electrónica como evidencia, qué es falta grave y cómo se
+despide, cómo se investiga una denuncia de hostigamiento sexual y en qué plazos,
+y qué papel tiene la investigación en el modelo de prevención de la Ley 30424.
+
+**No responde:** calificar una conducta como delito —el Código Penal no se carga,
+decisión del 03/09—, decidir si alguien es culpable, ni técnica forense: cómo se
+hace una imagen de un disco es metodología, no norma. Tampoco ve evidencia.
+
+Sus reglas propias: nunca concluir culpabilidad sino decir **qué hechos habría
+que acreditar**; si se trata de acceder al correo o al equipo de un trabajador,
+**empezar por la base legal de protección de datos**; y los plazos de un
+procedimiento, transcritos y con la advertencia de que su cómputo lo verifica
+un laboralista.
+
+## ELENA
+
+**Ethics, Legal Evaluation & Normative Assistant**
+
+**Responde:** qué exige la norma de un canal de denuncias: el canal como
+elemento del modelo de prevención, la protección al denunciante, la
+confidencialidad, la prohibición de represalias y los actos de hostilidad, y el
+procedimiento de hostigamiento sexual.
+
+**No responde, y es lo que la define: no recibe ni analiza denuncias
+concretas.** La manual-casos avisa de que ELENA "no es un agente más", porque es
+el único cuya materia invita a pegar datos de un denunciante. Esta ELENA es
+**normativa**: responde sobre lo que exige la ley, no procesa casos.
+
+Eso se sostiene en dos sitios, y el segundo es el que importa:
+
+1. **En el prompt.** Si la consulta contiene una denuncia, la primera frase dice
+   que no la va a analizar, y no repite ningún dato de ella.
+2. **En el sistema.** `guarda_historial=False`: las conversaciones con ELENA no
+   se guardan. Una regla del prompt no impide que un texto ya pegado acabe en la
+   tabla `mensajes`; no guardarlo sí. Es la "retención acotada" de manual-casos,
+   aplicada en el único sitio donde es verificable. La interfaz lo avisa al
+   elegirla.
+
+Y una regla que protege al cliente: comprobar en las fuentes el ámbito de cada
+norma antes de presentarla como obligación de una empresa privada, porque varias
+normas de protección al denunciante son solo para la administración pública.
+
+## Lo que falta para encenderlos
+
+Los PDFs de SPIJ, en su texto actualizado. La lista con nombres de fichero está
+en [PENDIENTE.md](PENDIENTE.md). Cuando lleguen: entrada en el registro,
+`ingest`, `validate`, `index`, y **casos de recuperación** para cada uno —hoy
+solo tienen casos de alcance, porque los identificadores de unidad no existen
+hasta que el PDF se parsea.
 
 ---
 
-## Lo que este trabajo NO incluye
+## El cotejo de DIEGO
 
-Consultar SUNAT, SUNARP, el RNP, el RNSSC y las listas restrictivas. Cada una es
-un conector, algunas sin API y con captcha. Eso no es prompt, es integración, y
-merece su propia decisión.
+DIEGO, el modelo, no consulta registros. El sistema sí, aparte: listas de
+sanciones de OFAC, ONU, UE y Reino Unido, el padrón de SUNAT y los proveedores
+sancionados por el OSCE. Determinista, sin modelo, y con fecha en cada
+resultado. Ver [Registros públicos](REGISTROS.md).
 
-La ficha RUC de SUNAT es la candidata obvia para el primero: la condición de
-"no habido" es gratuita, pública e instantánea, y es la primera consulta que se
-hace antes de pedirle nada al tercero.
+Su `fuera_de_alcance` lo dice así: si el usuario quiere comprobar a un tercero
+concreto, DIEGO lo remite al cotejo en vez de contestar.

@@ -68,6 +68,12 @@ def _hay_clave() -> bool:
 
 def _recuperacion(buscador: Buscador) -> int:
     fallos = 0
+    indexadas = {u.norma_id for u in buscador.unidades}
+    print("\nActivación")
+    for agente in AGENTES.values():
+        faltan = agente.faltantes(indexadas)
+        print(f"  {'activo ' if not faltan else 'apagado'} {agente.nombre:7}"
+              + (f" falta: {', '.join(faltan)}" if faltan else ""))
     for agente in AGENTES.values():
         if not agente.casos_recuperacion:
             continue
@@ -107,6 +113,8 @@ _COBERTURA = (
     ("qué pasa si un trabajador encuentra un huaco", "Ley 28296"),
     ("cuál es la multa máxima en protección de datos", None),
     ("quién es competente para sancionar", None),
+    ("¿cómo despido a un trabajador por falta grave?", "TUO del DL 728 (DS 003-97-TR)"),
+    ("¿qué hago con una denuncia de hostigamiento sexual?", "Ley 27942 y DS 014-2019-MIMP"),
 )
 
 
@@ -138,8 +146,12 @@ def _cobertura() -> int:
 
 def _alcance(buscador: Buscador) -> int:
     fallos = 0
+    indexadas = {u.norma_id for u in buscador.unidades}
     for agente in AGENTES.values():
         if not agente.casos_alcance:
+            continue
+        if not agente.activo(indexadas):
+            print(f"\n{agente.nombre} · alcance omitido: falta {', '.join(agente.faltantes(indexadas))}")
             continue
         print(f"\n{agente.nombre} · alcance")
         for caso in agente.casos_alcance:

@@ -19,21 +19,39 @@ export default function SelectorAgente({ agentes, activo, alCambiar }) {
       </p>
 
       <div className="agentes-fila" role="tablist" aria-label="Agente">
-        {agentes.map((a) => (
-          <button
-            key={a.id}
-            type="button"
-            role="tab"
-            aria-selected={a.id === activo}
-            className={a.id === activo ? "agente activo" : "agente"}
-            onClick={() => alCambiar(a.id)}
-            title={a.acronimo}
-          >
-            <span className="agente-nombre">{a.nombre}</span>
-            <span className="agente-area">{a.area}</span>
-          </button>
-        ))}
+        {agentes.map((a) => {
+          // Un agente sin su corpus se enseña igual, deshabilitado y diciendo
+          // qué le falta. Ocultarlo haría creer que no existe; dejarlo elegir
+          // haría que respondiera CARLOS en su nombre sin que se notara.
+          const apagado = a.activo === false;
+          const clase = ["agente", a.id === activo && "activo", apagado && "apagado"]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <button
+              key={a.id}
+              type="button"
+              role="tab"
+              aria-selected={a.id === activo}
+              aria-disabled={apagado}
+              disabled={apagado}
+              className={clase}
+              onClick={() => !apagado && alCambiar(a.id)}
+              title={apagado ? `Falta corpus: ${a.faltan.join(", ")}` : a.acronimo}
+            >
+              <span className="agente-nombre">{a.nombre}</span>
+              <span className="agente-area">{apagado ? "Falta corpus" : a.area}</span>
+            </button>
+          );
+        })}
       </div>
+
+      {actual && actual.guarda_historial === false && (
+        <p className="aviso-corpus">
+          Las conversaciones con {actual.nombre} no se guardan en el historial.
+          No escribas aquí datos de denunciantes ni de denuncias concretas.
+        </p>
+      )}
 
       {actual && (
         <p className="pista agente-alcance">

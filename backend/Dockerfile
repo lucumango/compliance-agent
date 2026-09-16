@@ -19,6 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY api.py auth.py nube.py auditoria.py cobertura.py ./
 COPY rag/ rag/
 COPY agentes/ agentes/
+COPY registros/ registros/
 COPY documentos/ documentos/
 # El índice (9 MB) y el corpus parseado se copian ya construidos.
 COPY data/index/ data/index/
@@ -31,6 +32,21 @@ COPY data/uit.json data/
 # Va DESPUÉS de los COPY: los ficheros se copian como root y quedan de solo
 # lectura para `carlos`, que es exactamente lo que se quiere. La aplicación no
 # escribe en disco.
+# Las listas de sanciones se bajan AL CONSTRUIR la imagen, no se versionan:
+# cambian a diario y una foto guardada en git sería vieja el día siguiente. Así
+# cada despliegue lleva las de ese día. Son ~90 MB de descarga y 2 MB de índice.
+#
+# Si una fuente está caída el build NO falla: la API arranca sin cotejo y lo
+# dice en /api/diego/registros. Un despliegue bloqueado porque la ONU tarda en
+# responder es peor que un cotejo que avisa de que no está.
+#
+# El padrón de SUNAT no entra: son 1,5 GB y no caben en el plan gratuito. En
+# producción el cotejo por RUC responde que no está disponible.
+# El crudo se borra pase lo que pase: son ~80 MB que la imagen no necesita.
+RUN (python -m registros.actualizar \
+     || echo "AVISO: no se pudieron bajar todos los registros públicos; el cotejo lo dirá") \
+    && rm -rf data/registros/crudo
+
 RUN useradd --create-home --uid 10001 carlos
 USER carlos
 

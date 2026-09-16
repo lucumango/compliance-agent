@@ -35,7 +35,7 @@ Sin interfaz: `python -m rag.cli "tu consulta"`.
 
 ---
 
-## Los ocho comandos
+## Los diez comandos
 
 ```bash
 python -m ingestion.ingest      # PDFs -> data/parsed/*.json
@@ -46,6 +46,8 @@ python -m rag.eval_prompt       # las reglas del prompt -> 7/7
 python -m rag.modelos           # que los modelos configurados sigan existiendo
 python -m agentes.evaluar       # corpus, citas y frontera de cada agente
 python -m rag.eval_correcciones # las observaciones de los revisores, otra vez
+python -m registros.actualizar  # listas de sanciones y OSCE (--sunat para el padrón)
+python -m registros.evaluar     # el cotejo: falsos negativos sobre todo
 ```
 
 `rag.eval_prompt` va aparte porque cada caso llama al modelo: gasta cuota y
@@ -204,6 +206,9 @@ rota, no se reutiliza.
 ## Ritmo
 
 **En cada cambio del parser o del corpus:** `validate` y `eval`.
+
+**Cada semana, si se usa el cotejo en local:** `python -m registros.actualizar`.
+En producción se actualiza solo con cada despliegue.
 
 **Cada mes:** `python -m rag.modelos`. Comprobar que la UIT del año sigue siendo
 la de `data/uit.json` —cambia cada enero por decreto supremo—. Las auditorías de

@@ -46,6 +46,16 @@ async function pedir(ruta, opciones = {}) {
 export const salud = () => pedir("/api/salud");
 export const agentes = () => pedir("/api/agentes");
 export const detonadores = () => pedir("/api/diego/detonadores");
+export const registrosDiego = () => pedir("/api/diego/registros");
+
+/** Cotejo determinista contra listas de sanciones y el padrón de SUNAT. No
+ *  pasa por el modelo: el nombre del tercero no sale del servidor. */
+export const cotejar = (nombre, ruc) =>
+  pedir("/api/diego/cotejo", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nombre: nombre || null, ruc: ruc || null }),
+  });
 export const normas = () => pedir("/api/normas");
 export const regimenes = () => pedir("/api/regimenes");
 export const grafo = () => pedir("/api/grafo");

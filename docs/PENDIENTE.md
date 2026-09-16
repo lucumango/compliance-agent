@@ -8,6 +8,31 @@ Estado al 27/08/2026: 824 unidades, 11 normas, `validate` sin problemas,
 
 ---
 
+## 0. Los PDFs que encienden a IVÁN y ELENA
+
+Texto **actualizado / concordado de SPIJ**, no el original de El Peruano, en
+`backend/data/raw/normativas/`:
+
+| Fichero | Norma | Enciende |
+|---|---|---|
+| `ds_002_2019_jus.pdf` | Reglamento de la Ley 30424 (modificado al menos por DS 002-2025-JUS y DS 022-2025-JUS) | ELENA |
+| `ds_003_97_tr.pdf` | TUO del DL 728 | IVÁN |
+| `ley_27942.pdf` | Ley de Hostigamiento Sexual | IVÁN, ELENA |
+| `ds_014_2019_mimp.pdf` | Su reglamento (modificado al menos por DS 021-2021-MIMP) | IVÁN |
+| `dl_1327.pdf` | Protección al denunciante | ELENA |
+| `ds_010_2017_jus.pdf` | Su reglamento | ELENA (no requerido) |
+| `ley_27269.pdf` | Firmas y certificados digitales | IVÁN (no requerido) |
+| `dl_1034.pdf` | Libre competencia | Cierra una observación de CORRECCIONES |
+| `ley_28296.pdf` | Patrimonio cultural | Cierra otra |
+| `iso_37002.pdf` | Solo si está licenciada | ELENA (no requerido) |
+
+Las modificatorias nombradas se encontraron el 16/09/2026 buscando las normas;
+no garantizan que no haya otras. Por eso se pide el texto actualizado.
+
+También: **ejecutar `005_auditoria_cotejo.sql`** en Supabase.
+
+---
+
 ## 1. Cotejo contra SPIJ
 
 **Ninguna de las once normas está cotejada.** `metadata_verificada` es `false`

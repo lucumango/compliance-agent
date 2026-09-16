@@ -60,6 +60,30 @@ class Agente:
     reglas: tuple[str, ...] = ()
     casos_recuperacion: tuple[CasoRecuperacion, ...] = field(default_factory=tuple)
     casos_alcance: tuple[CasoAlcance, ...] = field(default_factory=tuple)
+    # Las normas sin las que este agente no existe. Un agente está ACTIVO si y
+    # solo si todas están en el índice, y eso se calcula, no se declara: cuando
+    # alguien carga el PDF que falta, el agente se enciende solo, y si alguien
+    # retira una norma, se apaga en vez de seguir respondiendo de memoria.
+    #
+    # Vacío = no depende de ninguna en concreto (CARLOS, que usa el índice
+    # entero).
+    normas_requeridas: tuple[str, ...] = ()
+    # Si las conversaciones con este agente se guardan en el historial.
+    #
+    # ELENA es la razón de que exista. Su materia es el canal de denuncias, y
+    # la tentación obvia de quien lo use es pegar una denuncia real para
+    # preguntar qué hacer con ella. ELENA no procesa denuncias —su regla lo
+    # dice—, pero una regla del prompt no impide que el texto ya pegado acabe
+    # en la tabla `mensajes`. No guardarlo sí lo impide. Es la "retención
+    # acotada" de manual-casos, aplicada en el único sitio donde es verificable.
+    guarda_historial: bool = True
+
+    def faltantes(self, indexadas: set[str]) -> list[str]:
+        """Normas requeridas que no están en el índice."""
+        return [n for n in self.normas_requeridas if n not in indexadas]
+
+    def activo(self, indexadas: set[str]) -> bool:
+        return not self.faltantes(indexadas)
 
     def bloque_prompt(self) -> str:
         """El trozo del prompt que distingue a este agente de los demás."""

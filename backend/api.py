@@ -53,12 +53,40 @@ DESCARGO = (
     "Verifica siempre contra la fuente oficial."
 )
 
-_estado: dict[str, Buscador] = {}
+_estado: dict = {}
+
+
+def _cargar_registros() -> None:
+    """Listas de sanciones y padrón de SUNAT, si están descargados.
+
+    Que falten no impide arrancar: el chat no los necesita. Pero el estado se
+    publica en /api/diego/registros, porque un cotejo que no dice contra qué
+    comparó es peor que no tener cotejo.
+    """
+    try:
+        from registros.listas import Cotejo
+
+        _estado["cotejo"] = Cotejo()
+    except FileNotFoundError as e:
+        print(f"AVISO: {e}", flush=True)
+    try:
+        from registros.sunat import Padron
+
+        _estado["padron"] = Padron()
+    except FileNotFoundError as e:
+        print(f"AVISO: {e}", flush=True)
+    try:
+        from registros.osce import Inhabilitados
+
+        _estado["osce"] = Inhabilitados()
+    except FileNotFoundError as e:
+        print(f"AVISO: {e}", flush=True)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     _estado["buscador"] = Buscador()
+    _cargar_registros()
     if (aviso := aviso_de_arranque()) is not None:
         print(aviso, flush=True)
     yield
@@ -183,6 +211,7 @@ def catalogo_agentes() -> list[dict]:
     que el usuario lea lo mismo que lee el modelo, y no una versión de
     marketing escrita aparte que acabe diciendo otra cosa.
     """
+    indexadas = _indexadas()
     return [
         {
             "id": a.id,
@@ -193,9 +222,17 @@ def catalogo_agentes() -> list[dict]:
             "fuera_de_alcance": a.fuera_de_alcance,
             "materias": list(a.materias) if a.materias else None,
             "prompt_version": version_prompt(a),
+            # Calculado, no declarado: un agente sin sus normas no responde.
+            "activo": a.activo(indexadas),
+            "faltan": a.faltantes(indexadas),
+            "guarda_historial": a.guarda_historial,
         }
         for a in agentes.AGENTES.values()
     ]
+
+
+def _indexadas() -> set[str]:
+    return {u.norma_id for u in _estado["buscador"].unidades}
 
 
 @app.get("/api/cobertura", dependencies=PROTEGIDO)
@@ -299,7 +336,7 @@ def _documentos_out(resultados) -> list[dict]:
 def consultar(
     payload: ConsultaIn, usuario: Optional[Usuario] = Depends(usuario_opcional)
 ) -> ConsultaOut:
-    agente = agentes.obtener(payload.agente)
+    agente = agentes.obtener(payload.agente, _indexadas())
     try:
         resp = responder(
             payload.consulta,
@@ -379,7 +416,7 @@ def consultar_stream(
     # modelo (para vectorizar la consulta). Sin este try, agotar la cuota de
     # embeddings salía como un 500 con traza en vez del 502 que devuelve
     # /api/consultar, y el frontend solo podía enseñar "Error 500".
-    agente = agentes.obtener(payload.agente)
+    agente = agentes.obtener(payload.agente, _indexadas())
     try:
         prep = preparar(
             payload.consulta,
@@ -551,6 +588,116 @@ def generar_cuestionario(payload: CuestionarioIn) -> dict:
     except KeyError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     return ev.como_dict() | {"descargo": DESCARGO}
+
+
+# --------------------------------------------------------------------- cotejo
+# Comprobar a un tercero contra registros públicos. Determinista y SIN modelo:
+# el nombre del tercero no sale del servidor, y el resultado es el mismo cada
+# vez. Lo que devuelve son coincidencias potenciales y hechos del padrón, nunca
+# un veredicto.
+
+_ADVERTENCIA_COTEJO = (
+    "Una coincidencia en una lista de sanciones es POTENCIAL: se compara texto, "
+    "no se identifica a una persona. Antes de concluir nada, contrástala con "
+    "fecha de nacimiento, documento o nacionalidad. Y que un nombre no aparezca "
+    "solo dice que no aparece en estas listas, a estas fechas."
+)
+
+
+class CotejoIn(BaseModel):
+    nombre: Optional[str] = Field(default=None, max_length=200)
+    ruc: Optional[str] = Field(default=None, max_length=20)
+
+
+@app.get("/api/diego/registros", dependencies=PROTEGIDO)
+def registros_disponibles() -> dict:
+    cotejo, padron, osce = _estado.get("cotejo"), _estado.get("padron"), _estado.get("osce")
+    return {
+        "listas": cotejo.listas if cotejo else {},
+        "vigencia": (cotejo.vigencia() if cotejo else []) + _vigencia_osce(osce),
+        "padron_sunat": {"fecha": padron.fecha} if padron else None,
+        "osce": {"fecha": osce.fecha, "sanciones": len(osce.sanciones)} if osce else None,
+        "no_cubiertos": [
+            "SUNARP: no publica nada descargable",
+            "RNSSC (SERVIR): los datos abiertos están anonimizados; se consulta en su portal con el DNI",
+        ],
+    }
+
+
+def _vigencia_osce(osce) -> list[str]:
+    if osce is None:
+        return []
+    dias = osce.antiguedad_dias()
+    if dias is not None and dias > 30:
+        return [
+            f"OSCE: el dataset de proveedores sancionados es del {osce.fecha}, hace "
+            f"{dias} días. Las inhabilitaciones posteriores no están."
+        ]
+    return []
+
+
+@app.post("/api/diego/cotejo", dependencies=PROTEGIDO)
+def cotejar(
+    payload: CotejoIn, usuario: Optional[Usuario] = Depends(usuario_opcional)
+) -> dict:
+    if not (payload.nombre or payload.ruc):
+        raise HTTPException(status_code=422, detail="Indica un nombre, un RUC o ambos.")
+
+    cotejo, padron, osce = _estado.get("cotejo"), _estado.get("padron"), _estado.get("osce")
+    salida: dict = {"advertencia": _ADVERTENCIA_COTEJO, "no_comprobado": []}
+
+    contribuyente = None
+    if payload.ruc:
+        if padron is None:
+            salida["no_comprobado"].append("Padrón de SUNAT: no está descargado en este servidor.")
+        else:
+            contribuyente = padron.por_ruc(payload.ruc)
+            salida["sunat"] = {
+                "fecha_padron": padron.fecha,
+                "contribuyente": contribuyente.__dict__ if contribuyente else None,
+                "encontrado": contribuyente is not None,
+            }
+
+    # Si solo vino el RUC, se coteja la razón social que da SUNAT: es la forma
+    # oficial del nombre, y la que con más probabilidad está en una lista.
+    nombre = payload.nombre or (contribuyente.nombre if contribuyente else None)
+    if nombre:
+        if cotejo is None:
+            salida["no_comprobado"].append("Listas de sanciones: no están descargadas en este servidor.")
+        else:
+            coincidencias = cotejo.buscar(nombre)
+            salida["sanciones"] = {
+                "nombre_cotejado": nombre,
+                "listas": cotejo.listas,
+                "vigencia": cotejo.vigencia(),
+                "coincidencias": [c.__dict__ for c in coincidencias],
+            }
+
+    if osce is None:
+        salida["no_comprobado"].append("Proveedores sancionados del OSCE: no están descargados en este servidor.")
+    elif payload.ruc or nombre:
+        # Por RUC es un hecho; por nombre, candidatos. Se marca cuál de las dos.
+        por_ruc = osce.por_ruc(payload.ruc) if payload.ruc else []
+        salida["osce"] = {
+            "fecha_dataset": osce.fecha,
+            "avisos": _vigencia_osce(osce),
+            "por_ruc": por_ruc,
+            "por_nombre": [] if por_ruc or not nombre else osce.por_nombre(nombre),
+        }
+
+    salida["no_comprobado"].append(
+        "SUNARP y RNSSC: no hay cotejo automático. SUNARP no publica datos "
+        "descargables y el RNSSC los publica anonimizados; hay que consultarlos a mano."
+    )
+    # Quién cotejó y cuándo, sin el nombre del tercero: el registro de auditoría
+    # no guarda datos de nadie, solo que hubo un cotejo y si dio algo.
+    auditoria.registrar(
+        usuario.token if usuario else None,
+        usuario.id if usuario else None,
+        "cotejo",
+        documentos_citados=len(salida.get("sanciones", {}).get("coincidencias", [])),
+    )
+    return salida
 
 
 # ------------------------------------------------------------- documentos

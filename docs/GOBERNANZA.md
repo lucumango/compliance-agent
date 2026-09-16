@@ -50,6 +50,10 @@ Quién puede salir perjudicado y cómo.
 | **Datos personales del caso salen a Google** | El titular de los datos | Alta | `anonimizar.py` enmascara DNI, RUC, correo, teléfono, tarjeta, cuenta y monto de la consulta **y** de los fragmentos de documento que entran al prompt, con la misma tabla | **Medio.** No cubre nombres, y el texto del documento sí viaja íntegro al vectorizarse. Avisado en la interfaz |
 | **Un usuario ve documentos de otro** | Dos clientes a la vez | Crítica | Row level security en las cinco tablas; el servidor no tiene credencial que la salte; verificado con 0 filas sin sesión | Bajo |
 | **Alguien borra el historial o el registro de auditoría de todos** | Todos los usuarios a la vez | Crítica | Las funciones de purga ya no son invocables desde el API (`004_permisos_purga.sql`), y las nuevas nacen cerradas | Bajo, desde el 04/09/2026 |
+| **El cotejo no encuentra a un designado** (falso negativo) | El cliente, que contrata con un sancionado | Crítica | Normalización de tildes, orden y formas societarias; umbral 85; `registros.evaluar` con casos escritos para romperlo | Medio. No cubre transliteraciones entre alfabetos que la lista no traiga como alias |
+| **El cotejo da por sancionado a un homónimo** (falso positivo) | El tercero | Alta | Toda coincidencia es "potencial", con score y datos para descartarla; nunca "está sancionado" | Bajo |
+| **Se coteja contra una lista vieja** | El cliente | Alta | Fecha del emisor en cada resultado; aviso si pasa de 7 días (listas) o 30 (OSCE) | Medio. Hoy la UE tiene 42 días y el OSCE 273, por publicación del emisor |
+| **Alguien pega una denuncia real en ELENA** | El denunciante | Crítica | Regla del prompt que se niega a analizarla, y `guarda_historial=False`: no queda en la base | Medio. El texto sí viaja al modelo, anonimizado solo en patrones |
 | **Un documento subido inyecta instrucciones en el prompt** | Quien lee la respuesta | Media | Bloques `<fuente>` delimitados, el delimitador escapado dentro del texto del usuario, y la regla 9 del prompt. Con caso en `rag.eval_prompt` | Bajo |
 
 **El alto que queda es uno: el cotejo contra SPIJ.** La inyección de prompt y
@@ -143,6 +147,7 @@ Gemini 3.5 Flash" es una suposición.
 | `python -m rag.eval_prompt` | Que el modelo cumpla sus propias reglas | Al tocar `_SISTEMA` o cambiar de modelo |
 | `ruff check backend/` + `pip-audit` + `npm audit` | Lint y vulnerabilidades de dependencias | En cada push, automático |
 | `python -m rag.modelos` | Que los modelos declarados sigan existiendo | Cada mes |
+| `python -m registros.evaluar` | Que el cotejo encuentre a los designados y no a los homónimos | Tras actualizar los registros |
 | `python -m rag.eval_correcciones` | Que las ocho observaciones reportadas sigan corregidas | Antes de un despliegue que importe |
 | `python -m agentes.evaluar` | Que cada agente encuentre lo suyo, cite artículos que existen y rechace lo ajeno | Al tocar un agente. La parte gratis, en cada push |
 

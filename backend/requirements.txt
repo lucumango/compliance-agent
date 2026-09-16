@@ -23,3 +23,7 @@ python-docx>=1.1,<2.0
 
 # FastAPI necesita esto para leer multipart/form-data (la subida de archivos).
 python-multipart>=0.0.20,<1.0
+
+# Cotejo de nombres contra listas de sanciones (DIEGO). Comparación difusa en C:
+# decenas de miles de nombres en ~25 ms por búsqueda.
+rapidfuzz>=3.9,<4.0

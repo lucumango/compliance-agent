@@ -167,7 +167,8 @@ _PRACTICA_DOCS = (
     "Reporte de deuda coactiva y situación ante SUNAT",
     "Evidencia de operación real: licencia de funcionamiento, contrato de "
     "arrendamiento, fotos de instalaciones, planilla",
-    "Cotejo contra listas restrictivas: OFAC, ONU, UE, HMT, RNP y RNSSC",
+    "Cotejo contra listas restrictivas: OFAC, ONU, UE y Reino Unido (hay un "
+    "cotejo automático en DIEGO), más el RNP y el RNSSC, que no lo tienen",
     "Certificación anticorrupción y declaración de conflicto de interés "
     "firmadas por el tercero",
 )

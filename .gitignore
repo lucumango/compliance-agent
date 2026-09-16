@@ -18,3 +18,9 @@ dist/
 
 # Sitio de documentación generado por MkDocs.
 public/
+
+# Registros públicos descargados: listas de sanciones y padrón de SUNAT. Pesan
+# cientos de megas, cambian cada día y cualquiera los vuelve a bajar con
+# `python -m registros.actualizar`. Versionarlos sería guardar una foto vieja
+# de algo que solo vale si está al día.
+backend/data/registros/

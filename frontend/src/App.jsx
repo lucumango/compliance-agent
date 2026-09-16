@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import Mermaid from "./Mermaid";
 import CalculadoraMultas from "./CalculadoraMultas";
+import Cotejo from "./Cotejo";
 import Cuestionario from "./Cuestionario";
 import SelectorAgente from "./SelectorAgente";
 import GrafoNormas from "./GrafoNormas";
@@ -549,6 +550,11 @@ export default function App() {
     promptVersion,
   }) {
     if (!usuario || !respuesta) return;
+    // Hay agentes cuyas conversaciones no se guardan: ELENA, porque su materia
+    // invita a pegar denuncias reales. Lo declara el agente en el backend y la
+    // interfaz obedece, en vez de llevar aquí una lista propia que se quede
+    // vieja el día que haya un quinto agente.
+    if (agenteActivo?.guarda_historial === false) return;
     try {
       let id = conversacion;
       if (!id) {
@@ -737,7 +743,10 @@ export default function App() {
               CARLOS; el cuestionario, de DIEGO. Enseñar las dos siempre haría
               que el selector de arriba no cambiara nada visible. */}
           {agente === "diego" ? (
-            <Cuestionario />
+            <>
+              <Cotejo />
+              <Cuestionario />
+            </>
           ) : (
             <>
               <GrafoNormas />
